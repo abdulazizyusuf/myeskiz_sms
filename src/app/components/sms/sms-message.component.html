@@ -1,0 +1,1076 @@
+<app-header></app-header>
+
+@if (smsInfo) {
+<div class="notify-new-sms">
+  <div class="inner">
+    <div [innerHTML]="'sms_no_test_auth' | translate"></div>
+    <button class="close_btn" type="button" (click)="closeSmsInfo()"><i class="ion-md-close"></i></button>
+  </div>
+</div>
+}
+
+@if (currentUser) {
+<section class="main-content">
+  <h1 class="page-title">{{'send_sms' | translate}}</h1>
+  @if (!login_failed && !user_blocked && is_sms_access) {
+  <app-sms-menu></app-sms-menu>
+  }
+  @if (user_blocked) {
+  <div class="alert p-3 alert-danger">
+    Пользователь был заблокирован, свяжитесь с администратором
+  </div>
+  }
+  @if (userBalance()) {
+  <div class="white-content pl-3 pr-3 pt-2 pb-2 header-dflex mb-20">
+    @if (userBalance().type == 'balance' && userBalance().balance != 'ND' && currentCompany.type == 'client' &&
+    currentCompany.status != 'blocked') {
+    <h4 class="mt-0 mb-0">{{'balance_amount' | translate}}: <span><strong>{{userBalance().balance | number}}</strong>
+        {{'sum' | translate}}</span>
+      @if (currentUser.role == 'reseller') {
+      <button type="button" (click)="addBalance()" class="btn btn-outline-primary btn-sm mt-2 ml-4">{{'Пополнить счёт
+        через баланс' | translate}}</button>
+      }
+      @if (curLang == 'ru') {
+      <div [ngStyle]="{'font-size':'14px'}" class="text-danger mt-10">SMS-сообщения, отправленные через личный кабинет,
+        доставляются абонентам в течение от 1 минуты до 5 часов.</div>
+      }
+      @if (curLang == 'uz') {
+      <div [ngStyle]="{'font-size':'14px'}" class="text-danger mt-10">Shaxsiy kabinet orqali yuborilgan SMS xabarlar
+        abonentlarga 1 daqiqadan 5 soatgacha bo‘lgan vaqt ichida yetkazib beriladi.</div>
+      }
+      @if (curLang == 'oz') {
+      <div [ngStyle]="{'font-size':'14px'}" class="text-danger mt-10">Шахсий кабинет орқали юборилган SMS хабарлар
+        абонентларга 1 дақиқадан 5 соатгача бўлган вақт ичида етказиб берилади.</div>
+      }
+      @if (curLang == 'en') {
+      <div [ngStyle]="{'font-size':'14px'}" class="text-danger mt-10">SMS messages sent through the personal account are
+        delivered to subscribers within a period ranging from 1 minute to 5 hours.</div>
+      }
+      @if (currentCompany.note) {
+      <small style="font-size:16px;" class="d-block text-muted mt-2">({{currentCompany.note}})</small>
+      }
+    </h4>
+    }
+    @if (userBalance().type == 'balance' && userBalance().balance != 'ND' && currentCompany.type == 'test' &&
+    currentCompany.status != 'inactive') {
+    <h4 class="mt-0 mb-0">{{'balance_amount' | translate}}: <span><strong>{{userBalance().balance | number}}</strong>
+        {{'sum' | translate}}</span>
+      @if (curLang == 'ru') {
+      <div style="font-size:18px;max-width:95%;" class="text-danger mt-10">В Тестовом режиме Вы можете отправить смс
+        сообщение только По номеру, то есть по одному сообщению. Для того, чтобы отправлять массовые сообщения По
+        группам, Вам необходимо заключить с нами договор</div>
+      }
+      @if (curLang == 'uz') {
+      <div style="font-size:18px;max-width:95%;" class="text-danger mt-10">Test rejimida siz SMS-xabarni faqat Raqam
+        bo'yicha, ya'ni bitta donadan sms yuborishingiz mumkin. Bir vaqtning o'zida ko'pchilik ga Guruhlar bo'yicha
+        ommaviy xabarlarni yuborish uchun esa shartnoma tuzishingiz kerak</div>
+      }
+      @if (curLang == 'oz') {
+      <div style="font-size:18px;max-width:95%;" class="text-danger mt-10">Тест режимида сиз СМС-хабарни фақат Рақам
+        бўйича, яъни битта донадан смс юборишингиз мумкин. Бир вақтнинг ўзида кўпчилик га Гуруҳлар бўйича оммавий
+        хабарларни юбориш учун эса шартнома тузишингиз керак</div>
+      }
+      @if (currentCompany.note) {
+      <small style="font-size:16px;" class="d-block text-muted mt-2">({{currentCompany.note}})</small>
+      }
+    </h4>
+    }
+    @if (userBalance().type == 'balance' && userBalance().balance == 'ND' && currentCompany.status != 'blocked') {
+    <h4 class="mt-0 mb-0 info">{{'balance_amount' | translate}}: <span>{{'Без ограничения' | translate}}</span>
+      @if (currentCompany.note) {
+      <small style="font-size:16px;" class="d-block text-muted mt-2">({{currentCompany.note}})</small>
+      }
+    </h4>
+    }
+    @if (currentCompany && currentCompany.status == 'inactive' && currentCompany.type == 'test') {
+    <h4 class="mt-0 mb-0 pr-3 text-danger" [innerHTML]="'sms_no_test_auth' | translate" style="font-size:21px;">
+      @if (currentCompany.note) {
+      <small style="font-size:16px;" class="d-block text-muted mt-2">({{currentCompany.note}})</small>
+      }
+    </h4>
+    }
+    @if (currentCompany) {
+    <h5 class="info mb-0 text-right" style="min-width: 430px;">
+      <strong class="d-block">{{currentCompany.company_name}}</strong>
+      @if (currentCompany.status == 'active' && currentCompany.type == 'client') {
+      <span class="es_label_inline sm bg-success mt-2">{{'active' | translate}}</span>
+      }
+      @if (currentCompany.status == 'active' && currentCompany.type == 'test') {
+      <span class="es_label_inline sm bg-secondary mt-2">{{'Тестовый' | translate}}</span>
+      }
+      @if (currentCompany.status == 'blocked') {
+      <span class="es_label_inline sm bg-danger mt-2">{{'status_blocked' | translate}}</span>
+      }
+      @if (currentCompany.status == 'inactive' && currentCompany.type == 'test') {
+      <span class="es_label_inline sm bg-warning mt-2">{{'В ожидании' | translate}}</span>
+      }
+      @if (currentCompany.status == 'indebted') {
+      <span class="es_label_inline sm bg-info mt-2">{{'indebted' | translate}}</span>
+      }
+      @if (currentCompany.status == 'inactive' && currentCompany.type == 'client') {
+      <span class="es_label_inline sm bg-warning mt-2">{{'Временно не активный' | translate}}
+      </span>
+      }
+      @if (currentCompany.status == 'inactive' && currentCompany.type == 'client') {
+      <div class="d-block mt-1" [ngStyle]="{'font-size':'12px'}" [innerHtml]="'sms_blocked_info' | translate"></div>
+      }
+      @if (clients().length > 1) {
+      <button class="btn btn-sm btn-primary btn-l mt-2" type="button" (click)="openAlerPopup()">{{'changed' |
+        translate}}</button>
+      }
+      @if (currentCompany.status == 'active' && currentCompany.type == 'test' && currentCompany.contact_type == 'l') {
+      <div>
+        @if (!currentCompany.contract_status) {
+        <button class="btn btn-sm btn-primary mt-2" type="button" (click)="openRequestContract()">{{'Заключить договор'
+          | translate}}</button>
+        }
+        @if (currentCompany.contract_status) {
+        <div class="es_label_inline sm bg-success mt-2">{{'Договор уже выставлен' | translate}}</div>
+        }
+      </div>
+      }
+      @if ((currentCompany.status == 'active' || currentCompany.status == 'indebted') && currentCompany.type == 'test'
+      && currentCompany.contact_type == 'p') {
+      <div>
+        <div class="d-inline-block mr-2 text-primary position-relative" style="top:7px;" [ngbPopover]="popContent"
+          popoverTitle="{{'Инструкция для заключения договора' | translate}}">
+          <i class="ion-ios-information-circle-outline" style="font-size:25px;"></i>
+        </div>
+        <button class="btn btn-sm btn-primary mt-2" type="button" (click)="changeOwner()">{{'request_contract' |
+          translate}}</button>
+      </div>
+      }
+    </h5>
+    }
+  </div>
+  }
+  @if (sendSuccess() && !sendSuccessScheduled()) {
+  <div class="white-content">
+    <div class="notify-new-user">
+      <div [innerHTML]="'send_sms_success' | translate"></div> <button class="close_btn" type="button"
+        (click)="sendAgain()"><i class="ion-md-close"></i></button>
+    </div>
+    <div class="text-center mt-15">
+      <a (click)="sendAgain()" class="btn btn-success btn-r">{{'send_again_sms' | translate}}</a>
+      <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
+    </div>
+  </div>
+  }
+  @if (sendSuccess() && sendSuccessScheduled()) {
+  <div class="white-content">
+    <div class="notify-new-user">
+      <div [innerHTML]="'send_sms_success_scheduled' | translate"></div> <button class="close_btn" type="button"
+        (click)="sendAgain()"><i class="ion-md-close"></i></button>
+    </div>
+    <div class="text-center mt-15">
+      <a (click)="sendAgain()" class="btn btn-success btn-r">{{'send_again_sms' | translate}}</a>
+      <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
+    </div>
+  </div>
+  }
+  @if (curLang == 'ru' && !login_failed && !sendSuccess() && !user_blocked && is_sms_access) {
+  <div class="alert p-3 alert-info">
+    <h4 class="mt-0">Инструкция по отправке Смс рассылки:</h4>
+    <ul role="tablist" class="nav nav-tabs mt-10 justify-content-start">
+      <li class="nav-item"><a class="nav-link active" role="button">Через кабинет</a></li>
+      <li class="nav-item"><a class="nav-link"
+          href="https://documenter.getpostman.com/view/663428/RzfmES4z?version=latest" target="_blank">Через смс
+          шлюз</a></li>
+    </ul>
+    <p class="mb-10"><strong>1 ШАГ:</strong> В разделе Контакты <a target="_self"
+        href="/assets/data/contacts.xlsx">скачайте шаблон</a> для загрузки контактов и добавьте все свои
+      контакты.</p>
+    <p class="mb-10"><strong>Примичание*</strong></p>
+    <p class="mb-10">- Все поля с символом "*" должны быть обязательно заполнены в шаблоне.</p>
+    <p class="mb-10">- В шаблоне количество контактов не должно превышать 10 000 контактов.</p>
+    <p class="mb-10"><strong>2 ШАГ:</strong> Список контактов загрузите в систему в разделе Контакты.</p>
+    <p class="mb-0"><strong>3 ШАГ:</strong> Теперь Вы можете делать рассылку в разделе Отправить Смс.</p>
+  </div>
+  }
+  @if (curLang == 'en' && !login_failed && !sendSuccess() && !user_blocked && is_sms_access) {
+  <div class="alert p-3 alert-info">
+    <h4 class="mt-0">Instructions for sending SMS newsletters:</h4>
+    <ul role="tablist" class="nav nav-tabs mt-10 justify-content-start">
+      <li class="nav-item"><a class="nav-link active" role="button">Through the cabinet</a></li>
+      <li class="nav-item"><a class="nav-link"
+          href="https://documenter.getpostman.com/view/663428/RzfmES4z?version=latest" target="_blank">Via sms
+          gateway</a></li>
+    </ul>
+    <p class="mb-10"><strong>1 STEP:</strong> In the Contacts section, download the template for <a target="_self"
+        href="/assets/data/contacts.xlsx">downloading contacts</a> and add all your contacts.</p>
+    <p class="mb-10"><strong>Note*</strong></p>
+    <p class="mb-10">- All fields with the symbol "*" must be filled in the template.</p>
+    <p class="mb-10">- In the template, the number of contacts should not exceed 10 000 contacts.</p>
+    <p class="mb-10"><strong>2 STEP:</strong> Download the list of contacts to the system in the Contacts section.</p>
+    <p class="mb-0"><strong>3 STEP:</strong> Now you can do the newsletter in the Send SMS section.</p>
+  </div>
+  }
+  @if (curLang == 'uz' && !login_failed && !sendSuccess() && !user_blocked && is_sms_access) {
+  <div class="alert p-3 alert-info">
+    <h4 class="mt-0">SMS-xabarlarni yuborish bo'yicha ko'rsatma:</h4>
+    <ul role="tablist" class="nav nav-tabs mt-10 justify-content-start">
+      <li class="nav-item"><a class="nav-link active" role="button">Kabinet orqali</a></li>
+      <li class="nav-item"><a class="nav-link"
+          href="https://documenter.getpostman.com/view/663428/RzfmES4z?version=latest" target="_blank">SMS shlyuz
+          orqali</a></li>
+    </ul>
+    <p class="mb-10"><strong>1-QADAM:</strong> "Kontaktlar" bo'limida kontaktlarni yuklash uchun <a target="_self"
+        href="/assets/data/contacts.xlsx">shablonini yuklab oling</a> va barcha kontaktlaringizni qo'shing.
+    </p>
+    <p class="mb-10"><strong>Izoh*</strong></p>
+    <p class="mb-10">- "*" belgisi bo'lgan barcha maydonlar shablonda to'ldirilishi kerak.</p>
+    <p class="mb-10">- Shablonda kontaktlar soni 10 000 tadan oshmasligi kerak.</p>
+    <p class="mb-10"><strong>2-QADAM:</strong> Tayyor bo'lgan ro'yhatni "Kontaktlar" bo'limi orqali sistemga yuklab
+      qo'ying. </p>
+    <p class="mb-0"><strong>3-QADAM:</strong> Endi siz "SMS jo'natish" bo'limi orqali SMS xabarning yuborishingiz
+      mumkin.</p>
+  </div>
+  }
+  @if (curLang == 'oz' && !login_failed && !sendSuccess() && !user_blocked && is_sms_access) {
+  <div class="alert p-3 alert-info">
+    <h4 class="mt-0">СМС-хабарларни юбориш бўйича кўрсатма:</h4>
+    <ul role="tablist" class="nav nav-tabs mt-10 justify-content-start">
+      <li class="nav-item"><a class="nav-link active" role="button">Кабинет орқали</a></li>
+      <li class="nav-item"><a class="nav-link"
+          href="https://documenter.getpostman.com/view/663428/RzfmES4z?version=latest" target="_blank">СМС шлюз
+          орқали</a></li>
+    </ul>
+    <p class="mb-10"><strong>1-ҚАДАМ:</strong> "Контактлар" бўлимида контактларни юклаш учун <a target="_self"
+        href="/assets/data/contacts.xlsx">шаблонини юклаб олинг</a> ва барча контактларингизни қўшинг. </p>
+    <p class="mb-10"><strong>Изоҳ*</strong></p>
+    <p class="mb-10">- "*" белгиси бўлган барча майдонлар шаблонда тўлдирилиши керак.</p>
+    <p class="mb-10">- Шаблонда контактлар сони 10 000 тадан ошмаслиги керак.</p>
+    <p class="mb-10"><strong>2-ҚАДАМ:</strong> Тайёр бўлган рўйҳатни "Контактлар" бўлими орқали системга юклаб қўйинг.
+    </p>
+    <p class="mb-0"><strong>3-ҚАДАМ:</strong> Енди сиз "СМС жўнатиш" бўлими орқали СМС хабарнинг юборишингиз мумкин.</p>
+  </div>
+  }
+  @if (currentCompany && currentCompany.type == 'test' && currentCompany.status == 'active' && !sendSuccess()) {
+  <div class="alert p-3 alert-warning">
+    @if (curLang == 'ru') {
+    <p class="mb-2">В Вашем статусе Вы можете использовать только Тестовые смс шаблоны.</p>
+    }
+    @if (curLang == 'ru') {
+    <p class="mb-2"><strong>Тестовые смс шаблоны:</strong></p>
+    }
+    @if (curLang == 'uz') {
+    <p class="mb-2">Sizning statusda siz faqat Test uchun mo‘ljallangan sms shablonlardan foydalanishingiz mumkin</p>
+    }
+    @if (curLang == 'uz') {
+    <p class="mb-2"><strong>Test uchun mo‘ljallangan sms shablonlar:</strong></p>
+    }
+    @if (curLang == 'oz') {
+    <p class="mb-2">Сизнинг статусда сиз фақат Тест учун мўлжалланган смс шаблонлардан фойдаланишингиз мумкин.</p>
+    }
+    @if (curLang == 'oz') {
+    <p class="mb-2"><strong>Тест учун мўлжалланган смс шаблонлар:</strong></p>
+    }
+    <p class="mb-0"><strong>- </strong>Это тест от Eskiz</p>
+    <p class="mb-0"><strong>- </strong>Bu Eskiz dan test</p>
+    <p class="mb-2"><strong>- </strong>This is test from Eskiz</p>
+  </div>
+  }
+  @if (!login_failed && !user_blocked && !sendSuccess() && userBalance()) {
+  <section class="white-content">
+    <nav ngbNav #nav="ngbNav" class="nav-tabs" (navChange)="getActiveTab($event)">
+      @if (currentCompany && currentCompany.option_contact == 'yes' && search) {
+      <ng-container ngbNavItem>
+        <a ngbNavLink>{{'by_contacts' | translate}}</a>
+        <ng-template ngbNavContent>
+          @if (message) {
+          <form class="mt-15" (ngSubmit)="sendSms()" #dataForm="ngForm">
+            @if (dataNik() && dataNik().length > 0) {
+            <div class="form-group">
+              <label>{{'Ник (альфа имя)' | translate}}</label>
+              <select class="form-control" name="nik_id" [(ngModel)]="message.nik_id" style="min-width:250px" required>
+                @for (item of dataNik(); track $index) {
+                <option [value]="item.id">{{item.nick}}</option>
+                }
+              </select>
+            </div>
+            }
+            <div class="form-group">
+              <label>{{'mailing_name' | translate}}</label>
+              <input class="form-control" type="text" [(ngModel)]="message.name" name="name" #name="ngModel" required>
+            </div>
+            <form (ngSubmit)="searchContact()" class="mt-20 mb-20" #contactForm="ngForm">
+              <div class="inline-select">
+                <label>Пол</label>
+                <select class="form-control" name="gender" [(ngModel)]="search.gender" style="min-width:150px">
+                  <option value="">Все</option>
+                  <option value="Муж">Муж</option>
+                  <option value="Жен">Жен</option>
+                </select>
+              </div>
+              <div class="inline-select">
+                <label>Возрастная группа</label>
+                <select class="form-control" name="age" [(ngModel)]="search.age">
+                  <option value="">Все</option>
+                  <option value="20-">20-</option>
+                  <option value="20+">20+</option>
+                  <option value="30+">30+</option>
+                  <option value="40+">40+</option>
+                  <option value="50+">50+</option>
+                  <option value="60+">60+</option>
+                </select>
+              </div>
+              <div class="inline-select">
+                <label>Статус</label>
+                <select class="form-control" name="ctatus" [(ngModel)]="search.ctatus" style="min-width:150px">
+                  <option value="">Все</option>
+                  <option value="VIP">VIP</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                </select>
+              </div>
+              <div class="inline-select">
+                <label>Область</label>
+                <select class="form-control" name="region" [(ngModel)]="search.region"
+                  (ngModelChange)="getCities($event)">
+                  <option value="">Все</option>
+                  <option value="no">Неизвестный регион</option>
+                  @for (item of regions(); track $index) {
+                  <option [value]="item.name">{{item.name}}</option>
+                  }
+                </select>
+              </div>
+              @if (cities() && cities().length > 0) {
+              <div class="inline-select">
+                <label>Район</label>
+                <select class="form-control" name="city" [(ngModel)]="search.city">
+                  <option value="">Все</option>
+                  @for (item of cities(); track $index) {
+                  <option [value]="item.name">{{item.name}}</option>
+                  }
+                </select>
+              </div>
+              }
+              <div class="inline-select">
+                <label>Дата</label>
+                <input type="text" class="form-control" placeholder="дд.мм.гггг" name="dob" [(ngModel)]="search.dob">
+              </div>
+              <div class="inline-select">
+                <button class="btn btn-success" type="submit" [disabled]="loading">Найти</button>
+              </div>
+              @if (resultMessage) {
+              <h4 class="mb-20">{{resultMessage}}</h4>
+              }
+            </form>
+            <div class="form-group">
+              <div class="radio-inline i-checks">
+                <label for="instant">
+                  <input type="radio" id="instant" value="instant" [(ngModel)]="message.type" name="type"
+                    #type="ngModel"><i></i> {{'instant_dispatch' | translate}}
+                </label>
+              </div>
+              <div class="radio-inline i-checks">
+                <label for="scheduled">
+                  <input type="radio" id="scheduled" value="scheduled" [(ngModel)]="message.type" name="type"
+                    #type="ngModel"><i></i> {{'scheduled_dispatch' | translate}}
+                </label>
+              </div>
+            </div>
+            @if (message.type == 'scheduled') {
+            <div class="row">
+              <div class="col-sm-3 form-group">
+                <label>{{'scheduled_date' | translate}}</label>
+                <input class="form-control" type="text" placeholder="гггг-мм-дд" [(ngModel)]="message.date" name="date"
+                  ngbDatepicker #dateMessage="ngbDatepicker" (dateSelect)="onDateSelectionMessage($event)"
+                  (click)="dateMessage.toggle()" required>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'scheduled_time' | translate}}</label>
+                <select [(ngModel)]="message.time" name="time" class="form-control" required>
+                  @for (time of times; track time) {
+                  <option value="{{time}}">{{time}}</option>
+                  }
+                </select>
+              </div>
+            </div>
+            }
+            <div class="form-group">
+              <label>{{'insert_text_template' | translate}}</label>
+              <select [(ngModel)]="templateData" (ngModelChange)="templateChoose($event)" name="templateData"
+                class="form-control">
+                <option value="">{{'without_template' | translate}}</option>
+                @for (template of templates(); track $index) {
+                <option value="{{template.id}}">{{template.title}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{'message_text' | translate}}</label>
+              <textarea class="form-control" [(ngModel)]="message.text" name="text" #text="ngModel" required></textarea>
+              @if (!smsCountLimit) {
+              <p>
+                @if (smsCount > 0 && smsLength > 0) {
+                <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
+                    [translateParams]="{value: smsLength}"></span> - {{smsCount}} {{'pc' | translate}}.</span>
+                }
+                @if (message.text) {
+                <a role="button" class="btn-link mt-2" (click)="calcCharacter(message.text,'contact')">{{'Рассчитать
+                  символов' | translate}}</a>
+                }
+              </p>
+              }
+              @if (smsCountLimit) {
+              <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
+              }
+            </div>
+            @if (blacklist_keywords && blacklist_keywords.length > 0) {
+            <p>
+              <small class="text-uppercase text-danger d-block mb-1"><b>{{'Запрещённые слова' | translate}}</b></small>
+              @for (keyword of blacklist_keywords; track keyword) {
+              <span class="badge badge-danger mr-2" style="padding:5px 10px;">{{keyword}}</span>
+              }
+            </p>
+            }
+            <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
+                target="_blank">{{'Инструкция по символам' | translate}}</a></p>
+            @if (curLang == 'ru' && smsCount > 0 && message.contacts.length > 0) {
+            <div class="text-danger mb-3">
+              - Примерная стоимость SMS рассылки составляет:
+              <strong class="d-block">Количество контактов ({{message.contacts.length}} шт) × средная стоимость смс
+                ({{currentCompany.price}} сум) × Количество смс сообщений ({{smsCount}} шт) = {{smsCount *
+                currentCompany.price * message.contacts.length}} сум
+              </strong>
+              <div class="alert alert-warning p-1 mt-2">P/S: Реальная стоимость смс рассылки зависит от <a
+                  href="/sms/prices" target="_blank">цены</a> каждого сотового оператора, а также от категории:
+                сервисного и рекламного типа смс сообщений</div>
+            </div>
+            }
+            @if (curLang == 'uz' && smsCount > 0 && message.contacts.length > 0) {
+            <div class="text-danger mb-3">
+              - SMS xabarning yuborish taxminiy narxi:
+              <strong class="d-block">Kontaktlar soni ({{message.contacts.length}} dona) × o'rtacha SMS narxi
+                ({{currentCompany.price}} so'm) × SMS xabarlar soni ({{smsCount}} dona) = {{smsCount *
+                currentCompany.price * message.contacts.length}} so'm
+              </strong>
+              <div class="alert alert-warning p-1 mt-2">P/S: SMS habarning aniq narxi, har bir uyali aloqa operator
+                tomonidan ornatilgan <a href="/sms/prices" target="_blank">narxga</a> bogliq, hamda, matnning Servis
+                turdagi yoki Reklama turdagi kategoriyasiga kirishiga qarab</div>
+            </div>
+            }
+            @if (curLang == 'oz' && smsCount > 0 && message.contacts.length > 0) {
+            <div class="text-danger mb-3">
+              - СМС хабарнинг юбориш тахминий нархи:
+              <strong class="d-block">Контактлар сони ({{message.contacts.length}} дона) × ўртача СМС нархи
+                ({{currentCompany.price}} сўм) × СМС хабарлар сони ({{smsCount}} дона) = {{smsCount *
+                currentCompany.price * message.contacts.length}} сўм
+              </strong>
+              <div class="alert alert-warning p-1 mt-2">P/S: СМС ҳабарнинг аниқ нархи, ҳар бир уяли алоқа оператор
+                томонидан орнатилган <a href="/sms/prices" target="_blank">нархга</a> боглиқ, ҳамда, матннинг Сервис
+                турдаги ёки Реклама турдаги категориясига киришига қараб</div>
+            </div>
+            }
+            <div class="form-group">
+              <button type="submit" class="btn btn-success"
+                [disabled]="!dataForm.form.valid || message.contacts.length == 0 || smsWaitLoading() || smsCountLimit">{{'send'
+                | translate}} </button>
+            </div>
+          </form>
+          }
+        </ng-template>
+      </ng-container>
+      }
+      @if (currentCompany) {
+      <ng-container ngbNavItem>
+        <a ngbNavLink>{{'by_groups' | translate}}</a>
+        <ng-template ngbNavContent>
+          @if (messageGroup) {
+          <form class="mt-15" (ngSubmit)="sendSmsGroup()" #dataForm="ngForm">
+            @if (dataNik() && dataNik().length > 0) {
+            <div class="form-group">
+              <label>{{'Ник (альфа имя)' | translate}}</label>
+              <select class="form-control" name="nik_id" [(ngModel)]="messageGroup.nik_id" style="min-width:250px"
+                required>
+                @for (item of dataNik(); track $index) {
+                <option [value]="item.id">{{item.nick}}</option>
+                }
+              </select>
+            </div>
+            }
+            <div class="form-group">
+              <label>{{'mailing_name' | translate}}</label>
+              <input class="form-control" type="text" [(ngModel)]="messageGroup.name" name="name" #name="ngModel"
+                required>
+            </div>
+            <div class="form-group">
+              <label>{{'choose_group' | translate}}</label>
+              <ngx-select [items]="groupsData()" optionValueField="id" optionTextField="title"
+                [(ngModel)]="messageGroup.groups" name="groups" (selectionChanges)="changesGroups($event)"
+                #groups="ngModel" [multiple]="true" required></ngx-select>
+            </div>
+            @if (currentCompany.id != 13) {
+            <div class="form-group">
+              <div class="radio-inline i-checks">
+                <label for="instant">
+                  <input type="radio" id="instant" value="instant" [(ngModel)]="messageGroup.type" name="type"
+                    #type="ngModel"><i></i> {{'instant_dispatch' | translate}}
+                </label>
+              </div>
+              <div class="radio-inline i-checks">
+                <label for="scheduled">
+                  <input type="radio" id="scheduled" value="scheduled" [(ngModel)]="messageGroup.type" name="type"
+                    #type="ngModel"><i></i> {{'scheduled_dispatch' | translate}}
+                </label>
+              </div>
+            </div>
+            }
+            @if (currentCompany.id == 13 && is_type_sent) {
+            <div class="form-group">
+              <label>Тип отправки</label>
+              <select class="form-control" name="type" [(ngModel)]="messageGroup.type" style="max-width: 300px;">
+                <option value="instant">{{'instant_dispatch' | translate}}</option>
+                <option value="scheduled">{{'scheduled_dispatch' | translate}}</option>
+                <option value="clients">Eskiz клиенты</option>
+                <option value="sms">СМС</option>
+                <option value="vps">VPS</option>
+                <option value="colocation">Colocation</option>
+                <option value="ssl">SSL сертификат</option>
+                <option value="hosting_cpanel">Хостинг (CPanel)</option>
+                <option value="hosting_plesk">Хостинг (Plesk)</option>
+                <option value="mail">Почта</option>
+                <option value="domain">Домен</option>
+              </select>
+            </div>
+            }
+            @if (messageGroup.type == 'scheduled') {
+            <div class="row">
+              <div class="col-sm-3 form-group">
+                <label>{{'scheduled_date' | translate}}</label>
+                <input class="form-control" type="text" placeholder="гггг-мм-дд" [(ngModel)]="messageGroup.date"
+                  name="date" ngbDatepicker #dateMessage="ngbDatepicker"
+                  (dateSelect)="onDateSelectionMessageGroup($event)" (click)="dateMessage.toggle()" required>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'scheduled_time' | translate}}</label>
+                <select [(ngModel)]="messageGroup.time" name="time" class="form-control" required>
+                  @for (time of times; track time) {
+                  <option value="{{time}}">{{time}}</option>
+                  }
+                </select>
+              </div>
+            </div>
+            }
+            <div class="form-group">
+              <label>{{'insert_text_template' | translate}}</label>
+              <select [(ngModel)]="templateDataGroup" (ngModelChange)="templateChooseGroup($event)"
+                name="templateDataGroup" class="form-control">
+                <option value="">{{'without_template' | translate}}</option>
+                @for (template of templates(); track $index) {
+                <option value="{{template.id}}">{{template.title}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{'message_text' | translate}}</label>
+              <textarea class="form-control" [(ngModel)]="messageGroup.text" name="text" #text="ngModel"
+                required></textarea>
+              @if (!smsCountLimit) {
+              <p>
+                @if (smsCountGroup > 0 && smsLengthGroup > 0) {
+                <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
+                    [translateParams]="{value: smsLengthGroup}"></span> - {{smsCountGroup}} {{'pc' | translate}}.</span>
+                }
+                @if (messageGroup.text) {
+                <a role="button" class="btn-link mt-2" (click)="calcCharacter(messageGroup.text,'group')">{{'Рассчитать
+                  символов' | translate}}</a>
+                }
+              </p>
+              }
+              @if (smsCountLimit) {
+              <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
+              }
+            </div>
+            @if (blacklist_keywords && blacklist_keywords.length > 0) {
+            <p>
+              <small class="text-uppercase text-danger d-block mb-1"><b>{{'Запрещённые слова' | translate}}</b></small>
+              @for (keyword of blacklist_keywords; track keyword) {
+              <span class="badge badge-danger mr-2" style="padding:5px 10px;">{{keyword}}</span>
+              }
+            </p>
+            }
+            <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
+                target="_blank">{{'Инструкция по символам' | translate}}</a></p>
+            @if (curLang == 'ru' && smsCountGroup > 0 && contactsCount > 0) {
+            <div class="text-danger mb-3">
+              - Примерная стоимость SMS рассылки составляет:
+              <strong class="d-block">Количество контактов ({{contactsCount}} шт) × Стоимость смс
+                ({{currentCompany.price}} сум) × Количество смс сообщений ({{smsCountGroup}} шт) = {{smsCountGroup *
+                currentCompany.price * contactsCount}} сум
+              </strong>
+              <div class="alert alert-warning p-1 mt-2">P/S: Реальная стоимость смс рассылки зависит от <a
+                  href="/sms/prices" target="_blank">цены</a> каждого сотового оператора, а также от категории:
+                сервисного и рекламного типа смс сообщений</div>
+            </div>
+            }
+            @if (curLang == 'uz' && smsCountGroup > 0 && contactsCount > 0) {
+            <div class="text-danger mb-3">
+              - SMS xabarning yuborish taxminiy narxi:
+              <strong class="d-block">Kontaktlar soni ({{contactsCount}} dona) × SMS narxi ({{currentCompany.price}}
+                so'm) × SMS xabarlar soni ({{smsCountGroup}} dona) = {{smsCountGroup * currentCompany.price *
+                contactsCount}} so'm
+              </strong>
+              <div class="alert alert-warning p-1 mt-2">P/S: SMS habarning aniq narxi, har bir uyali aloqa operator
+                tomonidan ornatilgan <a href="/sms/prices" target="_blank">narxga</a> bogliq, hamda, matnning Servis
+                turdagi yoki Reklama turdagi kategoriyasiga kirishiga qarab</div>
+            </div>
+            }
+            @if (curLang == 'oz' && smsCountGroup > 0 && contactsCount > 0) {
+            <div class="text-danger mb-3">
+              - СМС хабарнинг юбориш тахминий нархи:
+              <strong class="d-block">Контактлар сони ({{contactsCount}} дона) × СМС нархи ({{currentCompany.price}}
+                сўм) × СМС хабарлар сони ({{smsCountGroup}} дона) = {{smsCountGroup * currentCompany.price *
+                contactsCount}} сўм
+              </strong>
+              <div class="alert alert-warning p-1 mt-2">P/S: СМС ҳабарнинг аниқ нархи, ҳар бир уяли алоқа оператор
+                томонидан орнатилган <a href="/sms/prices" target="_blank">нархга</a> боглиқ, ҳамда, матннинг Сервис
+                турдаги ёки Реклама турдаги категориясига киришига қараб</div>
+            </div>
+            }
+            <div class="form-group">
+              <button type="submit" class="btn btn-success"
+                [disabled]="!dataForm.form.valid || messageGroup.groups.length == 0 || smsWaitLoading() || smsCountLimit">{{'send'
+                | translate}}</button>
+            </div>
+          </form>
+          }
+        </ng-template>
+      </ng-container>
+      }
+      <ng-container ngbNavItem>
+        <a ngbNavLink>{{'По номеру' | translate}}</a>
+        <ng-template ngbNavContent>
+          @if (messageSingle) {
+          <form class="mt-15" (ngSubmit)="sendSmsSingle()" #dataForm="ngForm">
+            @if (is_admin) {
+            <div class="form-group">
+              <label>Оператор</label>
+              <select class="form-control" name="operator" [(ngModel)]="operator"
+                (ngModelChange)="changeOperator($event)" style="min-width:250px" required>
+                <option value="ucell">Ucell</option>
+                <option value="mobiuz">Mobiuz</option>
+                <option value="beeline">Beeline</option>
+                <option value="uzmobile">Uzmobile</option>
+                <option value="humans">Humans</option>
+                <option value="beeline">OQ mobile</option>
+                <option value="perfectum">Perfectum</option>
+              </select>
+            </div>
+            }
+            @if (dataNik && dataNik.length > 0) {
+            <div class="form-group">
+              <label>{{'Ник (альфа имя)' | translate}}</label>
+              @if (currentCompany.id == 13) {
+              <ngx-select [items]="dataNik()" name="nik_id" [(ngModel)]="messageSingle.nik_id" optionValueField="id"
+                optionTextField="nick" required></ngx-select>
+              }
+              @if (currentCompany.id != 13) {
+              <select class="form-control" name="nik_id" [(ngModel)]="messageSingle.nik_id" style="min-width:250px"
+                required>
+                @for (item of dataNik(); track $index) {
+                <option [value]="item.id">{{item.nick}}</option>
+                }
+              </select>
+              }
+            </div>
+            }
+            <div class="form-group">
+              <label>{{'phone' | translate}}</label>
+              <input class="form-control" type="text" [(ngModel)]="messageSingle.phone" name="phone" #phone="ngModel"
+                prefix="+998 " mask="000000000" required>
+            </div>
+            <div class="form-group">
+              <label>{{'insert_text_template' | translate}}</label>
+              <select [(ngModel)]="templateDataSingle" (ngModelChange)="templateChooseSingle($event)"
+                name="templateDataSingle" class="form-control">
+                <option value="">{{'without_template' | translate}}</option>
+                @for (template of templates(); track $index) {
+                <option value="{{template.id}}">{{template.title}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{'message_text' | translate}}</label>
+              <textarea class="form-control" [(ngModel)]="messageSingle.text" name="text" #text="ngModel"
+                required></textarea>
+              @if (!smsCountLimit) {
+              <p>
+                @if (smsCountSingle > 0 && smsLengthSingle > 0) {
+                <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
+                    [translateParams]="{value: smsLengthSingle}"></span> - {{smsCountSingle}} {{'pc' |
+                  translate}}.</span>
+                }
+                @if (messageSingle.text) {
+                <a role="button" class="btn-link mt-2"
+                  (click)="calcCharacter(messageSingle.text,'single')">{{'Рассчитать символов' | translate}}</a>
+                }
+              </p>
+              }
+              @if (smsCountLimit) {
+              <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
+              }
+            </div>
+            @if (blacklist_keywords && blacklist_keywords.length > 0) {
+            <p>
+              <small class="text-uppercase text-danger d-block mb-1"><b>{{'Запрещённые слова' | translate}}</b></small>
+              @for (keyword of blacklist_keywords; track keyword) {
+              <span class="badge badge-danger mr-2" style="padding:5px 10px;">{{keyword}}</span>
+              }
+            </p>
+            }
+            <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
+                target="_blank">{{'Инструкция по символам' | translate}}</a></p>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success"
+                [disabled]="!dataForm.form.valid || smsWaitLoading() || smsCountLimit">{{'send' | translate}}</button>
+            </div>
+          </form>
+          }
+        </ng-template>
+      </ng-container>
+      @if (currentUser.role == 'admin') {
+      <ng-container ngbNavItem>
+        <a ngbNavLink>По международному номеру</a>
+        <ng-template ngbNavContent>
+          @if (messageGlobal) {
+          <form class="mt-15" (ngSubmit)="sendSmsGlobal()" #dataForm="ngForm">
+            @if (currentCompany) {
+            <div class="form-group">
+              <label>{{'country' | translate}}</label>
+              <ngx-select [items]="countries()" name="country_code" [(ngModel)]="messageGlobal.country_code"
+                (ngModelChange)="changeCountry($event)" optionValueField="code" optionTextField="name"
+                required></ngx-select>
+              <!--  -->
+            </div>
+            }
+            <div class="form-group">
+              <label>{{'phone' | translate}}</label>
+              <input class="form-control" type="text" [(ngModel)]="messageGlobal.phone" name="phone" #phone="ngModel"
+                prefix="+{{messageGlobal.dial_code}} " mask="99999999999" required>
+            </div>
+            <div class="form-group">
+              <label>{{'insert_text_template' | translate}}</label>
+              <select [(ngModel)]="templateDataGlobal" (ngModelChange)="templateChooseGlobal($event)"
+                name="templateDataGlobal" class="form-control">
+                <option value="">{{'without_template' | translate}}</option>
+                @for (template of templates(); track $index) {
+                <option value="{{template.id}}">{{template.title}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{'message_text' | translate}}</label>
+              <textarea class="form-control" [(ngModel)]="messageGlobal.text" name="text" #text="ngModel"
+                required></textarea>
+              <p>
+                @if (smsCountGlobal > 0 && smsLengthGlobal > 0) {
+                <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
+                    [translateParams]="{value: smsLengthGlobal}"></span> - {{smsCountGlobal}} {{'pc' |
+                  translate}}.</span>
+                }
+                @if (messageGlobal.text) {
+                <a role="button" class="btn-link mt-2"
+                  (click)="calcCharacter(messageGlobal.text,'global')">{{'Рассчитать символов' | translate}}</a>
+                }
+              </p>
+            </div>
+            @if (blacklist_keywords && blacklist_keywords.length > 0) {
+            <p>
+              <small class="text-uppercase text-danger d-block mb-1"><b>{{'Запрещённые слова' | translate}}</b></small>
+              @for (keyword of blacklist_keywords; track keyword) {
+              <span class="badge badge-danger mr-2" style="padding:5px 10px;">{{keyword}}</span>
+              }
+            </p>
+            }
+            <div class="form-group">
+              <button type="submit" class="btn btn-success"
+                [disabled]="!dataForm.form.valid || smsWaitLoading()">{{'send'
+                | translate}}</button>
+            </div>
+          </form>
+          }
+        </ng-template>
+      </ng-container>
+      }
+    </nav>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </section>
+  }
+  @if (login_failed && currentUser.role != 'student') {
+  <div class="white-content mb-20">
+    @if (service_suspended_msg) {
+    <div class="alert p-2 alert-danger text-center">{{service_suspended_msg}}</div>
+    }
+    @if (!service_suspended_msg) {
+    <h4 class="mt-0 mb-0 pr-4 text-center" style="font-size:20px;">{{'sms_connect_msg' | translate}}</h4>
+    }
+    @if (!service_suspended_msg) {
+    <h5 class="info mb-0 mt-2 text-center">
+      <button class="btn btn-sm btn-primary mt-2" type="button" (click)="connectSms()">{{'Подключить смс' |
+        translate}}</button>
+    </h5>
+    }
+  </div>
+  }
+  @if (login_failed && currentUser.role == 'student') {
+  <div class="white-content header-dflex mb-20">
+    @if (curLang == 'ru') {
+    <div class="alert p-2 alert-danger">В статусе "Студент" нет возможности пользоватся услугой СМС. Услуга
+      предоставляется только для юридических лиц.</div>
+    }
+    @if (curLang == 'uz') {
+    <div class="alert p-2 alert-danger">"Talaba" statusida Sms xizmatidan foydalanib bo‘lmaydi. Xizmat faqat Yuridik
+      shaxslarga ko‘rsatiladi.</div>
+    }
+    @if (curLang == 'oz') {
+    <div class="alert p-2 alert-danger">"Талаба" статусида Смс хизматидан фойдаланиб бўлмайди. Хизмат фақат Юридик
+      шахсларга кўрсатилади.
+    </div>
+    }
+  </div>
+  }
+  @if (smsWaitLoading()) {
+  <div class="sms_sending_wait">
+    <div>
+      <h5 class="text-center mb-40">Ваш запрос обрабатывается. Это может занять несколько времени. Пожалуйста ждите до
+        завершения процесса.</h5>
+      <p class="text-center"><img src="https://my.eskiz.uz/assets/images/tail-spin.svg" height="50" width="auto"></p>
+    </div>
+  </div>
+  }
+  <div class="alert-popup-container" [ngClass]="{'show':choose_contact}">
+    @if (clients()) {
+    <div class="alert-popup-content">
+      <h2 class="alert-popup-title mb-15">Компания для СМС отправке</h2>
+      <div class="form-group">
+        <label>{{'choose_owner' | translate}}</label>
+        <select name="currentClientId" [(ngModel)]="currentClientId" class="form-control" required>
+          @for (item of clients(); track $index) {
+          <option [value]="item.id">{{item.company_name}}</option>
+          }
+        </select>
+      </div>
+      <hr class="rc_divider">
+      <div class="alert-popup-buttons">
+        <button type="button" class="btn btn-primary btn-r" [disabled]="!currentClientId"
+          (click)="saveClient(currentClientId)">{{'save' | translate}}</button>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="alert-popup-container" [ngClass]="{'show':choose_contacts}">
+    @if (contacts && sendData) {
+    <div class="alert-popup-content">
+      <h2 class="alert-popup-title mb-4">{{'Подключить смс' | translate}}</h2>
+      <div class="form-group">
+        <label>{{'choose_owner' | translate}}</label>
+        <select [(ngModel)]="sendData.contact_id" name="contact_id" class="form-control" required>
+          <option value="">{{'choose_owner' | translate}}</option>
+          <optgroup label="{{'personal' | translate}}">
+            @for (contact of contacts() | filter:{type:'p'}; track $index) {
+            <option [value]="contact.id">{{contact.name}}</option>
+            }
+          </optgroup>
+          <optgroup label="{{'legal_entity' | translate}}">
+            @for (contact of contacts() | filter:{type:'l'}; track $index) {
+            <option [value]="contact.id">{{contact.company_name}}</option>
+            }
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>{{'enter_company_info' | translate}}</label>
+        <textarea class="form-control" rows="2" name="info" [(ngModel)]="sendData.info"
+          placeholder="{{'company_info_placeholder' | translate}}" required></textarea>
+      </div>
+      <hr class="rc_divider">
+      <div class="alert-popup-buttons">
+        <button type="button" class="btn btn-primary btn-r" [disabled]="!sendData.contact_id && !sendData.info"
+          (click)="connectSmsService()">{{'Подключить' | translate}}</button>
+        <button type="button" class="btn btn-warning" (click)="closeAlert()">{{'close' | translate}}</button>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="alert-popup-container" [ngClass]="{'show':change_contact}">
+    @if (contacts() && sendData) {
+    <div class="alert-popup-content">
+      <h2 class="alert-popup-title mb-4">{{'Инструкция для заключения договора' | translate}}</h2>
+      @if (changeOwnerAccess) {
+      <div class="form-group">
+        <label>{{'choose_owner' | translate}}</label>
+        <select [(ngModel)]="sendData.contact_id" name="contact_id" class="form-control" required>
+          <option value="">{{'choose_owner' | translate}}</option>
+          <optgroup label="{{'legal_entity' | translate}}">
+            @for (contact of contacts() | filter:{type:'l'}; track $index) {
+            <option [value]="contact.id">{{contact.company_name}}</option>
+            }
+          </optgroup>
+        </select>
+      </div>
+      }
+      @if (!changeOwnerAccess) {
+      <div class="mb-3">
+        @if (curLang == 'oz') {
+        <div class="alert alert-info">
+          <p class="mb-3">1. Смс хизмати фақат <b>юридик шахслар</b> (МЧЖ/OOO, ХК, ЯТТ) га кўрсатилади. Жисмоний шахс
+            сифатида - 100 та бепул смс фақатгина: синов тариқасида ўз тизимларини бизнинг смс шлюзга улаб олишлари,
+            ҳамда шахсий кабинет орқали смс хизматининг барча функциялари билан танишиб чиқиш учун тақдим этилади.</p>
+          <p class="mb-3">2. Агар сиз <b>юридик шахс бўлсангиз</b> ва шартнома олишни истасангиз, унда <b>"Ташкилот
+              реквизитларини қўшиш"</b> тугмаси орқали, ташкилотингиз маълумотларини қўшиб қўйишингиз керак.</p>
+          <p class="mb-3">3. Ташкилотингиз реквизитлари қўшилгандан сўнг, СМС бўлимига кириб, қайтадан <b>"Шартнома
+              сўраш"</b> тугмасини босасиз ва аккаунтингизни жисмоний шахс статусидан юридик шахс статусига
+            ўзгартирасиз.</p>
+          <p>4. Смс хизмати юридик шахсга ўтгандан кейин, <b>"Шартнома тузиш"</b> тугмасини босиб, ташкилотингиз учун
+            автомат тарзда шартнома чиқартириб олишингиз мумкин бўлади.</p>
+        </div>
+        }
+        @if (curLang == 'uz') {
+        <div class="alert alert-info">
+          <p class="mb-3">1. Sms xizmati faqat <b>yuridik shaxslar</b> (MChJ/OOO, XK, YaTT) ga ko‘rsatiladi. Jismoniy
+            shaxs sifatida - 100 ta bepul sms faqatgina: sinov tariqasida o‘z tizimlarini bizning sms shlyuzga ulab
+            olishlari, hamda shaxsiy kabinet orqali sms xizmatining barcha funktsiyalari bilan tanishib chiqish uchun
+            taqdim etiladi.</p>
+          <p class="mb-3">2. Agar siz <b>yuridik shaxs bo‘lsangiz</b> va shartnoma olishni istasangiz, unda
+            <b>"Tashkilot rekvizitlarini qo‘shish"</b> tugmasi orqali, tashkilotingiz ma’lumotlarini qo‘shib
+            qo‘yishingiz kerak.
+          </p>
+          <p class="mb-3">3. Tashkilotingiz rekvizitlari qo‘shilgandan so‘ng, SMS bo‘limiga kirib, qaytadan
+            <b>"Shartnoma so‘rash"</b> tugmasini bosasiz va akkauntingizni jismoniy shaxs statusidan yuridik shaxs
+            statusiga o‘zgartirasiz.
+          </p>
+          <p>4. Sms xizmati yuridik shaxsga o‘tgandan keyin, <b>"Shartnoma tuzish"</b> tugmasini bosib, tashkilotingiz
+            uchun avtomat tarzda shartnoma chiqartirib olishingiz mumkin bo‘ladi.</p>
+        </div>
+        }
+        @if (curLang == 'ru' || curLang == 'en') {
+        <div class="alert alert-info">
+          <p class="mb-3">1. Услуга SMS информирование предоставляется только <b>юридическим лицам</b> (ООО, ЧП, ЯТТ/ИП)
+            и только резидентам Узбекистана. Физическим лицам и нерезидентам - 100 бесплатных смс предоставляются только
+            для того, чтобы: в тестовом режиме подключить свою систему к нашему смс шлюз, а также для ознакомления со
+            всеми функциями смс услуги в личном кабинете.</p>
+          <p class="mb-3">2. Если вы являетесь <b>юридическим лицом</b> и хотите получить договор, Вам необходимо нажать
+            на кнопку <b>"Добавить реквизиты организации"</b> и добавить данные своей организации.</p>
+          <p class="mb-3">3. После добавления реквизитов своей организации, необходимо зайти в раздел СМС и снова нажать
+            на кнопку <b>"Запрос договора"</b>, после чего, нужно изменить свой аккаунт с физического лица на
+            юридическое лицо.</p>
+          <p>4. Как только Ваш аккаунт перейдет на юридическое лицо, нажав кнопку <b>"Заключить договор"</b>, Вы можете
+            автоматический получить договор для своей организации.</p>
+        </div>
+        }
+        <div class="text-center mt-2">
+          <a href="/contacts/legal" class="btn btn-primary btn-sm">{{'Добавить реквизиты организации' | translate}}</a>
+        </div>
+      </div>
+      }
+      <hr class="rc_divider">
+      <div class="alert-popup-buttons">
+        @if (changeOwnerAccess) {
+        <button type="button" class="btn btn-primary btn-r" [disabled]="!sendData.contact_id"
+          (click)="changeOwnerPatch()">{{'save' | translate}}</button>
+        }
+        <button type="button" class="btn btn-warning" (click)="closeAlert()">{{'close' | translate}}</button>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="alert-popup-container" [ngClass]="{'show':alertShowRequestContract}">
+    <div class="alert-popup-content">
+      <h2 class="alert-popup-title mb-15">{{'Создать договор' | translate}}</h2>
+      @if (curLang == 'ru' || curLang == 'en') {
+      <div>
+        <p class="mb-4">1. После нажатия на кнопку Создать договор, в течение 15 минут в системе электронного
+          документооборота автоматически выставиться договор. Вам необходимо зайти на любой сервис электронного
+          документооборота которым Вы пользуетесь: <strong>Didox.uz, Soliqservis.uz, Faktura.uz</strong> и так далее, и
+          подписать свой договор. Подписав договор, необходимо по перечислению пополнить свой баланс в размере не менее
+          300 000 сум и сообщить нам об оплате по телеграму: <strong>&#64;eskizhelp</strong></p>
+        <p class="mb-10">2. Напоминаем что, все цены для отправки смс сообщений, указаны в разделе: <strong>СМС –
+            Цены</strong></p>
+      </div>
+      }
+      @if (curLang == 'oz') {
+      <div>
+        <p class="mb-4">1. Шартнома чиқартириш тугмасини босганингиздан сўнг, сизга 15 дақиқа ичида электрон ҳужжатлар
+          алмашинуви тизимида автоматик тарзда шартнома яратилади. Ўзингиз фойдаланаётган исталган электрон ҳужжат
+          алмашинуви тизимларидан: <strong>Didox.uz, Soliqservis.uz, Faktura.uz</strong> ва ҳоказо, бирига кириб, 
+          шартномангизни имзолашингиз керак. Шартнома имзолангандан сўнг, пул кўчириш йўли билан балансингизни энг
+          камида 300 000 сўмга тўлдиришингиз лозим ва тўловдан сўнг бу ҳақда бизга телеграм
+          <strong>&#64;eskizhelp</strong> орқали ҳабар бериб қўйишни унутманг.
+        </p>
+        <p class="mb-10">2. Эслатиб ўтамиз, SMS ҳабар юбориш учун барча нархлар: <strong>СМС – Нархлар</strong> бўлимда
+          кўрсатилган.</p>
+      </div>
+      }
+      @if (curLang == 'uz') {
+      <div>
+        <p class="mb-4">1. Shartnoma chiqartirish tugmasini bosganingizdan so‘ng, sizga 15 daqiqa ichida elektron
+          hujjatlar almashinuvi tizimida avtomatik tarzda shartnoma yaratiladi. O‘zingiz foydalanayotgan istalgan
+          elektron hujjat almashinuvi tizimlaridan: <strong>Didox.uz, Soliqservis.uz, Faktura.uz</strong> va hokazo,
+          biriga kirib,  shartnomangizni imzolashingiz kerak. Shartnoma imzolangandan so‘ng, pul ko‘chirish yo‘li bilan
+          balansingizni eng kamida 300 000 so‘mga to‘ldirishingiz lozim va to‘lovdan so‘ng bu haqda bizga telegram
+          <strong>&#64;eskizhelp</strong> orqali habar berib qo‘yishni unutmang.
+        </p>
+        <p class="mb-10">2. Eslatib o‘tamiz, SMS habar yuborish uchun barcha narxlar: <strong>SMS – Narxlar</strong>
+          bo‘limda ko‘rsatilgan.</p>
+      </div>
+      }
+      <hr class="rc_divider">
+      <div class="alert-popup-buttons">
+        <button type="button" class="btn btn-primary btn-r" (click)="requestContract()">{{'Создать договор' |
+          translate}}</button>
+        <button type="button" class="btn btn-warning" (click)="closeAlerPopup()">{{'close' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<ng-template #popContent>
+  @if (curLang == 'oz') {
+  <div>
+    <p class="mb-3">1. Смс хизмати фақат <b>юридик шахслар</b> (МЧЖ/OOO, ХК, ЯТТ) га кўрсатилади. Жисмоний шахс сифатида
+      - 100 та бепул смс фақатгина: синов тариқасида ўз тизимларини бизнинг смс шлюзга улаб олишлари, ҳамда шахсий
+      кабинет орқали смс хизматининг барча функциялари билан танишиб чиқиш учун тақдим этилади.</p>
+    <p class="mb-3">2. Агар сиз <b>юридик шахс бўлсангиз</b> ва шартнома олишни истасангиз, унда <b>"Ташкилот
+        реквизитларини қўшиш"</b> тугмаси орқали, ташкилотингиз маълумотларини қўшиб қўйишингиз керак.</p>
+    <p class="mb-3">3. Ташкилотингиз реквизитлари қўшилгандан сўнг, СМС бўлимига кириб, қайтадан <b>"Шартнома сўраш"</b>
+      тугмасини босасиз ва аккаунтингизни жисмоний шахс статусидан юридик шахс статусига ўзгартирасиз.</p>
+    <p>4. Смс хизмати юридик шахсга ўтгандан кейин, <b>"Шартнома тузиш"</b> тугмасини босиб, ташкилотингиз учун автомат
+      тарзда шартнома чиқартириб олишингиз мумкин бўлади.</p>
+  </div>
+  }
+  @if (curLang == 'uz') {
+  <div>
+    <p class="mb-3">1. Sms xizmati faqat <b>yuridik shaxslar</b> (MChJ/OOO, XK, YaTT) ga ko‘rsatiladi. Jismoniy shaxs
+      sifatida - 100 ta bepul sms faqatgina: sinov tariqasida o‘z tizimlarini bizning sms shlyuzga ulab olishlari, hamda
+      shaxsiy kabinet orqali sms xizmatining barcha funktsiyalari bilan tanishib chiqish uchun taqdim etiladi.</p>
+    <p class="mb-3">2. Agar siz <b>yuridik shaxs bo‘lsangiz</b> va shartnoma olishni istasangiz, unda <b>"Tashkilot
+        rekvizitlarini qo‘shish"</b> tugmasi orqali, tashkilotingiz ma’lumotlarini qo‘shib qo‘yishingiz kerak.</p>
+    <p class="mb-3">3. Tashkilotingiz rekvizitlari qo‘shilgandan so‘ng, SMS bo‘limiga kirib, qaytadan <b>"Shartnoma
+        so‘rash"</b> tugmasini bosasiz va akkauntingizni jismoniy shaxs statusidan yuridik shaxs statusiga
+      o‘zgartirasiz.</p>
+    <p>4. Sms xizmati yuridik shaxsga o‘tgandan keyin, <b>"Shartnoma tuzish"</b> tugmasini bosib, tashkilotingiz uchun
+      avtomat tarzda shartnoma chiqartirib olishingiz mumkin bo‘ladi.</p>
+  </div>
+  }
+  @if (curLang == 'ru' || curLang == 'en') {
+  <div>
+    <p class="mb-3">1. Услуга SMS информирование предоставляется только <b>юридическим лицам</b> (ООО, ЧП, ЯТТ/ИП) и
+      только резидентам Узбекистана. Физическим лицам и нерезидентам - 100 бесплатных смс предоставляются только для
+      того, чтобы: в тестовом режиме подключить свою систему к нашему смс шлюз, а также для ознакомления со всеми
+      функциями смс услуги в личном кабинете.</p>
+    <p class="mb-3">2. Если вы являетесь <b>юридическим лицом</b> и хотите получить договор, Вам необходимо нажать на
+      кнопку <b>"Добавить реквизиты организации"</b> и добавить данные своей организации.</p>
+    <p class="mb-3">3. После добавления реквизитов своей организации, необходимо зайти в раздел СМС и снова нажать на
+      кнопку <b>"Запрос договора"</b>, после чего, нужно изменить свой аккаунт с физического лица на юридическое лицо.
+    </p>
+    <p>4. Как только Ваш аккаунт перейдет на юридическое лицо, нажав кнопку <b>"Заключить договор"</b>, Вы можете
+      автоматический получить договор для своей организации.</p>
+  </div>
+  }
+</ng-template>

@@ -1,0 +1,520 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'my_text' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  <section class="white-content">
+    @if (curLang == 'ru' || curLang == 'en') {
+    <div class="alert p-3 alert-info">
+      <h4 class="mt-0 mb-20">Инструкция по добавлению Текстов для модерации:</h4>
+      <p class="mb-10">Перед тем как отправлять любые <strong>новые смс сообщения</strong>, пользователям сначала нужно
+        разместить тексты <strong>для проведения модерации</strong> нажав на кнопку “+ Добавить текст”. Не требуется
+        каждый раз добавлять один и тот же текст повторно. </p>
+      <p class="mb-10"><u>Тексты смс сообщений проходят модерацию от 1 часа до 1 дня, кроме выходных и праздничных
+          дней.</u></p>
+      <div class="punkts">
+        <div class="item">
+          <p class="mb-10"><strong>Пункт 1</strong></p>
+          <p class="mb-4"><strong>Пожалуйста, для модерации смс сообщения вводить текст только в оригинальном виде (без
+              изменений), то есть, в том виде, которая будет отправляться получателям на телефон. Обработка текста
+              (изменение переменных значений, масок) будет производиться только самим модератором.</strong></p>
+          <p class="mb-10"><strong>Примеры:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Здравствуйте (STUDENT)! Вы отсутствовали в (TIME) в группе (GROUP) во время урока (COURSE). –
+              <strong>неправильный вариант</strong>
+            </li>
+            <li class="mb-10"> - Здравствуйте Мурод! Вы отсутствовали в 11.00 в группе 789-A во время урока IELTS –
+              <strong>правильный вариант</strong>
+            </li>
+            <li> - Уважаемый #NAME#! На вашем счету осталось #CASH# #CASHNAME#. Своевременно пополните счёт. –
+              <strong>неправильный вариант</strong>
+            </li>
+            <li class="mb-10"> - Уважаемый Турсунов Анвар! На вашем счету осталось 32 456.74 сум. Своевременно пополните
+              счёт. – <strong>правильный вариант</strong></li>
+            <li> - Вы сделали заказ на [name]. Номер:# [order_id]. Сумма: [order_total]. Оплата при получение. –
+              <strong>неправильный вариант</strong>
+            </li>
+            <li class="mb-10"> - Вы сделали заказ на Eskiz.uz. Номер: #447-A. Сумма: 143 000 сум. Оплата при получение.
+              – <strong>правильный вариант</strong></li>
+          </ul>
+        </div>
+        <div class="item">
+          <p class="mb-10"><strong>Пункт 2</strong></p>
+          <p class="mb-4"><strong>Во всех смс сообщениях, где находятся “коды для регистрации” (авторизации,
+              верификации), обязательно должно указываться название ресурса (проекта, веб-сайта или название телеграм
+              бота), а также цель использования кодов авторизации. Тексты с кодами авторизации без указания названия
+              ресурса и цели использования не будут приниматься сотовыми операторами.</strong></p>
+          <p class="mb-10"><strong>Примеры:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Код подтверждения: 0000 – <strong>неправильный вариант</strong></li>
+            <li class="mb-10"> - Код подтверждения <u>для регистрации (цель использования) </u> на сайте
+              <strong>Eskiz.uz</strong> (название ресурса): 0000 – <strong>правильный вариант</strong>
+            </li>
+            <li> - Восстановление пароля для: 0000 – <strong>неправильный вариант</strong></li>
+            <li class="mb-10"> - <u>Восстановление пароля (цель использования) </u> для платформы <strong> Eskiz
+                Media</strong> (название ресурса): 0000 – <strong>правильный вариант</strong></li>
+            <li> - Код для мобильного приложения: 0000 – <strong>неправильный вариант</strong></li>
+            <li class="mb-10"> - Код верификации <u>для входа (цель использования)</u> к мобильному приложению
+              <strong>Eskiz.uz</strong> (название ресурса): 0000 – <strong>правильный вариант</strong>
+            </li>
+            <li> - Код подтверждения для заказа: 0000 – <strong>неправильный вариант</strong></li>
+            <li class="mb-10"> - Код подтверждения <u>для заказа (цель использования)</u> на сайте
+              <strong>Eskiz.uz</strong> (название ресурса): 0000 – <strong>правильный вариант</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <h5 class="mb-10 text-center">Статусы</h5>
+      <ol style="padding-left:25px;">
+        <li class="mb-2"><strong>На модерации</strong> - Тексты проходят модерацию каждые 3 часа с 10.00 до 16.00, кроме
+          выходных и праздничных дней. Пожалуйста, ожидайте.</li>
+        <li class="mb-2"><strong>В процессе</strong> - Текст передан сотовому оператору для модерации, пожалуста
+          ожидайте подтверждение текста.</li>
+        <li class="mb-2"><strong>Одобрено</strong> - Текст одобрен и готов к использованию.</li>
+        <li><strong>Отказан</strong> - Текст отклонён, причина отказа указано в Примечании.</li>
+      </ol>
+    </div>
+    }
+
+    @if (curLang == 'uz') {
+    <div class="alert p-3 alert-info">
+      <h4 class="mt-0 mb-20">Matnlarni moderatsiyadan o'tkazish bo'yicha Yo'riqnoma:</h4>
+      <p class="mb-10">Har qanday <strong>yangi sms xabarni</strong>, yuborishdan oldin, foydalanuvchilar “+ Matn
+        qo‘shish” tugmasi orqali, matnlarni <strong>moderatsiyadan o‘tkazish</strong> uchun, joylashtirib qo‘yishlari
+        kerak bo‘ladi. Avvalgi kiritilgan matnlarni, har safar qayta-qayta qo‘shish lozim emas.</p>
+      <p class="mb-10"><u>Sms xabar matnlari 1 soatdan 1 ish kunigacha moderatsiyadan o‘tkaziladi, bayram va dam olish
+          kunlaridan tashqari.</u></p>
+      <div class="punkts">
+        <div class="item">
+          <p class="mb-10"><strong>Punkt 1</strong></p>
+          <p class="mb-4"><strong>Iltimos, SMS-xabarni moderatsiyadan o'tkazish uchun, matnni faqat asl ko'rinishida
+              (qo'shimcha va o'zgartirishlarsiz), ya'ni abonentning mobil raqamiga matn qanday shaklda borsa, o'sha
+              ko'rinishda kiritish lozim. Sms matni bilan qayta ishlashni (o'zgaruvchan joylariga maska qo'yib
+              chiqishni) moderatorning o'zi faqat amalga oshiradi.</strong></p>
+          <p class="mb-10"><strong>Misollar:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Assalomu alaykum, (STUDENT)! Siz (GROUP) guruhida soat (TIME) da (COURSE) darsiga qatnashmadingiz –
+              <strong>noto‘g‘ri variant</strong>
+            </li>
+            <li class="mb-10"> - Assalomu alaykum, Murod! Siz 789-A guruhida soat 11.00 da IELTS darsiga qatnashmadingiz
+              – <strong>to‘g‘ri variant</strong></li>
+            <li> - Hurmatli #NAME#! Hisobingizda #CASH# #CASHNAME# qoldi. Hisobingizni o'z vaqtida to'ldiring. –
+              <strong>noto‘g‘ri variant</strong>
+            </li>
+            <li class="mb-10"> - Hurmatli Tursunov Anvar! Hisobingizda 32 456.74 so'm qoldi. Hisobingizni o'z vaqtida
+              to'ldiring. – <strong>to‘g‘ri variant</strong></li>
+            <li> - Siz [name] saytida buyurtma berdingiz. Raqam:# [order_id]. Miqdori:[order_total]. Qabul qilingandan
+              keyin toʻlanadi. – <strong>noto‘g‘ri variant</strong></li>
+            <li class="mb-10"> - Siz Eskiz.uz saytida buyurtma berdingiz. Raqam:# 447-A. Miqdori: 143 000 сум. Qabul
+              qilingandan keyin toʻlanadi. – <strong>to‘g‘ri variant</strong></li>
+          </ul>
+        </div>
+        <div class="item">
+          <p class="mb-10 mt-4"><strong>Punkt 2</strong></p>
+          <p class="mb-4"><strong>“Tasdiqlash kodi” mavjud bo‘lgan barcha sms xabarlarda, resurs nomi (loyiha nomi yoki
+              veb-sayt nomi yoki telegram bot nomi) hamda bu tasdiqlash kodini ishlatish maqsadi ko‘rsatib o‘tilishi
+              shart.
+              Resurs nomi va ishlatish maqsadi ko‘rsatilmagan tasdiqlash kodli matnlar uyali aloqa operatorlari
+              tomonidan qabul qilinmaydi.</strong></p>
+          <p class="mb-10"><strong>Misollar:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Ro‘yxatdan o‘tish uchun tasdiqlash kodi: 0000 – <strong>noto‘g‘ri variant</strong></li>
+            <li class="mb-10"> - <strong>Eskiz.uz</strong> sayti (resurs nomi) ga <u>ro‘yxatdan o‘tish uchun (ishlatish
+                maqsadi)</u> tasdiqlash kodi: 0000 – <strong>to‘g‘ri variant</strong></li>
+            <li> - Parolni tiklash kodi: 0000 – <strong>noto‘g‘ri variant</strong></li>
+            <li class="mb-10"> - <strong>Eskiz Media</strong> platformasi (resurs nomi) <u>ning parolini tiklash uchun
+                (ishlatish maqsadi)</u> kod: 0000 – <strong>to‘g‘ri variant</strong></li>
+            <li> - Kodni hech kimga bermang! Mobil ilovasi uchun kod: 0000 – <strong>noto‘g‘ri variant</strong></li>
+            <li class="mb-10"> - Kodni hech kimga bermang! <strong>Eskiz</strong> mobil ilovasi (resurs nomi) ga
+              <u>kirish uchun (ishlatish maqsadi)</u> tasdiqlash kodi: 0000 – <strong>to‘g‘ri variant</strong>
+            </li>
+            <li> - Buyurtmani tasdiqlash kodi: 0000 – <strong>noto‘g‘ri variant</strong></li>
+            <li class="mb-10"> - <strong>Eskiz.uz</strong> sayti (resurs nomi) dagi <u>buyurtmani tasdiqlash uchun
+                (ishlatish maqsadi)</u> kod: 0000 – <strong>to‘g‘ri variant</strong></li>
+          </ul>
+        </div>
+      </div>
+      <h5 class="mb-10 text-center">Statuslar</h5>
+      <ol style="padding-left:25px;">
+        <li class="mb-2"><strong>Moderatsiyada</strong> - Matnlar soat 10.00 dan 16.00 gacha, xar 3 soatda
+          moderatsiyadan o‘tadi (dam olish va bayram kunlaridan tashqari). Iltimos kuting.</li>
+        <li class="mb-2"><strong>Jarayonda</strong> - Matn uyali aloqa operatoriga moderatsiya uchun yuborildi, iltimos
+          matn tasdiqlanishini kuting.</li>
+        <li class="mb-2"><strong>Tasdiqlangan</strong> - Matn tasdiqlangan va ishlatishga tayyor.</li>
+        <li><strong>Rad etilgan</strong> - Matn qabul qilinmadi, rad etilishi sababi Izoxda ko‘rsatilgan.</li>
+      </ol>
+    </div>
+    }
+
+    @if (curLang == 'oz') {
+    <div class="alert p-3 alert-info">
+      <h4 class="mt-0 mb-20">Матнларни модерациядан ўтказиш бўйича йўриқнома:</h4>
+      <p class="mb-10">Ҳар қандай <strong>янги смс хабарни</strong>, юборишдан олдин, фойдаланувчилар “+ Матн қўшиш”
+        тугмаси орқали, матнларни <strong>модерациядан ўтказиш</strong> учун, жойлаштириб қўйишлари керак бўлади.
+        Аввалги киритилган матнларни, ҳар сафар қайта-қайта қўшиш лозим эмас.</p>
+      <p class="mb-10"><u>Смс хабар матнлари 1 соатдан 1 иш кунигача модерациядан ўтказилади, байрам ва дам олиш
+          кунларидан ташқари.</u></p>
+      <div class="punkts">
+        <div class="item">
+          <p class="mb-10"><strong>Пункт 1</strong></p>
+          <p class="mb-4"><strong>Илтимос, СМС-хабарни модерациядан ўтказиш учун, матнни фақат асл кўринишида (қўшимча
+              ва ўзгартиришларсиз), яъни абонентнинг мобил рақамига матн қандай шаклда борса, ўша кўринишда киритиш
+              лозим. Смс матни билан қайта ишлашни (ўзгарувчан жойларига маска қўйиб чиқишни) модераторнинг ўзи фақат
+              амалга оширади. </strong></p>
+          <p class="mb-10"><strong>Мисоллар:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Assalomu alaykum, (STUDENT)! Siz (GROUP) guruhida soat (TIME) da (COURSE) darsiga qatnashmadingiz –
+              <strong>нотўғри вариант</strong>
+            </li>
+            <li class="mb-10"> - Assalomu alaykum, Murod! Siz 789-A guruhida soat 11.00 da IELTS darsiga qatnashmadingiz
+              – <strong>тўғри вариант</strong></li>
+            <li> - Hurmatli #NAME#! Hisobingizda #CASH# #CASHNAME# qoldi. Hisobingizni o'z vaqtida to'ldiring. –
+              <strong>нотўғри вариант</strong>
+            </li>
+            <li class="mb-10"> - Hurmatli Tursunov Anvar! Hisobingizda 32 456.74 so'm qoldi. Hisobingizni o'z vaqtida
+              to'ldiring. – <strong>тўғри вариант</strong></li>
+            <li> - Siz [name] saytida buyurtma berdingiz. Raqam:# [order_id]. Miqdori:[order_total]. Qabul qilingandan
+              keyin toʻlanadi. – <strong>нотўғри вариант</strong></li>
+            <li class="mb-10"> - Siz Eskiz.uz saytida buyurtma berdingiz. Raqam:# 447-A. Miqdori: 143 000 сум. Qabul
+              qilingandan keyin toʻlanadi. – <strong>тўғри вариант</strong></li>
+          </ul>
+        </div>
+        <div class="item">
+          <p class="mb-10 mt-4"><strong>Пункт 2</strong></p>
+          <p class="mb-4"><strong>“Тасдиқлаш коди” мавжуд бўлган барча смс хабарларда, ресурс номи (лойиҳа номи ёки
+              веб-сайт номи ёки телеграм бот номи) ҳамда бу тасдиқлаш кодини ишлатиш мақсади кўрсатиб ўтилиши шарт.
+              Ресурс номи ва ишлатиш мақсади кўрсатилмаган тасдиқлаш кодли матнлар уяли алоқа операторлари томонидан
+              қабул қилинмайди.</strong></p>
+          <p class="mb-10"><strong>Мисоллар:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Ro‘yxatdan o‘tish uchun tasdiqlash kodi: 0000 – <strong>нотўғри вариант</strong></li>
+            <li class="mb-10"> - <strong>Eskiz.uz</strong> sayti (resurs nomi) ga <u>ro‘yxatdan o‘tish uchun (ishlatish
+                maqsadi)</u> tasdiqlash kodi: 0000 – <strong>тўғри вариант</strong></li>
+            <li> - Parolni tiklash kodi: 0000 – <strong>нотўғри вариант</strong></li>
+            <li class="mb-10"> - <strong>Eskiz Media</strong> platformasi (resurs nomi) <u>ning parolini tiklash uchun
+                (ishlatish maqsadi)</u> kod: 0000 – <strong>тўғри вариант</strong></li>
+            <li> - Kodni hech kimga bermang! Mobil ilovasi uchun kod: 0000 – <strong>нотўғри вариант</strong></li>
+            <li class="mb-10"> - Kodni hech kimga bermang! <strong>Eskiz</strong> mobil ilovasi (resurs nomi) ga
+              <u>kirish uchun (ishlatish maqsadi)</u> tasdiqlash kodi: 0000 – <strong>тўғри вариант</strong>
+            </li>
+            <li> - Buyurtmani tasdiqlash kodi: 0000 – <strong>нотўғри вариант</strong></li>
+            <li class="mb-10"> - <strong>Eskiz.uz</strong> sayti (resurs nomi) dagi <u>buyurtmani tasdiqlash uchun
+                (ishlatish maqsadi)</u> kod: 0000 – <strong>тўғри вариант</strong></li>
+          </ul>
+        </div>
+      </div>
+      <h5 class="mb-10 text-center">Статуслар</h5>
+      <ol style="padding-left:25px;">
+        <li class="mb-2"><strong>Модерацияда</strong> - Матнлар соат 10.00 дан 16.00 гача, хар 3 соатда модерациядан
+          ўтади (дам олиш ва байрам кунларидан ташқари). Илтимос кутинг.</li>
+        <li class="mb-2"><strong>Жараёнда</strong> - Матн уяли алоқа операторига модерация учун юборилди, илтимос матн
+          тасдиқланишини кутинг.</li>
+        <li class="mb-2"><strong>Тасдиқланган</strong> - Матн тасдиқланган ва ишлатишга тайёр.</li>
+        <li><strong>Рад этилган</strong> - Матн қабул қилинмади, рад этилиши сабаби Изохда кўрсатилган.</li>
+      </ol>
+    </div>
+    }
+
+    <div class="mb-15">
+      <button class="btn btn-sm btn-primary" (click)="addTemplate()"><i class="ion-md-add"></i> {{'add_template' |
+        translate}}</button>
+    </div>
+
+    <h3 class="mt-0 mb-20 text-center">{{'my_text' | translate}}</h3>
+
+    @if (currentClient) {
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>№</th>
+            <th>ID</th>
+            <th>{{'name_company' | translate}}</th>
+            <th>{{'sender_name' | translate}}</th>
+            <th>{{'template_type' | translate}}</th>
+            <th>{{'original_text' | translate}}</th>
+            <th>{{'date' | translate}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of templatesData(); track item.id; let i = $index) {
+          <tr>
+            <td>{{i + 1}}</td>
+            <td>{{item.app_id}}</td>
+            <td width="180">{{item.company_name}}
+              @if (item.status == 'moderation') {
+              <span class="es_label sm bg-warning mt-2 mb-2">{{'moderation' | translate}}</span>
+              }
+              @if (item.status == 'inproccess') {
+              <span class="es_label sm bg-secondary mt-2 mb-2">{{'inproccess' | translate}}</span>
+              }
+              @if (item.status == 'rejected') {
+              <span class="es_label sm bg-danger mt-2 mb-2">{{'Отказано' | translate}}</span>
+              }
+              @if (item.status == 'reklama' || item.status == 'service') {
+              <span class="es_label sm bg-success mt-2 mb-2">{{'Одобрено' | translate}}</span>
+              }
+              @if (item.is_admin) {
+              <small class="d-block text-muted">({{'Добавлено админом' | translate}})</small>
+              }
+              @if (!item.is_admin && !item.api_sent) {
+              <small class="d-block text-muted">({{'Добавлено через персональный кабинет' | translate}})</small>
+              }
+              @if (item.api_sent) {
+              <small class="d-block text-muted">({{'Добавлено через смс шлюз' | translate}})</small>
+              }
+            </td>
+            <td>{{item.nik}}</td>
+            <td>
+              @if (item.status == 'reklama' || item.status == 'service') {
+              <div>
+                @for (vl of item.operators; track vl) {
+                <span class="d-block small">
+                  <strong class="text-capitalize">{{vl.name}}: </strong>
+                  @if (vl.type == 'ad') {
+                  <span class="d-block">{{'Рекламный' | translate}} - @for (pr of prices | filter:{smsc_id:vl.smsc_id};
+                    track pr) {
+                    <span>{{pr.ad_price}} {{'sum' | translate}}</span>
+                    }</span>
+                  }
+                  @if (vl.type == 'service') {
+                  <span class="d-block">{{'Сервисный' | translate}} - @for (pr of prices | filter:{smsc_id:vl.smsc_id};
+                    track pr) {
+                    <span>{{pr.price}} {{'sum' | translate}}</span>
+                    }</span>
+                  }
+                </span>
+                }
+              </div>
+              }
+            </td>
+            <td>{{item.original_text}}
+              <span class="d-block font-italic text-muted">
+                <span [translate]="'entered_characters_total_sms'"
+                  [translateParams]="{value: item.original_text.length}"></span> - {{item.original_text | smsCount}}
+                {{'pc' | translate}}
+              </span>
+              @if (item.comment && item.status == 'moderation') {
+              <span class="d-block text-warning mt-2"><i class="ion-ios-alert i-r"></i> <i>{{'Комментарий' |
+                  translate}}: {{item.comment}}</i></span>
+              }
+              @if (item.status == 'rejected' && item.reason) {
+              <small class="d-block text-danger mt-2"><i class="ion-ios-alert i-r"></i>
+                <i>{{'Причина отказа' | translate}}: {{item.reason}}</i>
+              </small>
+              }
+              @if (item.status == 'moderation') {
+              <span class="d-block text-primary mt-2"><i class="ion-ios-alert i-r"></i>
+                @if (curLang == 'ru') {
+                <i>Тексты проходят модерацию каждые 3 часа с 10.00 до 16.00, кроме выходных и праздничных дней.
+                  Пожалуйста, ожидайте.</i>
+                }
+                @if (curLang == 'uz') {
+                <i>Matnlar soat 10.00 dan 16.00 gacha, xar 3 soatda moderatsiyadan o‘tadi (dam olish va bayram
+                  kunlaridan tashqari). Iltimos kuting.</i>
+                }
+                @if (curLang == 'oz') {
+                <i>Матнлар соат 10.00 дан 16.00 гача, хар 3 соатда модерациядан ўтади (дам олиш ва байрам кунларидан
+                  ташқари). Илтимос кутинг.</i>
+                }
+              </span>
+              }
+              @if (item.status == 'inproccess') {
+              <span class="d-block text-primary mt-2"><i class="ion-ios-alert i-r"></i>
+                @if (curLang == 'ru') {
+                <i>Текст передан сотовому оператору для модерации, пожалуста ожидайте подтверждение текста.</i>
+                }
+                @if (curLang == 'uz') {
+                <i>Matn uyali aloqa operatoriga moderatsiya uchun yuborildi, iltimos matn tasdiqlanishini kuting.</i>
+                }
+                @if (curLang == 'oz') {
+                <i>Матн уяли алоқа операторига модерация учун юборилди, илтимос матн тасдиқланишини кутинг.</i>
+                }
+              </span>
+              }
+              @if (item.status == 'reklama' || item.status == 'service') {
+              <span class="d-block text-primary mt-2"><i class="ion-ios-alert i-r"></i>
+                @if (curLang == 'ru') {
+                <i>Текст одобрен и готов к использованию.</i>
+                }
+                @if (curLang == 'uz') {
+                <i>Matn tasdiqlangan va ishlatishga tayyor.</i>
+                }
+                @if (curLang == 'oz') {
+                <i>Матн тасдиқланган ва ишлатишга тайёр.</i>
+                }
+              </span>
+              }
+            </td>
+            <td>
+              <b class="d-block small font-weight-bold">{{'Текст принят' | translate}}: </b>
+              <span class="d-block small mb-10">{{item.created_at | time:'dd.MM.yyyy HH:mm'}}</span>
+              @if (item.status == 'reklama' || item.status == 'service') {
+              <b class="d-block small font-weight-bold">{{'Текст одобрен' | translate}}: </b>
+              <span class="d-block small">{{item.approved_time | date:'dd.MM.yyyy'}}</span>
+              }
+            </td>
+            <td>
+              @if (item.status == 'moderation') {
+              <button class="btn btn-sm btn-danger" type="button" (click)="deleteTemplate(item)">{{'delete' |
+                translate}}</button>
+              }
+              @if (item.status == 'rejected' || item.status == 'moderation') {
+              <button class="btn btn-sm btn-warning" type="button" (click)="editTemplate(item)">{{'edit' |
+                translate}}</button>
+              }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-responsive-mobile">
+      <div ngbAccordion>
+        @for (item of templatesData(); track item.id) {
+        <div ngbAccordionItem>
+          <div ngbAccordionHeader>
+            <button ngbAccordionButton>{{item.company_name}} ({{item.inn}})</button>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <p><strong>ID</strong> {{item.app_id}}</p>
+                <p><strong>{{'name_company' | translate}}</strong> {{item.company_name}}</p>
+                <p><strong>{{'status' | translate}}</strong>
+                  @if (item.status == 'moderation') {
+                  <span class="es_label sm bg-warning mt-2 mb-2">{{'moderation' | translate}}</span>
+                  }
+                  @if (item.status == 'inproccess') {
+                  <span class="es_label sm bg-secondary mt-2 mb-2">{{'inproccess' | translate}}</span>
+                  }
+                  @if (item.status == 'rejected') {
+                  <span class="es_label sm bg-danger mt-2 mb-2">{{'Отказано' | translate}}</span>
+                  }
+                  @if (item.status == 'reklama' || item.status == 'service') {
+                  <span class="es_label sm bg-success mt-2 mb-2">{{'Одобрено' | translate}}</span>
+                  }
+                  @if (item.is_admin) {
+                  <small class="d-block text-muted">({{'Добавлено админом' | translate}})</small>
+                  }
+                  @if (!item.is_admin && !item.api_sent) {
+                  <small class="d-block text-muted">({{'Добавлено через персональный кабинет' | translate}})</small>
+                  }
+                  @if (item.api_sent) {
+                  <small class="d-block text-muted">({{'Добавлено через смс шлюз' | translate}})</small>
+                  }
+                </p>
+                <p><strong>{{'sender_name' | translate}}</strong>{{item.nik}}</p>
+                @if (item.status == 'reklama' || item.status == 'service') {
+                <p>
+                  @for (vl of item.operators; track vl) {
+                  <span class="d-block small">
+                    <strong class="text-capitalize">{{vl.name}}: </strong>
+                    @if (vl.type == 'ad') {
+                    <span class="d-block">{{'Рекламный' | translate}} - @for (pr of prices |
+                      filter:{smsc_id:vl.smsc_id}; track pr) {
+                      <span>{{pr.ad_price}} {{'sum' | translate}}</span>
+                      }</span>
+                    }
+                    @if (vl.type == 'service') {
+                    <span class="d-block">{{'Сервисный' | translate}} - @for (pr of prices |
+                      filter:{smsc_id:vl.smsc_id}; track pr) {
+                      <span>{{pr.price}} {{'sum' | translate}}</span>
+                      }</span>
+                    }
+                  </span>
+                  }
+                </p>
+                }
+                <p><strong>{{'original_text' | translate}}</strong>{{item.original_text}}
+                  <span class="d-block font-italic text-muted">
+                    <span [translate]="'entered_characters_total_sms'"
+                      [translateParams]="{value: item.original_text.length}"></span> - {{item.original_text | smsCount}}
+                    {{'pc' | translate}}
+                  </span>
+                  @if (item.comment && item.status == 'moderation') {
+                  <span class="d-block text-warning mt-2"><i class="ion-ios-alert i-r"></i> <i>{{'Комментарий' |
+                      translate}}: {{item.comment}}</i></span>
+                  }
+                  @if (item.status == 'rejected' && item.reason) {
+                  <small class="d-block text-danger mt-2"><i class="ion-ios-alert i-r"></i>
+                    <i>{{'Причина отказа' | translate}}: {{item.reason}}</i>
+                  </small>
+                  }
+                  @if (item.status == 'moderation') {
+                  <span class="d-block text-primary mt-2"><i class="ion-ios-alert i-r"></i>
+                    @if (curLang == 'ru') {
+                    <i>Тексты проходят модерацию от 1 часа до 1 дня, кроме выходных и праздничных дней. Пожалуйста
+                      ждите. После модерации изменится статус.</i>
+                    }
+                    @if (curLang == 'uz') {
+                    <i>Matnlar 1 soatdan 1 kungacha moderatsiyadan o'tadi, dam olish va bayram kunlaridan tashqari.
+                      Iltimos kuting. Moderatsiyadan keyin status o'zgaradi.</i>
+                    }
+                    @if (curLang == 'oz') {
+                    <i>Матнлар 1 соатдан 1 кунгача модерациядан ўтади, дам олиш ва байрам кунларидан ташқари. Илтимос
+                      кутинг. Модерациядан кейин статус ўзгаради.</i>
+                    }
+                  </span>
+                  }
+                  @if (item.status == 'inproccess') {
+                  <span class="d-block text-primary mt-2"><i class="ion-ios-alert i-r"></i>
+                    @if (curLang == 'ru') {
+                    <i>Текст передан сотовому оператору для модерации, пожалуста ожидайте подтверждение текста.</i>
+                    }
+                    @if (curLang == 'uz') {
+                    <i>Matn uyali aloqa operatoriga moderatsiya uchun yuborildi, iltimos matn tasdiqlanishini
+                      kuting.</i>
+                    }
+                    @if (curLang == 'oz') {
+                    <i>Матн уяли алоқа операторига модерация учун юборилди, илтимос матн тасдиқланишини кутинг.</i>
+                    }
+                  </span>
+                  }
+                  @if (item.status == 'reklama' || item.status == 'service') {
+                  <span class="d-block text-primary mt-2"><i class="ion-ios-alert i-r"></i>
+                    @if (curLang == 'ru') {
+                    <i>Текст одобрен и готов к использованию.</i>
+                    }
+                    @if (curLang == 'uz') {
+                    <i>Matn tasdiqlangan va ishlatishga tayyor.</i>
+                    }
+                    @if (curLang == 'oz') {
+                    <i>Матн тасдиқланган ва ишлатишга тайёр.</i>
+                    }
+                  </span>
+                  }
+                </p>
+                <p><strong>{{'Текст принят' | translate}}</strong>{{item.created_at | time:'dd.MM.yyyy HH:mm'}}</p>
+                @if (item.status == 'reklama' || item.status == 'service') {
+                <p><strong>{{'Текст одобрен' | translate}}</strong>{{item.approved_time | date:'dd.MM.yyyy'}}</p>
+                }
+                @if (item.status == 'moderation') {
+                <strong>Действия</strong>
+                }
+                <p>
+                  @if (item.status == 'moderation') {
+                  <button class="btn btn-sm btn-danger" type="button" (click)="deleteTemplate(item)">{{'delete' |
+                    translate}}</button>
+                  }
+                  @if (item.status == 'rejected' || item.status == 'moderation') {
+                  <button class="btn btn-sm btn-warning" type="button" (click)="editTemplate(item)">{{'edit' |
+                    translate}}</button>
+                  }
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </section>
+
+</section>

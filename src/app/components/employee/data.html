@@ -1,0 +1,73 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'Сотрудники' | translate}}</h1>
+
+  @if (is_access) {
+  <section class="white-content">
+    @if (currentUser.role != 'booker') {
+    <div class="mb-15">
+      <button class="btn btn-sm btn-primary" (click)="addData()"><i class="ion-md-add"></i> {{'add' |
+        translate}}</button>
+    </div>
+    }
+    <div class="table-responsive mob-visible">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>№</th>
+            <th>{{'fullname' | translate}}</th>
+            <th>Email</th>
+            <th>{{'Номер телефона' | translate}}</th>
+            <th>{{'department' | translate}}</th>
+            <th>{{'status' | translate}}</th>
+            <th>{{'date' | translate}}</th>
+            <th></th>
+          </tr>
+          <tr>
+            <th colspan="8">
+              <input type="text" class="form-control" [(ngModel)]="searching" placeholder="Искать">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of dataItems() | searching:searching; track item.id; let i = $index) {
+          <tr>
+            <td>{{i+1}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.email}}</td>
+            <td>+{{item.phone_ext}}{{item.phone}}</td>
+            <td>{{item.department}}</td>
+            <td>
+              @if (item.access == 'active') {
+              <span class="es_label bg-success">{{'active' | translate}}</span>
+              }
+              @if (item.access == 'inactive') {
+              <span class="es_label bg-danger">{{'Неактивный' | translate}}</span>
+              }
+            </td>
+            <td>{{item.created_at | date:'dd.MM.yyyy HH:mm'}}</td>
+            <td width="130">
+              <button class="btn btn-sm btn-warning" type="button" (click)="editData(item)" placement="bottom"
+                ngbTooltip="Редактировать"><i class="ion-md-create"></i></button>
+              <button class="btn btn-sm btn-danger" type="button" (click)="deleteData(item)" placement="bottom"
+                ngbTooltip="Удалить"><i class="ion-md-trash"></i></button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+  }
+
+  @if (!is_access) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      Доступ запрешен.
+    </div>
+  </section>
+  }
+
+</section>

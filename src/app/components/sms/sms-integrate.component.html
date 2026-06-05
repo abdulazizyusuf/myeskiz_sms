@@ -1,0 +1,99 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'settings' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  <h3 class="mt-0 mb-15 text-center">
+    @if (curUrl) {
+    <button class="btn btn-sm btn-primary btn-r" (click)="removeLink()">{{'Все сервисы' | translate}}</button>
+    }
+
+    {{'Интеграции системы' | translate}}
+  </h3>
+
+  @if (curLang == 'ru') {
+  <p class="mb-2 text-center">
+    <strong class="d-block mb-2">Не нашли в списке, то что искали? </strong>
+    <strong class="d-block">Тогда создайте Тикет и мы изучим возможность интеграции нашего смс сервиса в Вашу
+      систему!</strong>
+  </p>
+  }
+  @if (curLang == 'uz') {
+  <p class="mb-2 text-center">
+    <strong class="d-block mb-2">Ro‘yxatda o‘zingiz istagan narsangizni topmadingizmi?</strong>
+    <strong class="d-block">Unda bizga Tiket oching va biz qanday qilib sizning tizimingizga SMS xizmatini integratsiya
+      qilish imkoniyatini o‘rganib chiqamiz!</strong>
+  </p>
+  }
+  @if (curLang == 'oz') {
+  <p class="mb-2 text-center">
+    <strong class="d-block mb-2">Рўйхатда ўзингиз истаган нарсангизни топмадингизми?</strong>
+    <strong class="d-block">Унда бизга Тикет очинг ва биз қандай қилиб сизнинг тизимингизга SMS хизматини интеграция
+      қилиш имкониятини ўрганиб чиқамиз!</strong>
+  </p>
+  }
+  @if (curLang == 'en') {
+  <p class="mb-2 text-center">
+    <strong class="d-block mb-2">Didn't find what you were looking for in the list?</strong>
+    <strong class="d-block">Create a Ticket and we will learn the possibility of integrating our SMS service into your
+      system!</strong>
+  </p>
+  }
+
+  @if (!curUrl) {
+  <div class="sms-integration">
+    @for (item of dataItems(); track item.id) {
+    <div class="sms-item">
+      <img class="logo" src="{{siteUrl}}/sms-integration/{{item.logo}}">
+      @if (curLang == 'ru') {
+      <div class="title">{{item.title}}</div>
+      }
+      @if (curLang == 'en') {
+      <div class="title">{{item.title_en}}</div>
+      }
+      @if (curLang == 'uz') {
+      <div class="title">{{item.title_uz}}</div>
+      }
+      @if (curLang == 'oz') {
+      <div class="title">{{item.title_oz}}</div>
+      }
+      <div class="btns">
+        @if (item.link) {
+        <a href="{{item.link}}" target="_blank" class="more">{{'actions' | translate}}</a>
+        }
+      </div>
+    </div>
+    }
+    @for (item of types; track item.id) {
+    <div class="sms-item">
+      <img class="logo" [src]="item.logo">
+      @if (curLang == 'ru') {
+      <div class="title">{{item.title}}</div>
+      }
+      @if (curLang == 'en') {
+      <div class="title">{{item.title_en}}</div>
+      }
+      @if (curLang == 'uz') {
+      <div class="title">{{item.title_uz}}</div>
+      }
+      @if (curLang == 'oz') {
+      <div class="title">{{item.title_oz}}</div>
+      }
+      <div class="btns">
+        <button type="button" (click)="setUrl(item.link)" class="more">{{'Подключиться' | translate}}</button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  @if (curUrl) {
+  <div>
+    <iframe [src]="curUrl | safe" style="width:100%;height:700px;" frameborder="0" allowfullscreen></iframe>
+  </div>
+  }
+
+</section>

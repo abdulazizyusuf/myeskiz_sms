@@ -1,0 +1,320 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'detailing' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  <p><a routerLink="/sms/detailing" class="btn btn-primary"><i class="ion-md-arrow-back"></i> {{'back' | translate}}</a>
+  </p>
+
+  @if (!user_blocked && !login_failed && !not_found) {
+  <section class="white-content">
+    <ol class="alert alert-info mb-20">
+      <h4 class="mt-0">{{'status_desc' | translate}}:</h4>
+      <h6 class="mb-10"><strong>{{'sms_charged_text' | translate}} *</strong></h6>
+      <li class="btn-l"><strong>{{'waiting' | translate}}</strong> - {{'sms_awaiting_dispatch_operator' | translate}}
+      </li>
+      <li class="btn-l"><strong>{{'sms_status_waiting' | translate}}</strong> - {{'sms_status_waiting_info' |
+        translate}}</li>
+      <li class="btn-l"><strong>{{'sms_status_delivered' | translate}}</strong> - {{'sms_status_delivered_info' |
+        translate}}</li>
+      <li class="btn-l"><strong>{{'scheduled' | translate}}</strong> - {{'sms_scheduled_info' | translate}}</li>
+      <li class="btn-l" style="white-space:break-spaces;"><strong>{{'sms_status_notdelivered' | translate}}</strong> -
+        {{'sms_status_notdelivered_info' | translate}}</li>
+      <li class="btn-l d-none"><strong>{{'sms_status_rejected' | translate}}</strong> - {{'sms_status_rejected_info' |
+        translate}}</li>
+      <li class="btn-l d-none"><strong>{{'sms_status_expired' | translate}}</strong> - {{'sms_status_expired_info' |
+        translate}}</li>
+    </ol>
+    @if (loader) {
+    <div class="loader-content"><img src="/assets/images/tail-spin.svg" height="50" width="auto"></div>
+    }
+    @if (counts()) {
+    <div class="mt-15 mb-15">
+      @if (counts().stDelC > 0) {
+      <div class="btn-r es_label_inline sm bg-success">{{status_delivered}} ({{counts().stDelC}})</div>
+      }
+      @if (counts().stWaiC > 0) {
+      <div class="btn-r es_label_inline sm bg-warning">{{'waiting' | translate}} ({{counts().stWaiC}})</div>
+      }
+      @if (counts().stTRSC > 0) {
+      <div class="btn-r es_label_inline sm bg-warning">{{status_waiting}} ({{counts().stTRSC}})</div>
+      }
+      @if (counts().stSchedC > 0) {
+      <div class="btn-r es_label_inline sm bg-warning">{{status_scheduled}} ({{counts().stSchedC}})</div>
+      }
+      @if (counts().stNotDelC > 0) {
+      <div class="btn-r es_label_inline sm bg-danger">{{status_not_delivered}} ({{counts().stNotDelC}})</div>
+      }
+      @if (counts().stFailC > 0) {
+      <div class="btn-r es_label_inline sm bg-danger">{{status_failed}} ({{counts().stFailC}})</div>
+      }
+      @if (counts().stExpC > 0) {
+      <div class="btn-r es_label_inline sm bg-danger">{{status_expired}} ({{counts().stExpC}})</div>
+      }
+      @if (counts().stRejC > 0) {
+      <div class="es_label_inline sm bg-danger">{{status_rejected}} ({{counts().stRejC}})</div>
+      }
+    </div>
+    }
+    @if (total_sum_mailing() && total_sum_mailing().total_spent > 0) {
+    <p class="alert alert-info text-center mb-3">
+      <strong>Стоимость отправленных SMS сообщений составляет: СМС (Сервисный) {{total_sum_mailing().spent | number}}
+        {{'sum' | translate}} + СМС (Рекламный) {{total_sum_mailing().ad_spent | number}} {{'sum' | translate}} =
+        {{total_sum_mailing().total_spent | number}} {{'sum' | translate}}</strong>
+    </p>
+    }
+    @if (!loader && messagesData()) {
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>{{'phone' | translate}}</th>
+            <th>{{'message_text' | translate}}</th>
+            <th>{{'Оператор' | translate}}</th>
+            <th>{{'time_send' | translate}}</th>
+            <th>{{'status' | translate}}</th>
+            <th>{{'Цена (сум)' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of messagesData(); track item.id) {
+          <tr>
+            <td>{{item.to}}
+              <span class="d-block">
+                <a class="d-block mt-1 btn-link small" role="button" (click)="viewCharsSms(item)">{{'Посмотреть символы'
+                  | translate}}</a>
+              </span>
+            </td>
+            <td>
+              @if (item.message && !is_history) {
+              <div>{{item.message}}
+                <span class="d-block font-italic text-muted">
+                  <span [translate]="'entered_characters_total_sms'"
+                    [translateParams]="{value: item.message.length}"></span> - {{item.parts_count}} {{'pc' | translate}}
+                  <!-- , <span *ngIf="item.dispatch_id > 0 && item.dispatch_id != '123'">{{'Отправлено через кабинет' | translate}}</span><span *ngIf="!item.dispatch_id || item.dispatch_id == 0 || item.dispatch_id == '123'">{{'Отправлено через смс шлюз' | translate}}</span> -->
+                </span>
+              </div>
+              }
+              @if (item.content && is_history) {
+              <div>{{item.content}}
+                <span class="d-block font-italic text-muted">
+                  <span [translate]="'entered_characters_total_sms'"
+                    [translateParams]="{value: item.content.length}"></span> - {{item.content | smsCount}} {{'pc' |
+                  translate}}
+                  <!-- , <span *ngIf="item.dispatch_id > 0 && item.dispatch_id != '123'">{{'Отправлено через кабинет' | translate}}</span><span *ngIf="!item.dispatch_id || item.dispatch_id == 0 || item.dispatch_id == '123'">{{'Отправлено через смс шлюз' | translate}}</span> -->
+                </span>
+              </div>
+              }
+            </td>
+            <td>
+              @for (cm of companies() | filter:{app_id:item.smsc_id}; track $index) {
+              <span class="d-block text-capitalize">{{cm.name}}</span>
+              }
+            </td>
+            @if (!is_history) {
+            <td width="150">{{item.sent_at | date:'dd.MM.yyyy HH:mm:ss':'UTC'}}</td>
+            }
+            @if (is_history) {
+            <td width="150">{{item.created_at | time:'dd.MM.yyyy HH:mm:ss'}}</td>
+            }
+            <td width="170">
+              @for (status of filterStatus | filter:{val:item.status}; track status) {
+              <div><span class="es_label {{status.bg}}">{{status.title}}</span></div>
+              }
+              <!-- <a *ngIf="item.parts && !is_history" class="d-block text-center btn-link small" role="button" (click)="viewDetailSms(item)">{{'actions' | translate}}</a> -->
+            </td>
+            <td width="140">
+              @if (item.price > 0 && is_history) {
+              <div>{{item.price | number}} {{'сум' | translate}}</div>
+              }
+              @if (item.total_price > 0 && !is_history) {
+              <div>{{item.total_price | number}} {{'сум' | translate}}</div>
+              }
+              @for (ct of countries | filter:{code:item.country_code | lowercase}; track $index) {
+              <span class="d-block">{{ct.name}}</span>
+              }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-responsive-mobile">
+      <div ngbAccordion>
+        @for (item of messagesData(); track item.id) {
+        <div ngbAccordionItem>
+          <div ngbAccordionHeader>
+            <button ngbAccordionButton>
+              {{item.to}} - <i class="ion-md-time grey"></i> @if (!is_history) {
+              <span> {{item.sent_at | date:'dd.MM.yyyy HH:mm:ss':'UTC'}}</span>
+              } @if (is_history) {
+              <span> {{item.created_at | time:'dd.MM.yyyy HH:mm'}}</span>
+              }
+            </button>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <p><strong>{{'phone' | translate}}</strong>{{item.to}}
+                  <span class="d-block">
+                    <a class="d-block mt-1 btn-link small" role="button" (click)="viewCharsSms(item)">{{'Посмотреть
+                      символы' | translate}}</a>
+                  </span>
+                </p>
+                <p><strong>{{'message_text' | translate}}</strong>
+                  @if (item.message && !is_history) {
+                  <span class="d-block">
+                    {{item.message}}
+                    <span class="d-block font-italic text-muted">
+                      <span [translate]="'entered_characters_total_sms'"
+                        [translateParams]="{value: item.message.length}"></span> - {{item.parts_count}} {{'pc' |
+                      translate}}
+                      <!-- , <span *ngIf="item.dispatch_id > 0 && item.dispatch_id != '123'">{{'Отправлено через кабинет' | translate}}</span>
+                            <span *ngIf="!item.dispatch_id || item.dispatch_id == 0 || item.dispatch_id == '123'">{{'Отправлено через смс шлюз' | translate}}</span> -->
+                    </span>
+                  </span>
+                  }
+                  @if (item.content && is_history) {
+                  <span class="d-block">
+                    {{item.content}}
+                    <span class="d-block font-italic text-muted">
+                      <span [translate]="'entered_characters_total_sms'"
+                        [translateParams]="{value: item.content.length}"></span> - {{item.content | smsCount}} {{'pc' |
+                      translate}},
+                      @if (item.dispatch_id > 0 && item.dispatch_id != '123') {
+                      <span>{{'Отправлено через кабинет' | translate}}</span>
+                      }
+                      @if (!item.dispatch_id || item.dispatch_id == 0 || item.dispatch_id == '123') {
+                      <span>{{'Отправлено через смс шлюз' | translate}}</span>
+                      }
+                    </span>
+                  </span>
+                  }
+                </p>
+                <p><strong>{{'Оператор' | translate}}</strong>
+                  @for (cm of companies() | filter:{app_id:item.smsc_id}; track $index) {
+                  <span class="d-block text-capitalize">{{cm.name}}</span>
+                  }
+                </p>
+                @if (!is_history) {
+                <p><strong>{{'time_send' | translate}}</strong>{{item.sent_at | date:'dd.MM.yyyy HH:mm:ss':'UTC'}}</p>
+                }
+                @if (is_history) {
+                <p><strong>{{'time_send' | translate}}</strong>{{item.created_at | time:'dd.MM.yyyy HH:mm:ss'}}</p>
+                }
+                @for (status of filterStatus | filter:{val:item.status}; track status) {
+                <p>
+                  <strong>{{'status' | translate}}</strong>
+                  <span class="es_label {{status.bg}}">{{status.title}}</span>
+                  <!-- <a *ngIf="item.parts && !is_history" class="d-block text-center btn-link small" role="button" (click)="viewDetailSms(item)">{{'actions' | translate}}</a> -->
+                </p>
+                }
+                <p><strong>{{'Цена (сум)' | translate}}</strong>
+                  @if (item.price > 0 && is_history) {
+                  <span>{{item.price | number}} {{'сум' | translate}}</span>
+                  }
+                  @if (item.total_price > 0 && !is_history) {
+                  <span>{{item.total_price | number}} {{'сум' | translate}}</span>
+                  }
+                  @for (ct of countries | filter:{code:item.country_code | lowercase}; track $index) {
+                  <span class="d-block">{{ct.name}}</span>
+                  }
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="text-center">
+      <ngb-pagination class="d-flex justify-content-center" [pageSize]="pageSize" [collectionSize]="totalPage"
+        [(page)]="currentPage" [maxSize]="4" [rotate]="true" (pageChange)="pageChanged($event)"></ngb-pagination>
+    </div>
+    }
+    @if (!loader && !messagesData) {
+    <h3 class="mt-30 mb-30 text-center">{{'records_not_found' | translate}}</h3>
+    }
+  </section>
+  }
+
+  @if (not_found) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      {{'sms_no_auth' | translate}}
+    </div>
+  </section>
+  }
+
+  @if (login_failed) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      {{'authorization_sms_failed' | translate}}
+    </div>
+  </section>
+  }
+
+  @if (user_blocked) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      {{'authorization_sms_blocked' | translate}}
+    </div>
+  </section>
+  }
+
+</section>
+
+<div class="alert-popup-container" [ngClass]="{'show': alertSms}">
+  @if (smsData) {
+  <div class="alert-popup-content big">
+    <h4 class="alert-popup-title mb-3">+{{smsData.to}}</h4>
+    <div class="table-responsive mob-visible">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>{{'Оператор' | translate}}</th>
+            <th>{{'status' | translate}}</th>
+            <th>{{'Получено' | translate}}</th>
+            <th>{{'Доставлено' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of smsData.part_data; track item) {
+          <tr>
+            <td>@for (cm of companies | filter:{app_id:smsData.smsc_id}; track cm) {
+              <div style="text-transform:capitalize;">{{cm.name}}</div>
+              }
+            </td>
+            <td>
+              @if (item.dlr_state) {
+              <div>
+                @for (status of filterStatus | filter:{val:item.dlr_state}; track status) {
+                <div><span class="es_label {{status.bg}}">{{status.title}}</span></div>
+                }
+              </div>
+              }
+            </td>
+            <td>@if (item.accepted) {
+              <span>{{item.accept_time | date:'dd.MM.yyyy HH:mm:ss':'TAS'}}</span>
+              }
+            </td>
+            <td>@if (item.dlr_time) {
+              <span>{{item.dlr_time | date:'dd.MM.yyyy HH:mm:ss':'TAS'}}</span>
+              }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="rc_divider"></div>
+    <div class="alert-popup-buttons">
+      <button type="button" class="btn btn-warning" (click)="closeAlert()">{{'close' | translate}}</button>
+    </div>
+  </div>
+  }
+</div>

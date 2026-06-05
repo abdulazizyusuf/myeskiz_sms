@@ -1,0 +1,283 @@
+<div class="modal-header">
+  @if (contact) {
+  <h4 class="modal-title">{{contact.name}}</h4>
+  }
+  @if (log_view) {
+  <h4 class="modal-title">{{'СМС логи' | translate}}</h4>
+  }
+  @if (export_contact) {
+  <h4 class="modal-title">{{'export_contacts' | translate}}</h4>
+  }
+  <button type="button" class="close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@if (edited) {
+<div class="modal-body">
+  @if (contact) {
+  <form class="col-lg-12" (ngSubmit)="patchContact()" #dataForm="ngForm">
+    <div class="form-group">
+      <label>{{'fullname' | translate}}</label>
+      <input type="text" class="form-control" [(ngModel)]="contact.name" name="name" #name="ngModel">
+    </div>
+    <div class="form-group">
+      <label>{{'phone' | translate}} <span class="text-danger">*</span></label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1"><img src="/assets/images/flags/uz.svg" width="20"
+              height="auto"> &nbsp;+</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="contact.phone" name="phone" #phone="ngModel" minlength="9"
+          mask="000000000000" placeholder="9XXXXXXXX {{'mobile_number' | translate}}" required>
+      </div>
+      @if (phoneCode) {
+      <div class="help-block text-danger">{{'code_operator_not_available' | translate}}</div>
+      }
+      @if (phoneExist) {
+      <div class="help-block text-danger">{{'phone_number_already_token' | translate}}</div>
+      }
+    </div>
+    @if (groups) {
+    <div class="form-group">
+      <label>{{'groups' | translate}} <span class="text-danger">*</span></label>
+      <select [(ngModel)]="contact.group_id" name="group_id" (ngModelChange)="groupChange($event)" class="form-control"
+        required>
+        <option value="">{{'choose_group' | translate}}</option>
+        @for (group of groups(); track $index) {
+        <option [value]="group.id">{{group.title}}</option>
+        }
+      </select>
+    </div>
+    }
+    @if (currentClient && currentClient.option_contact == 'yes') {
+    <div>
+      <div class="form-group">
+        <label>{{'Баланс' | translate}}</label>
+        <input type="text" class="form-control" [(ngModel)]="contact.summa" name="summa">
+      </div>
+      <div class="form-group">
+        <label>{{'contract' | translate}}</label>
+        <input type="text" class="form-control" [(ngModel)]="contact.dogovor" name="dogovor">
+      </div>
+      <div class="form-group">
+        <label>Пол</label>
+        <select class="form-control" name="gender" [(ngModel)]="contact.gender">
+          <option value="">Выберите пол</option>
+          <option value="Муж">Муж</option>
+          <option value="Жен">Жен</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Дата рождение (дд.мм.гггг)</label>
+        <input type="text" class="form-control" [(ngModel)]="contact.dob" name="dob" #dob="ngModel"
+          placeholder="дд.мм.гггг" [dropSpecialCharacters]="false" mask="00.00.0000">
+      </div>
+      <div class="form-group">
+        <label>Возрастная группа</label>
+        <select class="form-control" name="age" [(ngModel)]="contact.age">
+          <option value="">Выберите группу</option>
+          <option value="20-">20-</option>
+          <option value="20+">20+</option>
+          <option value="30+">30+</option>
+          <option value="40+">40+</option>
+          <option value="50+">50+</option>
+          <option value="60+">60+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Статус</label>
+        <select class="form-control" name="ctatus" [(ngModel)]="contact.ctatus">
+          <option value="">Выберите статус</option>
+          <option value="VIP">VIP</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Область</label>
+        <select class="form-control" name="region" [(ngModel)]="contact.region" (ngModelChange)="getCities($event)">
+          <option value="">Все</option>
+          @for (item of regions(); track $index) {
+          <option [value]="item.name">{{item.name}}</option>
+          }
+        </select>
+      </div>
+      @if (cities().length > 0) {
+      <div class="form-group">
+        <label>Район</label>
+        <select class="form-control" name="city" [(ngModel)]="contact.city" (ngModelChange)="getDistricts($event)">
+          <option value="">Все</option>
+          @for (item of cities(); track $index) {
+          <option [value]="item.name">{{item.name}}</option>
+          }
+        </select>
+      </div>
+      }
+      @if (districts() && districts().length > 0) {
+      <div class="form-group">
+        <label>Город</label>
+        <select class="form-control" name="district" [(ngModel)]="contact.district">
+          <option value="">Все</option>
+          @for (item of districts(); track $index) {
+          <option [value]="item.name">{{item.name}}</option>
+          }
+        </select>
+      </div>
+      }
+    </div>
+    }
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid || phoneCode">{{'save' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </form>
+  }
+</div>
+}
+@if (deleted) {
+<div class="modal-body">
+  <div class="alert alert-danger">
+    {{'are_you_sure_delete' | translate}} <strong>{{contact.name}}</strong>?
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-r" (click)="deleteContact()">{{'delete' | translate}}</button>
+    <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+  </div>
+</div>
+}
+@if (log_view) {
+<div class="modal-body">
+  @if (sms_logs()) {
+  <div class="col-lg-12">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>Phone</th>
+            <th>From</th>
+            <th>IP</th>
+            <th>Message</th>
+            <th>Level name</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of sms_logs(); track item.id) {
+          <tr>
+            <td>{{item.to}}</td>
+            <td>{{item.from}}</td>
+            <td>{{item.ip}}</td>
+            <td>
+              @if (item.full_message) {
+              <span class="d-block" style="word-wrap: break-word;max-width:300px;">{{item.full_message}}</span>
+              }
+              @if (!item.full_message) {
+              <span class="d-block" style="word-wrap: break-word;max-width:300px;">{{item.message}}</span>
+              }
+            </td>
+            <td>{{item.level_name}}</td>
+            <td>{{item.timestamp | time:'dd.MM.yyyy HH:mm:ss'}}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="table-responsive-mobile">
+      <div ngbAccordion>
+        @for (item of sms_logs(); track item.id) {
+        <div ngbAccordionItem>
+          <div ngbAccordionHeader>
+            <button ngbAccordionButton>{{item.to}} ({{item.timestamp | time:'dd.MM.yyyy HH:mm:ss'}})</button>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <p><strong>Phone</strong>{{item.to}}</p>
+                <p><strong>From</strong>{{item.from}}</p>
+                <p><strong>IP</strong>{{item.ip}}</p>
+                <p><strong>Message</strong>
+                  @if (item.full_message) {
+                  <span style="word-wrap: break-word;">{{item.full_message}}</span>
+                  }
+                  @if (!item.full_message) {
+                  <span style="word-wrap: break-word;">{{item.message}}</span>
+                  }
+                </p>
+                <p><strong>Level name</strong>{{item.level_name}}</p>
+                <p><strong>Time</strong>{{item.timestamp | time:'dd.MM.yyyy HH:mm:ss'}}</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">Закрыть</button>
+    </div>
+  </div>
+  }
+</div>
+}
+@if (chars_view) {
+<div class="modal-body">
+  @if (sms_chars()) {
+  <div class="col-lg-12">
+    <div class="mb-3" [innerHTML]="sms.message_char"></div>
+    @if (sms_chars()?.length > 0) {
+    <div class="table-responsive mob-visible">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>char</th>
+            <th>code</th>
+            <th>position</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of sms_chars(); track $index) {
+          <tr>
+            <td><span class="bg-danger">{{item.char}}</span></td>
+            <td>{{item.code}}</td>
+            <td>{{item.position}}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+    <div class="form-group">
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">Закрыть</button>
+    </div>
+  </div>
+  }
+</div>
+}
+@if (export_contact) {
+<div class="modal-body">
+  @if (filter) {
+  <form class="col-lg-12" (ngSubmit)="exportContact()" #dataForm="ngForm">
+    @if (groups()) {
+    <div class="form-group">
+      <label>{{'groups' | translate}} <span class="text-danger">*</span></label>
+      <select [(ngModel)]="filter.group_id" name="group_id" class="form-control" required>
+        <option value="">{{'choose_group' | translate}}</option>
+        @for (item of groups(); track $index) {
+        <option [value]="item.id">{{item.title}} ({{item.contact_count}})</option>
+        }
+      </select>
+    </div>
+    }
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'export_contacts' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </form>
+  }
+</div>
+}

@@ -1,0 +1,48 @@
+<div class="modal-header">
+  @if (change_pass) {
+    <h4 class="modal-title">{{'change_password' | translate}}</h4>
+  }
+  @if (viewed) {
+    <h4 class="modal-title">{{'profile' | translate}}</h4>
+  }
+  <button type="button" class="close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@if (change_pass) {
+  <div class="modal-body">
+    <form class="col-lg-12" (ngSubmit)="changedPassword()" #userForm="ngForm">
+      <div class="form-group">
+        <label>{{'password' | translate}}:</label>
+        <input type="password" class="form-control" minlength="6" [(ngModel)]="user.password" name="password" #password="ngModel" required>
+      </div>
+      <div class="form-group">
+        <label for="pwd">{{'confirm_password' | translate}}:</label>
+        <input name="confirmPassword" type="password" class="form-control" [(ngModel)]="confirmPassword" matchPassword>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">{{'change' | translate}}</button>
+        <button type="submit" class="btn btn-warning btn-l" (click)="activeModal.close()">{{'close' | translate}}</button>
+      </div>
+    </form>
+  </div>
+}
+@if (viewed) {
+  <div class="modal-body">
+    <dl class="row">
+      <dt class="col-sm-4">Email</dt>
+      <dd class="col-sm-8">{{user.email}}</dd>
+      <dt class="col-sm-4">{{'phone' | translate}}</dt>
+      <dd class="col-sm-8">+{{user.phone_ext}}{{user.phone}}</dd>
+      <dt class="col-sm-4">{{'country' | translate}}</dt>
+      @for (country of countries | filter:{code:user.country_code}; track country) {
+        <dd class="col-sm-8">{{country.name}}</dd>
+      }
+      <dt class="col-sm-4">{{'date_registration' | translate}}</dt>
+      <dd class="col-sm-8">{{user.created_at | time:'dd.MM.yyyy HH:mm'}}</dd>
+    </dl>
+    <div class="form-group">
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </div>
+}

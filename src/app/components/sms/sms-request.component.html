@@ -1,0 +1,434 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'Заявка на Ник (альфа имя)' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  <section class="white-content">
+    @if (curLang == 'ru' || curLang == 'en') {
+    <div>
+      <h3 class="mt-0 mb-20 text-center">Заявка на создание Ника (Альфа имени) **</h3>
+      <p class="mb-1 text-center"><strong>Утверждение Альфа-имени со стороны сотовых операторов занимает 1-2 месяцев.
+          *</strong></p>
+      <p class="mb-1 text-center"><strong>Стоимость созданий одной Альфа имени у сотовых операторов: **</strong></p>
+      <ol>
+        <li><strong>Beeline</strong> – ежемесячная абон плата 250 000 сум</li>
+        <li><strong>Ucell</strong> – ежемесячная абон плата 200 000 сум</li>
+        <li><strong>Uzmobile</strong> – ежемесячная абон плата 100 000 сум</li>
+        <li><strong>Mobiuz</strong> – единоразовая оплата 600 000 сум</li>
+        <li><strong>Humans</strong> – единоразовая оплата 300 000 сум</li>
+        <li><strong>Perfectum</strong> – Сервис ник не работает</li>
+      </ol>
+      <p class="mb-2"><strong>P/S: Отдельно за ник договор не предоставляется. Оплата производится по тому же договору
+          смс, Во время оплаты в деталях платежа обязательно писать: “За организации каналов для передачи SMS-сообщений
+          сог дог №”.</strong></p>
+      <div class="alert p-3 alert-info">
+        <h5 class="mt-0">Образец:</h5>
+        <p class="mb-5"><strong>Ник:</strong> Eskiz</p>
+        <p class="mb-5">В альфа-имени может быть максимум 11 символов и без пробелов. Можно использовать только
+          латинские буквы.</p>
+        <p class="mb-10">Образец: Eskiz, ESKIZ, eskiz, Eskiz.uz, Eskizuz, EskizUZ, Eskiz_MEDIA, ESKIZ_MEDIA</p>
+        <p class="mb-10"><strong>Введите сферу деятельности компании:</strong> Услуги по разработке сайтов, хостинга,
+          регистрации домена </p>
+      </div>
+    </div>
+    }
+    @if (curLang == 'uz') {
+    <div>
+      <h3 class="mt-0 mb-20 text-center">Nik (Alfa nom) ochtirish uchun ariza **</h3>
+      <p class="mb-20 text-center"><strong>Mobil operatorlari tomonidan alfa nomini tasdiqlash uchun 1-2 oy vaqt talab
+          etiladi. *</strong></p>
+      <p class="mb-10 text-center"><strong>Bitta Alfa nomini yaratish narxi: **</strong></p>
+      <ol>
+        <li><strong>Beeline</strong> – xar oylik abon to‘lov 250 000 so‘m</li>
+        <li><strong>Ucell</strong> – xar oylik abon to‘lov 200 000 so‘m</li>
+        <li><strong>Uzmobile</strong> – xar oylik abon to‘lov 100 000 so‘m</li>
+        <li><strong>Mobiuz</strong> – bir martalik to‘lov 600 000 so‘m</li>
+        <li><strong>Humans</strong> – bir martalik to‘lov 300 000 so‘m</li>
+        <li><strong>Perfectum</strong> – Nik xizmati ishlamaydi</li>
+      </ol>
+      <p class="mb-2"><strong>P/S: Nik uchun alohida shartnoma berilmaydi. Sms uchun tuzilgan shartnoma asosida to‘lov
+          qilinaveradi. To‘lovni amalga oshirayotgan vaqtda, To‘lov maqsadi ga: "За организации каналов для передачи
+          SMS-сообщений сог.дог №" dib yoziladi.</strong></p>
+      <div class="alert p-3 alert-info">
+        <h5 class="mt-0">Namuna:</h5>
+        <p class="mb-5"><strong>Nik:</strong> Eskiz</p>
+        <p class="mb-5">Alfa nomi - eng ko'pi bilan 11 ta belgidan iborat bo'lishi lozim va so'zlar orasida bo'sh joy
+          qolmasligi kerak. Faqat lotin harflarini ishlatish mumkin.</p>
+        <p class="mb-10">Namuna: Eskiz, ESKIZ, eskiz, Eskiz.uz, Eskizuz, EskizUZ, Eskiz_MEDIA, ESKIZ_MEDIA</p>
+        <p class="mb-10"><strong>Korhonangizning faoliyati turini kiriting:</strong> Услуги по разработке сайтов,
+          хостинга, регистрации домена </p>
+      </div>
+    </div>
+    }
+    @if (curLang == 'oz') {
+    <div>
+      <h3 class="mt-0 mb-20 text-center">Ник (Алфа ном) очтириш учун ариза **</h3>
+      <p class="mb-20 text-center"><strong>Мобил операторлари томонидан алфа номини тасдиқлаш учун 1-2 ой вақт талаб
+          этилади. *</strong></p>
+      <p class="mb-10 text-center"><strong>Битта Алфа номини яратиш нархи: **</strong></p>
+      <ol>
+        <li><strong>Beeline</strong> – хар ойлик абон тўлов 250 000 сўм</li>
+        <li><strong>Ucell</strong> – хар ойлик абон тўлов 200 000 сўм</li>
+        <li><strong>Uzmobile</strong> – хар ойлик абон тўлов 100 000 сўм</li>
+        <li><strong>Mobiuz</strong> – бир марталик тўлов 600 000 сўм</li>
+        <li><strong>Humans</strong> – бир марталик тўлов 300 000 сўм</li>
+        <li><strong>Perfectum</strong> – Ник хизмати ишламайди</li>
+      </ol>
+      <p class="mb-2"><strong>P/S: Ник учун алоҳида шартнома берилмайди. Смс учун тузилган шартнома асосида тўлов
+          қилинаверади. Тўловни амалга ошираётган вақтда, Тўлов мақсади га: "За организации каналов для передачи
+          SMS-сообщений сог.дог №" диб ёзилади.</strong></p>
+      <div class="alert p-3 alert-info">
+        <h5 class="mt-0">Намуна:</h5>
+        <p class="mb-5"><strong>Ник:</strong> Eskiz</p>
+        <p class="mb-5">Альфа номи - энг кўпи билан 11 та белгидан иборат бўлиши лозим ва сўзлар орасида бўш жой
+          қолмаслиги керак. Фақат лотин ҳарфларини ишлатиш мумкин.</p>
+        <p class="mb-10">Намуна: Eskiz, ESKIZ, eskiz, Eskiz.uz, Eskizuz, EskizUZ, Eskiz_MEDIA, ESKIZ_MEDIA</p>
+        <p class="mb-10"><strong>Корхонангизнинг фаолият турини киритинг:</strong> Услуги по разработке сайтов,
+          хостинга, регистрации домена </p>
+      </div>
+    </div>
+    }
+
+    <div class="mb-4">
+      <button class="btn btn-sm btn-primary" (click)="addRequest()"><i class="ion-md-add"></i> {{'Заявка на Ник (альфа
+        имя)' | translate}}</button>
+    </div>
+
+    <nav ngbNav #nav="ngbNav" class="nav-tabs">
+      <ng-container [ngbNavItem]="1" ngbNavItem>
+        <a ngbNavLink>{{'Ник без абон платы' | translate}}</a>
+        <ng-template ngbNavContent>
+          @if (anketaData().length > 0) {
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th>{{'Ник (альфа имя)' | translate}}</th>
+                  <th>{{'description' | translate}}</th>
+                  <th>{{'link' | translate}}</th>
+                  <th>{{'Файл' | translate}}</th>
+                  <th width="250">{{'application_status' | translate}}</th>
+                  <th>{{'application_submission_date' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of anketaData(); track $index) {
+                <tr>
+                  <td>{{item.nic}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.link}}</td>
+                  <td>
+                    @if (item.file) {
+                    <a href="{{siteUrl}}/nik-files/{{item.file}}" class="d-block text-primary"
+                      target="_blank">{{'Посмотреть файл' | translate}}</a>
+                    }
+                  </td>
+                  <td>
+                    <p class="mb-5">Beeline: @if (item.beeline == 'closed') {
+                      <strong class="text-success">{{'Создан' | translate}}</strong>
+                      }@if (item.beeline == 'waiting') {
+                      <strong class="text-warning">{{'Не оплачен за Ник' | translate}}</strong>
+                      }@if (item.beeline == 'open') {
+                      <strong class="text-danger">{{'Заявка принята' | translate}}</strong>
+                      }@if (item.beeline == 'busy') {
+                      <strong class="text-secondary">{{'Отказано' | translate}}</strong>
+                      }@if (item.beeline == 'cancelled') {
+                      <strong class="text-body">{{'Отказан от ника' | translate}}</strong>
+                      }@if (item.beeline == 'not_paid') {
+                      <strong class="text-warning">{{'Ник не продлена' | translate}}</strong>
+                      }@if (item.beeline == 'paid') {
+                      <strong class="text-success">{{'Ник продлён' | translate}}</strong>
+                      }
+                    </p>
+                    <p class="mb-5">Mobiuz: @if (item.ums == 'closed') {
+                      <strong class="text-success">{{'Создан' | translate}}</strong>
+                      }@if (item.ums == 'waiting') {
+                      <strong class="text-warning">{{'Не оплачен за Ник' | translate}}</strong>
+                      }@if (item.ums == 'open') {
+                      <strong class="text-danger">{{'Заявка принята' | translate}}</strong>
+                      }@if (item.ums == 'busy') {
+                      <strong class="text-secondary">{{'Отказано' | translate}}</strong>
+                      }@if (item.ums == 'cancelled') {
+                      <strong class="text-body">{{'Отказан от ника' | translate}}</strong>
+                      }@if (item.ums == 'not_paid') {
+                      <strong class="text-warning">{{'Ник не продлена' | translate}}</strong>
+                      }@if (item.ums == 'paid') {
+                      <strong class="text-success">{{'Ник продлён' | translate}}</strong>
+                      }
+                    </p>
+                    <p class="mb-5">UCELL: @if (item.ucell == 'closed') {
+                      <strong class="text-success">{{'Создан' | translate}}</strong>
+                      }@if (item.ucell == 'waiting') {
+                      <strong class="text-warning">{{'Не оплачен за Ник' | translate}}</strong>
+                      }@if (item.ucell == 'open') {
+                      <strong class="text-danger">{{'Заявка принята' | translate}}</strong>
+                      }@if (item.ucell == 'busy') {
+                      <strong class="text-secondary">{{'Отказано' | translate}}</strong>
+                      }@if (item.ucell == 'cancelled') {
+                      <strong class="text-body">{{'Отказан от ника' | translate}}</strong>
+                      }@if (item.ucell == 'not_paid') {
+                      <strong class="text-warning">{{'Ник не продлена' | translate}}</strong>
+                      }@if (item.ucell == 'paid') {
+                      <strong class="text-success">{{'Ник продлён' | translate}}</strong>
+                      }
+                    </p>
+                    <p class="mb-5">Uzmobile: @if (item.uzmobile == 'closed') {
+                      <strong class="text-success">{{'Создан' | translate}}</strong>
+                      }@if (item.uzmobile == 'waiting') {
+                      <strong class="text-warning">{{'Не оплачен за Ник' | translate}}</strong>
+                      }@if (item.uzmobile == 'open') {
+                      <strong class="text-danger">{{'Заявка принята' | translate}}</strong>
+                      }@if (item.uzmobile == 'busy') {
+                      <strong class="text-secondary">{{'Отказано' | translate}}</strong>
+                      }@if (item.uzmobile == 'cancelled') {
+                      <strong class="text-body">{{'Отказан от ника' | translate}}</strong>
+                      }@if (item.uzmobile == 'not_paid') {
+                      <strong class="text-warning">{{'Ник не продлена' | translate}}</strong>
+                      }@if (item.uzmobile == 'paid') {
+                      <strong class="text-success">{{'Ник продлён' | translate}}</strong>
+                      }
+                    </p>
+                    <p>Humans: @if (item.human == 'closed') {
+                      <strong class="text-success">{{'Создан' | translate}}</strong>
+                      }@if (item.human == 'waiting') {
+                      <strong class="text-warning">{{'Не оплачен за Ник' | translate}}</strong>
+                      }@if (item.human == 'open') {
+                      <strong class="text-danger">{{'Заявка принята' | translate}}</strong>
+                      }@if (item.human == 'busy') {
+                      <strong class="text-secondary">{{'Отказано' | translate}}</strong>
+                      }@if (item.human == 'cancelled') {
+                      <strong class="text-body">{{'Отказан от ника' | translate}}</strong>
+                      }@if (item.human == 'not_paid') {
+                      <strong class="text-warning">{{'Ник не продлена' | translate}}</strong>
+                      }@if (item.human == 'paid') {
+                      <strong class="text-success">{{'Ник продлён' | translate}}</strong>
+                      }
+                    </p>
+                  </td>
+                  <td>{{item.date | time:'dd.MM.yyyy'}}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-responsive-mobile">
+            <div ngbAccordion>
+              @for (item of anketaData(); track $index) {
+              <div ngbAccordionItem>
+                <div ngbAccordionHeader>
+                  <button ngbAccordionButton> {{item.nic}}</button>
+                </div>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <ng-template>
+                      <p><strong>{{'Ник (альфа имя)' | translate}}</strong>{{item.nic}}</p>
+                      <p><strong>{{'description' | translate}}</strong>{{item.description}}</p>
+                      <p><strong>{{'link' | translate}}</strong>{{item.link}}</p>
+                      <p><strong>{{'Файл' | translate}}</strong>
+                        @if (item.file) {
+                        <a href="{{siteUrl}}/nik-files/{{item.file}}" class="d-block text-primary"
+                          target="_blank">{{'Посмотреть файл' | translate}}</a>
+                        }
+                      </p>
+                      <p><strong>{{'application_status' | translate}}</strong>
+                        <span class="d-block">Beeline: @if (item.beeline == 'closed') {
+                          <b class="text-success">Создан</b>
+                          }@if (item.beeline == 'waiting') {
+                          <b class="text-warning">{{'Не оплачен за Ник' | translate}}</b>
+                          }@if (item.beeline == 'open') {
+                          <b class="text-danger">{{'Заявка принята' | translate}}</b>
+                          }@if (item.beeline == 'busy') {
+                          <b class="text-secondary">{{'Отказано' | translate}}</b>
+                          }@if (item.beeline == 'cancelled') {
+                          <b class="text-body">{{'Отказан от ника' | translate}}</b>
+                          }@if (item.beeline == 'not_paid') {
+                          <b class="text-warning">{{'Ник не продлена' | translate}}</b>
+                          }@if (item.beeline == 'paid') {
+                          <b class="text-success">{{'Ник продлён' | translate}}</b>
+                          }</span>
+                        <span class="d-block">Mobiuz: @if (item.ums == 'closed') {
+                          <b class="text-success">Создан</b>
+                          }@if (item.ums == 'waiting') {
+                          <b class="text-warning">{{'Не оплачен за Ник' | translate}}</b>
+                          }@if (item.ums == 'open') {
+                          <b class="text-danger">{{'Заявка принята' | translate}}</b>
+                          }@if (item.ums == 'busy') {
+                          <b class="text-secondary">{{'Отказано' | translate}}</b>
+                          }@if (item.ums == 'cancelled') {
+                          <b class="text-body">{{'Отказан от ника' | translate}}</b>
+                          }@if (item.ums == 'not_paid') {
+                          <b class="text-warning">{{'Ник не продлена' | translate}}</b>
+                          }@if (item.ums == 'paid') {
+                          <b class="text-success">{{'Ник продлён' | translate}}</b>
+                          }</span>
+                        <span class="d-block">UCELL: @if (item.ucell == 'closed') {
+                          <b class="text-success">Создан</b>
+                          }@if (item.ucell == 'waiting') {
+                          <b class="text-warning">{{'Не оплачен за Ник' | translate}}</b>
+                          }@if (item.ucell == 'open') {
+                          <b class="text-danger">{{'Заявка принята' | translate}}</b>
+                          }@if (item.ucell == 'busy') {
+                          <b class="text-secondary">{{'Отказано' | translate}}</b>
+                          }@if (item.ucell == 'cancelled') {
+                          <b class="text-body">{{'Отказан от ника' | translate}}</b>
+                          }@if (item.ucell == 'not_paid') {
+                          <b class="text-warning">{{'Ник не продлена' | translate}}</b>
+                          }@if (item.ucell == 'paid') {
+                          <b class="text-success">{{'Ник продлён' | translate}}</b>
+                          }</span>
+                        <span class="d-block">Uzmobile: @if (item.uzmobile == 'closed') {
+                          <b class="text-success">Создан</b>
+                          }@if (item.uzmobile == 'waiting') {
+                          <b class="text-warning">{{'Не оплачен за Ник' | translate}}</b>
+                          }@if (item.uzmobile == 'open') {
+                          <b class="text-danger">{{'Заявка принята' | translate}}</b>
+                          }@if (item.uzmobile == 'busy') {
+                          <b class="text-secondary">{{'Отказано' | translate}}</b>
+                          }@if (item.uzmobile == 'cancelled') {
+                          <b class="text-body">{{'Отказан от ника' | translate}}</b>
+                          }@if (item.uzmobile == 'not_paid') {
+                          <b class="text-warning">{{'Ник не продлена' | translate}}</b>
+                          }@if (item.uzmobile == 'paid') {
+                          <b class="text-success">{{'Ник продлён' | translate}}</b>
+                          }</span>
+                        <span class="d-block">Humans: @if (item.human == 'closed') {
+                          <b class="text-success">Создан</b>
+                          }@if (item.human == 'waiting') {
+                          <b class="text-warning">{{'Не оплачен за Ник' | translate}}</b>
+                          }@if (item.human == 'open') {
+                          <b class="text-danger">{{'Заявка принята' | translate}}</b>
+                          }@if (item.human == 'busy') {
+                          <b class="text-secondary">{{'Отказано' | translate}}</b>
+                          }@if (item.human == 'cancelled') {
+                          <b class="text-body">{{'Отказан от ника' | translate}}</b>
+                          }@if (item.human == 'not_paid') {
+                          <b class="text-warning">{{'Ник не продлена' | translate}}</b>
+                          }@if (item.human == 'paid') {
+                          <b class="text-success">{{'Ник продлён' | translate}}</b>
+                          }</span>
+                      </p>
+                      <p><strong>{{'application_submission_date' | translate}}</strong>{{item.date | time:'dd.MM.yyyy'}}
+                      </p>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </ng-template>
+      </ng-container>
+      @if (nikData().length > 0) {
+      <ng-container [ngbNavItem]="2" ngbNavItem>
+        <a ngbNavLink>{{'Ник с абон платой' | translate}}</a>
+        <ng-template ngbNavContent>
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Оператор</th>
+                  <th>НИК</th>
+                  <th width="150">Статус</th>
+                  <th>Дата активации</th>
+                  <th>Дата окончания</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of nikData(); track $index) {
+                <tr>
+                  <td class="text-capitalize">
+                    @if (item.operator == 'ucell') {
+                    <span>Ucell</span>
+                    }
+                    @if (item.operator != 'ucell') {
+                    <span>{{item.operator}}</span>
+                    }
+                  </td>
+                  <td>{{item.nik}}</td>
+                  <td>
+                    @if (item.status == 'active') {
+                    <span class="es_label_inline sm bg-success">Активный</span>
+                    }
+                    @if (item.status == 'inactive') {
+                    <span class="es_label_inline sm bg-danger">Закончен</span>
+                    }
+                    @if (item.status == 'blocked') {
+                    <span class="es_label_inline sm bg-warning">Временно не активный</span>
+                    }
+                    @if (item.status == 'waiting') {
+                    <span class="es_label_inline sm bg-primary">В ожидании</span>
+                    }
+                  </td>
+                  <td>@if (item.start_date) {
+                    <span>{{item.start_date | time:'dd.MM.yyyy'}}</span>
+                    }
+                  </td>
+                  <td>@if (item.end_date) {
+                    <span>{{item.end_date | time:'dd.MM.yyyy'}}</span>
+                    }
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="table-responsive-mobile">
+            <div ngbAccordion>
+              @for (item of nikData; track item) {
+              <div ngbAccordionItem>
+                <div ngbAccordionHeader>
+                  <button ngbAccordionButton>{{item.nik}}</button>
+                </div>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <ng-template>
+                      <p><strong>Оператор</strong>
+                        @if (item.operator == 'ucell') {
+                        <span>Ucell</span>
+                        }
+                        @if (item.operator != 'ucell') {
+                        <span class="text-capitalize">{{item.operator}}</span>
+                        }
+                      </p>
+                      <p><strong>НИК</strong>{{item.nik}}</p>
+                      <p><strong>Статус</strong>
+                        @if (item.status == 'active') {
+                        <span class="es_label_inline sm bg-success">Активный</span>
+                        }
+                        @if (item.status == 'inactive') {
+                        <span class="es_label_inline sm bg-danger">Закончен</span>
+                        }
+                        @if (item.status == 'blocked') {
+                        <span class="es_label_inline sm bg-warning">Временно не активный</span>
+                        }
+                        @if (item.status == 'waiting') {
+                        <span class="es_label_inline sm bg-primary">В ожидании</span>
+                        }
+                      </p>
+                      <p><strong>Дата активации</strong> @if (item.start_date) {
+                        <span>{{item.start_date | time:'dd.MM.yyyy'}}</span>
+                        }
+                      </p>
+                      <p><strong>Дата окончания</strong>@if (item.end_date) {
+                        <span>{{item.end_date | time:'dd.MM.yyyy'}}</span>
+                        }
+                      </p>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      }
+    </nav>
+    <div [ngbNavOutlet]="nav"></div>
+  </section>
+</section>

@@ -1,0 +1,49 @@
+<div class="login-bg"></div>
+
+<div class="login-container">
+
+  @if (authContent) {
+  <div class="login-content text-center">
+    <div>
+      <img src="/assets/images/eskiz.svg" width="auto" height="70">
+      <h5>{{'login_personal_cabinet' | translate}}</h5>
+    </div>
+    @if (loginData) {
+    <form (ngSubmit)="signIn()" #loginForm="ngForm">
+      <div class="form-group text-left">
+        <label>Email</label>
+        <input type="email" class="form-control" [(ngModel)]="loginData.email" email="true" name="email"
+          #email="ngModel" required>
+      </div>
+      <div class="form-group text-left">
+        <label for="pwd">{{'password' | translate}}</label>
+        <input type="password" class="form-control" minlength="6" maxlength="36" [(ngModel)]="loginData.password"
+          name="password" #password="ngModel" required>
+      </div>
+      <div class="form-group mt-30">
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.form.valid">{{'enter' |
+          translate}}</button>
+      </div>
+    </form>
+    }
+  </div>
+  }
+
+</div>
+
+@if (langSwitch) {
+<div class="langs">
+  <div class="text-center">
+    <img class="mb-40" src="/assets/images/eskiz.svg" width="auto" height="100">
+    <div>
+      <a role="button" (click)="switchLang('ru')">Русский</a>
+      <a role="button" (click)="switchLang('uz')">O'zbekcha</a>
+      <a role="button" (click)="switchLang('oz')">Ўзбекча</a>
+      <a role="button" (click)="switchLang('en')">English</a>
+    </div>
+  </div>
+</div>
+}
+
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#e0154b" type="ball-scale-ripple-multiple"
+  [fullScreen]="true"></ngx-spinner>

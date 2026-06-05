@@ -1,0 +1,597 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'kontakti' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  @if (!user_blocked && !login_failed && !not_found) {
+  <section class="white-content">
+    <div class="mb-15">
+      <button class="btn btn-sm btn-primary btn-r mb-5" (click)="addContact()"><i class="ion-md-add"></i> {{'add_by_one'
+        | translate}}</button>
+      @if (currentClient && currentClient.id != 13) {
+      <div class="upload_file btn-r mb-5">
+        <input type="file" id="uploadCaptureInputFile"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+          name="files" (change)="importContact($event)"> <i class="ion-md-cloud-upload"></i> {{'import_contacts' |
+        translate}} (.xlsx)
+      </div>
+      }
+      <button class="btn btn-sm btn-info btn-r mb-5" (click)="exportContact()"><i class="ion-md-cloud-download"></i>
+        {{'export_contacts' | translate}}</button>
+      <button class="btn btn-sm btn-danger btn-r mb-5" type="button" (click)="deleteSelected()">{{'delete_selected' |
+        translate}}</button>
+      <button class="btn btn-sm btn-danger btn-r mb-5" type="button" (click)="deleteContactsAll()">{{'delete_all' |
+        translate}}</button>
+      <button class="btn btn-sm btn-secondary btn-r mb-5" type="button" routerLink="/sms/blacklist">{{'blacklist' |
+        translate}}</button>
+      <button class="btn btn-sm btn-primary mb-5" type="button" routerLink="/sms/template">{{'templates' |
+        translate}}</button>
+    </div>
+    @if (curLang == 'ru') {
+    <p class="text-danger">Чтобы загрузить новые контакты, <a target="_self" href="{{templateFileLink}}">скачайте
+        шаблон</a> и заполните его. * Все поля обязательно для заполнение. <br> В шаблоне количество контактов не должно
+      превышать <strong>10 000</strong> контактов.</p>
+    }
+    @if (curLang == 'uz') {
+    <p class="text-danger">Yangi kontaktlarni yuklash uchun, <a target="_self" href="{{templateFileLink}}">shablonni
+        yuklab oling</a> va uni to'ldiring. * Barcha maydonchalar to'ldirilishi shart. <br> Shablonda kontaktlar soni
+      <strong>10 000</strong> tadan oshmasligi kerak.
+    </p>
+    }
+    @if (curLang == 'oz') {
+    <p class="text-danger">Янги контактларни юклаш учун, <a target="_self" href="{{templateFileLink}}">шаблонни юклаб
+        олинг</a> ва уни тўлдиринг. * Барча майдончалар тўлдирилиши шарт. <br> Шаблонда контактлар сони <strong>10
+        000</strong> тадан ошмаслиги керак.</p>
+    }
+    @if (curLang == 'en') {
+    <p class="text-danger">To import new contacts, <a target="_self" href="{{templateFileLink}}">download the
+        template</a> and fill it. * All fields are required. <br> In the template, the number of contacts should not
+      exceed <strong>10 000</strong> contacts.</p>
+    }
+    <div class="mb-30">
+      @if (search) {
+      <form (ngSubmit)="searchContact()" #contactForm="ngForm">
+        @if (currentClient && currentClient.option_contact == 'yes') {
+        <div>
+          <div class="form-group">
+            <label>{{'contract' | translate}}</label>
+            <input type="text" class="form-control" [(ngModel)]="search.dogovor" name="dogovor">
+          </div>
+          <div class="inline-select">
+            <label>Пол</label>
+            <select class="form-control" name="gender" [(ngModel)]="search.gender" style="min-width:150px">
+              <option value="">Все</option>
+              <option value="Муж">Муж</option>
+              <option value="Жен">Жен</option>
+            </select>
+          </div>
+          <div class="inline-select">
+            <label>Возрастная группа</label>
+            <select class="form-control" name="age" [(ngModel)]="search.age">
+              <option value="">Все</option>
+              <option value="20-">20-</option>
+              <option value="20+">20+</option>
+              <option value="30+">30+</option>
+              <option value="40+">40+</option>
+              <option value="50+">50+</option>
+              <option value="60+">60+</option>
+            </select>
+          </div>
+          <div class="inline-select">
+            <label>Статус</label>
+            <select class="form-control" name="ctatus" [(ngModel)]="search.ctatus" style="min-width:150px">
+              <option value="">Все</option>
+              <option value="VIP">VIP</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+            </select>
+          </div>
+          <div class="inline-select">
+            <label>Область</label>
+            <select class="form-control" name="region" [(ngModel)]="search.region" (ngModelChange)="getCities($event)">
+              <option value="">Все</option>
+              @for (item of regions(); track $index) {
+              <option [value]="item.name">{{item.name}}</option>
+              }
+            </select>
+          </div>
+          @if (cities && cities.length > 0) {
+          <div class="inline-select">
+            <label>Район</label>
+            <select class="form-control" name="city" [(ngModel)]="search.city">
+              <option value="">Все</option>
+              @for (item of cities(); track $index) {
+              <option [value]="item.name">{{item.name}}</option>
+              }
+            </select>
+          </div>
+          }
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <select class="custom-select" name="option" #option="ngModel" [(ngModel)]="search.option">
+                <option value="name">по имени</option>
+                <option value="phone">по номеру телефона</option>
+              </select>
+            </div>
+            <input type="text" class="form-control" minlength="4" [(ngModel)]="search.val" placeholder="Искать"
+              name="val" #val="ngModel">
+            <div class="input-group-prepend">
+              <button class="btn btn-success" type="submit">Найти</button>
+            </div>
+          </div>
+        </div>
+        }
+        @if (currentClient && currentClient.option_contact == 'no') {
+        <div class="input-group" style="width:100%;">
+          <div class="input-group-prepend">
+            <select class="custom-select" name="option" #option="ngModel" [(ngModel)]="search.option">
+              <option value="name">по имени</option>
+              <option value="phone">по номеру телефона</option>
+            </select>
+          </div>
+          <input type="text" class="form-control" minlength="4" [(ngModel)]="search.val" placeholder="Искать" name="val"
+            #val="ngModel">
+          <div class="input-group-prepend">
+            <button class="btn btn-success" type="submit" [disabled]="!search.val">Найти</button>
+          </div>
+        </div>
+        }
+      </form>
+      }
+    </div>
+    @if (resultSearch().length > 0) {
+    <h4>{{'found' | translate}} ({{resultSearch().length}}) <button type="button" (click)="searchReset()"
+        class="btn btn-sm btn-l btn-warning">{{'cancel' | translate}}</button></h4>
+    }
+    <div class="col-sm-12 status-row mb-10">
+      <ul class="rc_quick-stats">
+        <li class="color-info">
+          <a role="button" (click)="setStatus('')" class="link" [ngClass]="{'active': curStatus == ''}">
+            <span class="title">Всего</span>
+            <div class="stat">{{totalActive + totalNoActive + totalBlocked}}</div>
+          </a>
+        </li>
+        <li class="color-success">
+          <a role="button" (click)="setStatus('active')" class="link" [ngClass]="{'active': curStatus == 'active'}">
+            <span class="title">{{'active' | translate}}</span>
+            <div class="stat">{{totalActive}}</div>
+          </a>
+        </li>
+        <li class="color-danger">
+          <a role="button" (click)="setStatus('inactive')" class="link" [ngClass]="{'active': curStatus == 'inactive'}">
+            <span class="title">{{'invalid_format' | translate}}</span>
+            <div class="stat">{{totalNoActive}}</div>
+          </a>
+        </li>
+        <li class="color-danger">
+          <a role="button" (click)="setStatus('blocked')" class="link" [ngClass]="{'active': curStatus == 'blocked'}">
+            <span class="title">{{'Запрещённые номера' | translate}}</span>
+            <div class="stat">{{totalBlocked}}</div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            @if (resultSearch().length == 0) {
+            <th width="30">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="all_delete" name="all_delete"
+                  (change)="handleContactDeleteAll($event)">
+                <label class="custom-control-label" for="all_delete"></label>
+              </div>
+            </th>
+            }
+            <th>{{'fullname' | translate}}</th>
+            <th>{{'phone' | translate}}</th>
+            <th>{{'groups' | translate}}</th>
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>{{'Баланс' | translate}}</th>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>{{'contract' | translate}}</th>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>Пол</th>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>Дата рождение</th>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>Возрастная группа</th>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>Статус</th>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <th>Регион</th>
+            }
+            <th>{{'status' | translate}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        @if (resultSearch().length == 0) {
+        <tbody>
+          @for (contact of contacts(); track contact.id) {
+          <tr>
+            <td>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="{{contact.id}}_delete"
+                  name="{{contact.id}}_delete" [(ngModel)]="contact.selected">
+                <label class="custom-control-label" for="{{contact.id}}_delete"></label>
+              </div>
+            </td>
+            <td>{{contact.name}}</td>
+            <td>+{{contact.phone}}</td>
+            <td>{{contact.group_name}}</td>
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.summa}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.dogovor}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.gender}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.dob}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.age}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.ctatus}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>
+              @if (contact.region) {
+              <div>- {{contact.region}}</div>
+              }
+              @if (contact.city) {
+              <div>- {{contact.city}}</div>
+              }
+              @if (contact.district) {
+              <div>- {{contact.district}}</div>
+              }
+            </td>
+            }
+            <td>
+              @if (contact.status == 1 && !contact.is_bl) {
+              <span class="es_label sm bg-success">{{'active' | translate}}</span>
+              }
+              @if (contact.status == 0 && !contact.is_bl) {
+              <div class="es_label sm bg-danger">{{'status_not_approved' | translate}}</div>
+              }
+              @if (contact.is_bl) {
+              <div class="es_label sm bg-danger">{{'Запрещён' | translate}}</div>
+              }
+              @if (contact.notice) {
+              <div class="text-danger notice-block">{{contact.notice}}</div>
+              }
+            </td>
+            <td width="100">
+              <button class="btn btn-sm btn-warning" type="button" (click)="editContact(contact)" placement="bottom"
+                ngbTooltip="{{'edit' | translate}}"><i class="ion-md-create"></i></button>
+              <button class="btn btn-sm btn-danger" type="button" (click)="deleteContact(contact)" placement="bottom"
+                ngbTooltip="{{'delete' | translate}}"><i class="ion-md-trash"></i></button>
+            </td>
+          </tr>
+          }
+        </tbody>
+        }
+        @if (resultSearch().length > 0) {
+        <tbody>
+          @for (contact of resultSearch(); track contact.id) {
+          <tr>
+            <td>{{contact.name}}</td>
+            <td>+{{contact.phone}}
+              @if (currentUser.role == 'admin' || currentUser.role == 'leader') {
+              <span class="d-block">{{contact.company_name}}</span>
+              }
+            </td>
+            <td>{{contact.group_name}}</td>
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.summa}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.dogovor}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.gender}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.dob}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.age}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>{{contact.ctatus}}</td>
+            }
+            @if (currentClient && currentClient.option_contact == 'yes') {
+            <td>
+              @if (contact.region) {
+              <div>- {{contact.region}}</div>
+              }
+              @if (contact.city) {
+              <div>- {{contact.city}}</div>
+              }
+              @if (contact.district) {
+              <div>- {{contact.district}}</div>
+              }
+            </td>
+            }
+            <td>
+              @if (contact.status == 1 && !contact.is_bl) {
+              <div class="es_label sm bg-success">{{'active' | translate}}</div>
+              }
+              @if (contact.status == 0 && !contact.is_bl) {
+              <div class="es_label sm bg-danger">{{'status_not_approved' | translate}}</div>
+              }
+              @if (contact.is_bl) {
+              <div class="es_label sm bg-danger">{{'Запрещён' | translate}}</div>
+              }
+              @if (contact.notice) {
+              <div class="text-danger notice-block">{{contact.notice}}</div>
+              }
+            </td>
+            <td width="100">
+              <button class="btn btn-sm btn-warning" type="button" (click)="editContact(contact)" placement="bottom"
+                ngbTooltip="{{'edit' | translate}}"><i class="ion-md-create"></i></button>
+              <button class="btn btn-sm btn-danger" type="button" (click)="deleteContact(contact)" placement="bottom"
+                ngbTooltip="{{'delete' | translate}}"><i class="ion-md-trash"></i></button>
+            </td>
+          </tr>
+          }
+        </tbody>
+        }
+      </table>
+    </div>
+    @if (resultSearch().length == 0) {
+    <div class="table-responsive-mobile">
+      <div ngbAccordion>
+        @for (contact of contacts(); track contact.id) {
+        <div ngbAccordionItem>
+          <div ngbAccordionHeader>
+            <button ngbAccordionButton>
+              <div class="custom-control custom-checkbox d-inline">
+                <input type="checkbox" class="custom-control-input" id="{{contact.id}}_delete"
+                  name="{{contact.id}}_delete" [(ngModel)]="contact.selected">
+                <label class="custom-control-label" for="{{contact.id}}_delete"></label>
+              </div> {{contact.name ? contact.name : contact.phone}}
+            </button>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <p><strong>{{'fullname' | translate}}</strong>{{contact.name}}</p>
+                <p><strong>{{'phone' | translate}}</strong>+{{contact.phone}}</p>
+                <p><strong>{{'groups' | translate}}</strong>{{contact.group_name}}</p>
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>{{'Баланс' | translate}}</strong>{{contact.summa}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>{{'contract' | translate}}</strong>{{contact.dogovor}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Пол</strong>{{contact.gender}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Дата рождение</strong>{{contact.dob}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Возрастная группа</strong>{{contact.age}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Статус</strong>{{contact.ctatus}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Регион</strong>
+                  @if (contact.region) {
+                  <span class="d-block">- {{contact.region}}</span>
+                  }
+                  @if (contact.city) {
+                  <span class="d-block">- {{contact.city}}</span>
+                  }
+                  @if (contact.district) {
+                  <span class="d-block">- {{contact.district}}</span>
+                  }
+                </p>
+                }
+                <p>
+                  <strong>{{'status' | translate}}</strong>
+                  @if (contact.status == 1 && !contact.is_bl) {
+                  <span class="es_label bg-success">{{'active' | translate}}</span>
+                  }
+                  @if (contact.status == 0 && !contact.is_bl) {
+                  <span class="es_label bg-danger">{{'status_not_approved' | translate}}</span>
+                  }
+                  @if (contact.is_bl) {
+                  <span class="es_label bg-danger">{{'Запрещён' | translate}}</span>
+                  }
+                  @if (contact.notice) {
+                  <span class="text-danger notice-block">{{contact.notice}}</span>
+                  }
+                </p>
+                <strong>{{'actions' | translate}}</strong>
+                <p>
+                  <button class="btn btn-sm btn-warning mt-5 btn-r" type="button"
+                    (click)="editContact(contact)">{{'edit' |
+                    translate}}</button>
+                  <button class="btn btn-sm btn-danger mt-5" type="button" (click)="deleteContact(contact)">{{'delete' |
+                    translate}}</button>
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    @if (resultSearch().length > 0) {
+    <div class="table-responsive-mobile">
+      <div ngbAccordion>
+        @for (contact of resultSearch(); track contact.id) {
+        <div ngbAccordionItem>
+          <div ngbAccordionHeader>
+            <button ngbAccordionButton>
+              <div class="custom-control custom-checkbox d-inline">
+                <input type="checkbox" class="custom-control-input" id="{{contact.id}}_delete"
+                  name="{{contact.id}}_delete" [(ngModel)]="contact.selected">
+                <label class="custom-control-label" for="{{contact.id}}_delete"></label>
+              </div> {{contact.name ? contact.name : contact.phone}}
+            </button>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <p><strong>{{'fullname' | translate}}</strong>{{contact.name}}</p>
+                <p><strong>{{'phone' | translate}}</strong>+{{contact.phone}}
+                  @if (currentUser.role == 'admin' || currentUser.role == 'leader') {
+                  <span class="d-block">{{contact.company_name}}</span>
+                  }
+                </p>
+                <p><strong>{{'groups' | translate}}</strong>{{contact.group_name}}</p>
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>{{'Баланс' | translate}}</strong>{{contact.summa}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>{{'contract' | translate}}</strong>{{contact.dogovor}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Пол</strong>{{contact.gender}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Дата рождение</strong>{{contact.dob}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Возрастная группа</strong>{{contact.age}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Статус</strong>{{contact.ctatus}}</p>
+                }
+                @if (currentClient && currentClient.option_contact == 'yes') {
+                <p><strong>Регион</strong>
+                  @if (contact.region) {
+                  <span class="d-block">- {{contact.region}}</span>
+                  }
+                  @if (contact.city) {
+                  <span class="d-block">- {{contact.city}}</span>
+                  }
+                  @if (contact.district) {
+                  <span class="d-block">- {{contact.district}}</span>
+                  }
+                </p>
+                }
+                <p>
+                  <strong>{{'status' | translate}}</strong>
+                  @if (contact.status == 1 && !contact.is_bl) {
+                  <span class="es_label bg-success">{{'active' | translate}}</span>
+                  }
+                  @if (contact.status == 0 && !contact.is_bl) {
+                  <span class="es_label bg-danger">{{'status_not_approved' | translate}}</span>
+                  }
+                  @if (contact.is_bl) {
+                  <span class="es_label bg-danger">{{'Запрещён' | translate}}</span>
+                  }
+                  @if (contact.notice) {
+                  <span class="text-danger notice-block">{{contact.notice}}</span>
+                  }
+                </p>
+                <strong>{{'actions' | translate}}</strong>
+                <p>
+                  <button class="btn btn-sm btn-warning mt-5 btn-r" type="button"
+                    (click)="editContact(contact)">{{'edit' |
+                    translate}}</button>
+                  <button class="btn btn-sm btn-danger mt-5" type="button" (click)="deleteContact(contact)">{{'delete' |
+                    translate}}</button>
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    <div class="text-center">
+      <ngb-pagination class="d-flex justify-content-center" [collectionSize]="totalPage" [(page)]="currentPage"
+        [pageSize]="perPage" [maxSize]="4" [rotate]="true" (pageChange)="pageChanged($event)"></ngb-pagination>
+    </div>
+  </section>
+  }
+
+  @if (not_found) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      {{'sms_no_auth' | translate}}
+    </div>
+  </section>
+  }
+
+  @if (login_failed) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      {{'authorization_sms_failed' | translate}}
+    </div>
+  </section>
+  }
+
+  @if (user_blocked) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      {{'authorization_sms_blocked' | translate}}
+    </div>
+  </section>
+  }
+
+</section>
+
+@if (progressBarContent) {
+<div class="sms_sending_wait">
+  <div>
+    <h5 class="text-center mb-40">Ваш запрос обрабатывается. Это может занять несколько времени. Пожалуйста ждите до
+      завершения процесса.</h5>
+    <p class="text-center"><img src="https://my.eskiz.uz/assets/images/tail-spin.svg" height="50" width="auto"></p>
+  </div>
+</div>
+}
+
+<div class="alert-popup-container" [ngClass]="{'show': alertRemove}">
+  <div class="alert-popup-content">
+    <h4 class="alert-popup-title mb-3">{{'Удалить контактов' | translate}}</h4>
+    <div class="form-group text-left">
+      <p>{{'are_you_sure_delete' | translate}}?</p>
+    </div>
+    <div class="rc_divider"></div>
+    <div class="alert-popup-buttons">
+      <button type="submit" class="btn btn-danger btn-r" (click)="deleteSelectedApprove()">{{'delete' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="closeAlert()">{{'close' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="alert-popup-container" [ngClass]="{'show': alertRemoveAll}">
+  <div class="alert-popup-content">
+    <h4 class="alert-popup-title mb-3">{{'Удалить контактов' | translate}}</h4>
+    <div class="form-group text-left">
+      <p>{{'are_you_sure_delete' | translate}}?</p>
+    </div>
+    <div class="rc_divider"></div>
+    <div class="alert-popup-buttons">
+      <button type="submit" class="btn btn-danger btn-r" (click)="deleteContactsAllApprove()">{{'delete' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="closeAlert()">{{'close' | translate}}</button>
+    </div>
+  </div>
+</div>

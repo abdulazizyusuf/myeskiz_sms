@@ -1,0 +1,47 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'settings' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  <section class="white-content">
+    <h3 class="mt-0 mb-15 text-center">{{'connect_sms_title' | translate}}</h3>
+    @if (not_found && setting()) {
+    <form (ngSubmit)="saveSettings()" class="row" #dataForm="ngForm">
+      <div class="form-group col-sm-6">
+        <label>Email ({{'login' | translate}})</label>
+        <input type="text" class="form-control" [(ngModel)]="setting().email" name="email" required>
+      </div>
+      <div class="form-group col-sm-6">
+        <label>{{'secret_key' | translate}} ({{'password' | translate}})</label>
+        <input type="text" class="form-control" [(ngModel)]="setting().secret_key" name="secret_key"
+          placeholder="{{'enter_secret_key' | translate}}" required>
+      </div>
+      <div class="form-group col-sm-12">
+        <button type="submit" class="btn btn-success" [disabled]="!dataForm.form.valid">{{'save' | translate}}</button>
+      </div>
+    </form>
+    }
+    @if (!not_found && setting()) {
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <label>API (документация)</label>
+        <a class="d-block text-primary" href="https://documenter.getpostman.com/view/663428/RzfmES4z?version=latest"
+          target="_blank">https://documenter.getpostman.com/view/663428/RzfmES4z?version=latest</a>
+      </div>
+      <div class="form-group col-sm-6">
+        <label>Email ({{'login' | translate}})</label>
+        <input type="text" class="form-control" [value]="setting().email" readonly="readonly" disabled="disabled">
+      </div>
+      <div class="form-group col-sm-6 mb-20">
+        <label>{{'secret_key' | translate}} ({{'password' | translate}})</label>
+        <input type="text" class="form-control" [value]="setting().secret_key" readonly="readonly" disabled="disabled">
+      </div>
+    </div>
+    }
+
+  </section>
+
+</section>

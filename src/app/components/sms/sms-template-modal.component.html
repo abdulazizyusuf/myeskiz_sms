@@ -1,0 +1,327 @@
+<div class="modal-header">
+  @if (template) {
+  <h4 class="modal-title">{{template.title}}</h4>
+  }
+  @if (add_request) {
+  <h4 class="modal-title">{{'Заявка на Ник (альфа имя)' | translate}}</h4>
+  }
+  @if (templateData) {
+  <h4 class="modal-title">{{'my_text' | translate}}</h4>
+  }
+  @if (balance_bonus) {
+  <h4 class="modal-title">{{'Пополнить счёт через баланс' | translate}}</h4>
+  }
+  @if (blacklist) {
+  <h4 class="modal-title">{{'blacklist' | translate}}</h4>
+  }
+  <button type="button" class="close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@if (edited) {
+<div class="modal-body">
+  @if (template) {
+  <form class="col-lg-12" (ngSubmit)="patchTemplate()" #dataForm="ngForm">
+    <div class="form-group">
+      <label>{{'title' | translate}} <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" [(ngModel)]="template.title" name="title" #title="ngModel" required>
+    </div>
+    <div class="form-group">
+      <label>{{'text' | translate}} <span class="text-danger">*</span></label>
+      <textarea name="text" class="form-control" [(ngModel)]="template.text" #text="ngModel" cols="10" rows="5"
+        required></textarea>
+    </div>
+    <p>&#64;name - {{'contact_name_example' | translate}} </p>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'save' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </form>
+  }
+</div>
+}
+@if (deleted) {
+<div class="modal-body">
+  <div class="alert alert-danger">
+    {{'are_you_sure_delete' | translate}} <strong>{{template.title}}</strong>?
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-r" (click)="deleteTemplate()">{{'delete' | translate}}</button>
+    <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+  </div>
+</div>
+}
+@if (add_request) {
+<div class="modal-body">
+  @if (anketa) {
+  <form (ngSubmit)="sendRequest()" class="row" #dataForm="ngForm">
+    @if (curLang == 'ru' || curLang == 'en') {
+    <p class="mb-10 text-danger col-sm-12"><strong>Заявка будет принято только после оплаты. Во время оплаты, в деталях
+        платежа обязательно указать: "за организации каналов для передачи СМС-сообщений"</strong></p>
+    }
+    @if (curLang == 'oz') {
+    <p class="mb-10 text-danger col-sm-12"><strong>Ариза фақат тўловдан сўнг қабул қилинади. Тўловни амалга
+        ошираётганда, тўлов мақсади албатта: "за организации каналов для передачи СМС-сообщений" - деб кўрсатилиши
+        лозим</strong></p>
+    }
+    @if (curLang == 'uz') {
+    <p class="mb-10 text-danger col-sm-12"><strong>Ariza faqat to'lovdan so'ng qabul qilinadi. To'lovni amalga
+        oshirayotganda, to'lov maqsadi albatta: "за организации каналов для передачи СМС-сообщений" - deb ko'rsatilishi
+        lozim</strong></p>
+    }
+    <div class="form-group col-sm-12">
+      @if (curLang == 'ru' || curLang == 'en' || curLang == 'oz') {
+      <label>НИК <span class="text-danger">*</span></label>
+      }
+      @if (curLang == 'uz') {
+      <label>Nik <span class="text-danger">*</span></label>
+      }
+      <input type="text" class="form-control" maxlength="11" pattern="[a-zA-Z0-9_.]{2,11}" [(ngModel)]="anketa.nic"
+        name="nic" #nic="ngModel" required>
+      @if (nic.invalid && nic.touched) {
+      <p class="mb-0 text-danger">@if (curLang == 'ru' || curLang == 'en') {
+        <small>В альфа-имени может быть максимум 11 символов и без пробелов. Можно использовать только латинские
+          буквы.</small>
+        }@if (curLang == 'uz') {
+        <small>Alfa nomi - eng ko'pi bilan 11 ta belgidan iborat bo'lishi lozim va so'zlar orasida bo'sh joy qolmasligi
+          kerak. Faqat lotin harflarini ishlatish mumkin.</small>
+        }@if (curLang == 'oz') {
+        <small>Альфа номи - энг кўпи билан 11 та белгидан иборат бўлиши лозим ва сўзлар орасида бўш жой қолмаслиги
+          керак. Фақат лотин ҳарфларини ишлатиш мумкин.</small>
+        }
+      </p>
+      }
+    </div>
+    <div class="form-group col-sm-12">
+      @if (curLang == 'ru' || curLang == 'en') {
+      <label>Введите сферу деятельности компании <span class="text-danger">*</span></label>
+      }
+      @if (curLang == 'uz') {
+      <label>Korhonangizning faoliyati turini kiriting <span class="text-danger">*</span></label>
+      }
+      @if (curLang == 'oz') {
+      <label>Корхонангизнинг фаолият турини киритинг <span class="text-danger">*</span></label>
+      }
+      <input type="text" class="form-control" [(ngModel)]="anketa.description" name="description" required>
+    </div>
+    <div class="form-group col-sm-12">
+      <label>{{'enter_nik_link' | translate}} <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" [(ngModel)]="anketa.link" name="link" required>
+    </div>
+    <div class="form-group col-sm-12">
+      <label>{{'Загрузите свою Гувохнома или Лицензию' | translate}} <span class="text-danger">*</span></label>
+      <div>
+        @if (!anketa.file) {
+        <div class="dropZone">
+          @if (upload_file()) {
+          <div class="upload_file_loading"></div>
+          }
+          <input type="file" id="uploadFile" accept="image/*,application/pdf" name="files"
+            (change)="onFileChange($event)" required>
+          <i class="ion-md-camera"></i> <span>{{'upload_file' | translate}}</span>
+        </div>
+        }
+        @if (anketa.file) {
+        <ul class="files mb-4">
+          <li>
+            <i class="ion-ios-attach i-r"></i> <a href="{{siteUrl}}/nik-files/{{anketa.file}}"
+              target="_blank">{{'Посмотреть файл' | translate}}</a> <a role="button" (click)="removeFile()"
+              class="text-danger ml-2">{{'delete' | translate}}</a>
+          </li>
+        </ul>
+        }
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'send' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </form>
+  }
+</div>
+}
+@if (!template_delete && templateData) {
+<div class="modal-body">
+  <form class="col-lg-12" (ngSubmit)="patchTemplateData()" #dataForm="ngForm">
+    <div class="form-group">
+      @if (curLang == 'ru' || curLang == 'en') {
+      <label class="text-danger">Пожалуйста, для модерации смс сообщения вводить текст только в оригинальном виде (без
+        изменений), то есть, в том виде, которая будет отправляться получателям на телефон. Обработка текста (изменение
+        переменных значений, масок) будет производиться только самим модератором <span
+          class="text-danger">*</span></label>
+      }
+      @if (curLang == 'uz') {
+      <label class="text-danger">Iltimos, SMS-xabarni moderatsiyadan o'tkazish uchun, matnni faqat asl ko'rinishida
+        (qo'shimcha va o'zgartirishlarsiz), ya'ni abonentning mobil raqamiga matn qanday shaklda borsa, o'sha
+        ko'rinishda kiritish lozim. Sms matni bilan qayta ishlashni (o'zgaruvchan joylariga maska qo'yib chiqishni)
+        moderatorning o'zi faqat amalga oshiradi. <span class="text-danger">*</span></label>
+      }
+      @if (curLang == 'oz') {
+      <label class="text-danger">Илтимос, СМС-хабарни модерациядан ўтказиш учун, матнни фақат асл кўринишида (қўшимча ва
+        ўзгартиришларсиз), яъни абонентнинг мобил рақамига матн қандай шаклда борса, ўша кўринишда киритиш лозим. Смс
+        матни билан қайта ишлашни (ўзгарувчан жойларига маска қўйиб чиқишни) модераторнинг ўзи фақат амалга оширади.
+        <span class="text-danger">*</span></label>
+      }
+      <textarea name="text" class="form-control" [(ngModel)]="templateData.original_text" #text="ngModel" cols="10"
+        rows="5" required></textarea>
+      @if (!smsCountLimit) {
+      <p>
+        @if (smsCount > 0 && smsLength > 0) {
+        <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
+            [translateParams]="{value: smsLength}"></span> - {{smsCount}} {{'pc' | translate}}.</span>
+        }
+        @if (templateData.original_text) {
+        <a role="button" class="btn-link mt-2" (click)="calcCharacter(templateData.original_text)">{{'Рассчитать
+          символов' | translate}}</a>
+        }
+      </p>
+      }
+      @if (smsCountLimit) {
+      <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
+      }
+    </div>
+    @if (blacklist_keywords && blacklist_keywords.length > 0) {
+    <p>
+      <small class="text-uppercase text-danger d-block mb-1"><b>{{'Запрещённые слова' | translate}}</b></small>
+      @for (keyword of blacklist_keywords; track keyword) {
+      <span class="badge badge-danger mr-2" style="padding:5px 10px;">{{keyword}}</span>
+      }
+    </p>
+    }
+    <div class="form-group">
+      <label>{{'Добавить комментарию' | translate}}</label>
+      <textarea name="comment" class="form-control" [(ngModel)]="templateData.comment" cols="2" rows="2"></textarea>
+    </div>
+    <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link" target="_blank">{{'Инструкция по
+        использованию символов в смс' | translate}}</a></p>
+    <div class="mt-3" style="display:flex;">
+      <input type="checkbox" id="terms_condition" [(ngModel)]="templateData.terms" name="terms_condition" required>
+      <label for="terms_condition" class="i-l mb-0" style="font-size:12px"> {{'sms_text_agree' | translate}}</label>
+    </div>
+    <div class="mt-2 mb-3" style="display:flex;">
+      <input type="checkbox" id="terms_condition_2" [(ngModel)]="templateData.terms_2" name="terms_condition_2"
+        required> <label for="terms_condition_2" class="i-l mb-0" style="font-size:12px"> {{'sms_text_agree_2' |
+        translate}}</label>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'save' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </form>
+</div>
+}
+@if (template_delete && templateData) {
+<div class="modal-body">
+  <div class="alert alert-danger">
+    {{'are_you_sure_delete' | translate}}?
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-r" (click)="deleteTemplateData()">{{'delete' | translate}}</button>
+    <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+  </div>
+</div>
+}
+@if (balance_bonus && balanceData) {
+<div class="modal-body">
+  <form class="col-lg-12" (ngSubmit)="addBalance()" #dataForm="ngForm">
+    @if (tariff()) {
+    <h4 class="mt-0 mb-4">{{'balance_amount' | translate}}: <span><strong>{{tariff().amount | number}}</strong> {{'sum'
+        |
+        translate}}</span> </h4>
+    }
+    <div class="form-group">
+      <label>{{'Баланс' | translate}} <span class="text-danger">*</span></label>
+      <input type="number" class="form-control" [(ngModel)]="balanceData.balance" name="balance" required>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'Пополнить баланс' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'close' | translate}}</button>
+    </div>
+  </form>
+</div>
+}
+@if (blacklist_edited) {
+<div class="modal-body">
+  @if (blacklist) {
+  <form class="col-lg-12" (ngSubmit)="patchBlacklist()" #dataForm="ngForm">
+    <div class="form-group">
+      <label>{{'type' | translate}}:</label>
+      <select name="type" [(ngModel)]="blacklist.type" class="form-control" required>
+        <option value="">{{'choose' | translate}}</option>
+        <option value="phone">{{'Номер телефона' | translate}}</option>
+        <option value="content">{{'Слова' | translate}}</option>
+      </select>
+    </div>
+    @if (blacklist.type == 'phone') {
+    <div class="form-group">
+      <label>{{'Номер телефона' | translate}}</label>
+      <input type="text" placeholder="{{'enter_number_code_998' | translate}}" class="form-control"
+        [(ngModel)]="blacklist.keyword" minlength="12" maxlength="12" mask="000000000000" name="keyword" required>
+    </div>
+    }
+    @if (blacklist.type == 'content') {
+    <div class="form-group">
+      <label>{{'Запрещенная слова' | translate}}</label>
+      <input type="text" class="form-control" [(ngModel)]="blacklist.keyword" name="keyword" required>
+    </div>
+    }
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'save' |
+        translate}}</button>
+      <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'cancel' | translate}}</button>
+    </div>
+  </form>
+  }
+</div>
+}
+@if (blacklist_deleted) {
+<div class="modal-body">
+  @if (blacklist) {
+  <div class="alert alert-danger">
+    {{'are_you_sure_delete' | translate}} <strong>{{blacklist.keyword}}</strong>?
+  </div>
+  }
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-r" (click)="deleteBlacklist()">{{'delete' | translate}}</button>
+    <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'cancel' | translate}}</button>
+  </div>
+</div>
+}
+@if (blacklist_batch && blacklist) {
+<div class="modal-body">
+  @if (curLang != 'en') {
+  <p class="text-danger">Чтобы загрузить новые контакты в черный список либо удалить контактов из списка Вам необходимо
+    <a target="_self" href="/assets/data/blacklist_sms.xlsx">скачать шаблон</a> и заполните его. <br> В
+    шаблоне количество контактов не должно превышать <strong>30 000</strong> контактов.
+  </p>
+  }
+  <div class="form-group">
+    <div>
+      <div class="radio-inline i-checks">
+        <label for="add">
+          <input type="radio" id="add" value="add" [(ngModel)]="blacklist.action" name="action"><i></i> {{'Добавить в
+          список' | translate}}
+        </label>
+      </div>
+      <div class="radio-inline i-checks">
+        <label for="remove">
+          <input type="radio" id="remove" value="remove" [(ngModel)]="blacklist.action" name="action"><i></i> {{'Удалить
+          из списка' | translate}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="upload_file">
+    <input type="file" id="uploadCaptureInputFile"
+      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" name="files"
+      (change)="batchBlacklist($event)"> <i class="ion-md-cloud-upload"></i> {{'import_contacts' | translate}} (.xlsx)
+  </div>
+  <div class="form-group mt-4">
+    <button type="button" class="btn btn-warning" (click)="activeModal.close()">{{'cancel' | translate}}</button>
+  </div>
+</div>
+}

@@ -1,0 +1,83 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'Логи' | translate}}</h1>
+
+  @if (is_access) {
+  <section class="white-content">
+    <div class="mb-10 text-center">
+      <div class="inline-select" style="max-width:180px;">
+        <label class="text-capitalize">{{'Сотрудники' | translate}}</label>
+        <select name="user_id" [(ngModel)]="filter.user_id" class="form-control">
+          <option value="">{{'Все' | translate}}</option>
+          @for (item of users(); track $index) {
+          <option [value]="item.id">{{item.name}} ({{item.email}})</option>
+          }
+        </select>
+      </div>
+      <div class="inline-select">
+        <label class="text-capitalize">{{'Действия' | translate}}</label>
+        <select name="action" [(ngModel)]="filter.action" class="form-control">
+          <option value="">{{'Все' | translate}}</option>
+          @for (item of actions; track item) {
+          <option [value]="item.val">{{item.title}}</option>
+          }
+        </select>
+      </div>
+      <div class="inline-select" style="max-width:146px;">
+        <label>{{'from_date' | translate}}</label>
+        <input type="date" name="date_from" [(ngModel)]="filter.date_from" class="form-control">
+      </div>
+      <div class="inline-select" style="max-width:146px;">
+        <label>{{'to_date' | translate}}</label>
+        <input type="date" name="date_to" [(ngModel)]="filter.date_to" class="form-control">
+      </div>
+      <div class="inline-select">
+        <button class="btn btn-success mr-2" type="button" (click)="getDataItems()">{{'filter' | translate}}</button>
+        <button type="button" (click)="searchReset()" class="btn btn-warning">{{'cancel' | translate}}</button>
+      </div>
+    </div>
+    <div class="table-responsive mob-visible">
+      <table class="table table-striped m-b-none">
+        <thead>
+          <tr>
+            <th>{{'Сотрудник' | translate}}</th>
+            <th>{{'Действия' | translate}}</th>
+            <th>{{'date' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (log of logs(); track log.id) {
+          <tr>
+            <td>
+              <strong class="d-block">{{log.name}}</strong>
+              {{log.email}}
+            </td>
+            <td>
+              @for (obj of actions | filter:{val:log.action}; track obj) {
+              <span style="font-size:14px;padding:5px 10px;" class="{{obj.color}}">{{obj.title}}</span>
+              }
+            </td>
+            <td>{{log.created_at | time: 'dd.MM.yyyy HH:mm'}}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center">
+      <ngb-pagination class="d-flex justify-content-center" [collectionSize]="totalPage" [(page)]="currentPage"
+        [maxSize]="4" [pageSize]="pageSize" [rotate]="true" (pageChange)="pageChanged($event)"></ngb-pagination>
+    </div>
+  </section>
+  }
+
+  @if (!is_access) {
+  <section class="white-content">
+    <div class="alert p-2 alert-danger">
+      Доступ запрешен.
+    </div>
+  </section>
+  }
+
+</section>

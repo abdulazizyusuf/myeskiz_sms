@@ -1,0 +1,71 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'groups' | translate}}</h1>
+
+  <app-sms-menu></app-sms-menu>
+
+  <section class="white-content">
+    <div class="mb-15">
+      <button class="btn btn-sm btn-primary" (click)="addGroup()"><i class="ion-md-add"></i> {{'add' |
+        translate}}</button>
+      <button class="btn btn-sm btn-danger btn-l" type="button" (click)="deleteAll()">{{'delete_all' |
+        translate}}</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>{{'title' | translate}}</th>
+            <th>{{'contacts' | translate}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of groups(); track item.id) {
+          <tr>
+            <td>{{item.title}}</td>
+            <td>{{item.contact_count}}</td>
+            <td width="100">
+              <button class="btn btn-sm btn-warning" type="button" (click)="editGroup(item)" placement="bottom"
+                ngbTooltip="{{'edit' | translate}}"><i class="ion-md-create"></i></button>
+              <button class="btn btn-sm btn-danger" type="button" (click)="deleteGroup(item)" placement="bottom"
+                ngbTooltip="{{'delete' | translate}}"><i class="ion-md-trash"></i></button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-responsive-mobile">
+      <div ngbAccordion>
+        @for (item of groups(); track item.id) {
+        <div ngbAccordionItem>
+          <div ngbAccordionHeader>
+            <button ngbAccordionButton>{{item.title}} ({{item.contact_count}})</button>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <p><strong>{{'title' | translate}}</strong>{{item.title}}</p>
+                <p><strong>{{'contacts' | translate}}</strong>{{item.contact_count}}</p>
+                <strong>{{'actions' | translate}}</strong>
+                <p>
+                  <button class="btn btn-sm btn-warning mt-5 btn-r" type="button" (click)="editGroup(item)">{{'edit' |
+                    translate}}</button>
+                  <button class="btn btn-sm btn-danger mt-5" type="button" (click)="deleteGroup(item)">{{'delete' |
+                    translate}}</button>
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+  </section>
+
+</section>

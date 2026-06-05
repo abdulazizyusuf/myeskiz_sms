@@ -1,0 +1,119 @@
+<header class="header">
+  <nav class="navbar navbar-expand-md bg-white box-shadow">
+    <a class="navbar-brand" [routerLink]="'/'"><img src="/assets/images/eskiz.svg" width="auto" height="60">
+      <span class="version">3.0</span></a>
+    <div class="mobile-n">
+      <a class="nav-link" role="button" (click)="panelUserToggle = !panelUserToggle"><i class="ion-md-person"></i></a>
+      <a class="nav-link lang" role="button" (click)="panelLangToggle = !panelLangToggle">
+        @if (curLang == 'ru') {
+        <span>Рус</span>
+        }
+        @if (curLang == 'uz') {
+        <span>O'zb</span>
+        }
+        @if (curLang == 'oz') {
+        <span>Ўзб</span>
+        }
+        @if (curLang == 'en') {
+        <span>Eng</span>
+        }
+      </a>
+      <button class="navbar-toggler" type="button" (click)="sidebarToggle = !sidebarToggle">
+        <i class="ion-ios-menu"></i>
+      </button>
+    </div>
+
+    <ul class="user-panel-mobile dropdown-menu" [ngClass]="{'active':panelUserToggle}">
+      <li class="user_info">
+        {{'welcome' | translate}}
+        <div><strong>{{currentUser.email}}</strong></div>
+      </li>
+      <li class="nav-item"><a class="nav-link" role="button" (click)="changePass()">{{'change_password' |
+          translate}}</a></li>
+      <li class="nav-item"><a class="nav-link" role="button" (click)="viewCurUser()">{{'profile' | translate}}</a></li>
+      <li class="divider"></li>
+      <li class="nav-item"><a class="nav-link" role="button" (click)="onLogout()">{{'logout' | translate}}</a></li>
+    </ul>
+
+    <ul class="user-panel-mobile dropdown-menu" [ngClass]="{'active':panelLangToggle}">
+      <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('ru')">Русский</a></li>
+      <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('uz')">O'zbekcha</a></li>
+      <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('oz')">Ўзбекча</a></li>
+      <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('en')">English</a></li>
+    </ul>
+
+    <div class="nav-right" [ngClass]="{'active':navbarToggle}">
+      @if (currentUser) {
+      <ul class="navbar-nav">
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link" role="button" ngbDropdownToggle><i class="ion-md-person"></i></a>
+          <ul ngbDropdownMenu>
+            <li class="user_info">
+              {{'welcome' | translate}}
+              <div><strong>{{currentUser.email}}</strong></div>
+            </li>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="changePass()">{{'change_password' |
+                translate}}</a></li>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="viewCurUser()">{{'profile' | translate}}</a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="onLogout()"> {{'logout' | translate}}</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item lang" ngbDropdown>
+          <a class="nav-link" role="button" ngbDropdownToggle>
+            @if (curLang == 'ru') {
+            <span>Рус</span>
+            }
+            @if (curLang == 'uz') {
+            <span>O'zb</span>
+            }
+            @if (curLang == 'oz') {
+            <span>Ўзб</span>
+            }
+            @if (curLang == 'en') {
+            <span>Eng</span>
+            }
+          </a>
+          <ul ngbDropdownMenu>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('ru')">Русский</a></li>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('uz')">O'zbekcha</a></li>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('oz')">Ўзбекча</a></li>
+            <li class="nav-item"><a class="nav-link" role="button" (click)="switchLang('en')">English</a></li>
+          </ul>
+        </li>
+      </ul>
+      }
+    </div>
+  </nav>
+</header>
+
+<aside class="sidebar" [ngClass]="{'show':sidebarToggle}">
+  @if (currentUser) {
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/sms" [class]="this.smsActive"><i class="ion-ios-mail-unread"></i> {{'sms' |
+        translate}}</a>
+    </li>
+    @if (currentUser.role != 'employee') {
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/employees" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i
+          class="ion-ios-people"></i> {{'Сотрудники' | translate}}</a>
+    </li>
+    }
+    @if (currentUser.role != 'employee') {
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/logs" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i
+          class="ion-md-filing"></i> {{'Логи' | translate}}</a>
+    </li>
+    }
+  </ul>
+  }
+</aside>
+
+
+<button class="scrollToTop" type="button" (click)="scrollToTop()"><i class="ion ion-ios-arrow-up"></i></button>
+
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#e0154b" type="ball-scale-ripple-multiple"
+  [fullScreen]="true"></ngx-spinner>
