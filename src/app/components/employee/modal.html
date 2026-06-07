@@ -39,6 +39,12 @@
       <label>{{'department' | translate}}</label>
       <input type="text" class="form-control" [(ngModel)]="data.department" name="department" required>
     </div>
+    <div class="mb-3">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="data.detailing" name="detailing" id="detailing">
+        <label class="custom-control-label" for="detailing">{{'Доступ к смс детализацию' | translate}}</label>
+      </div>
+    </div>
     <div class="form-group">
       <label>{{'password' | translate}} <a role="button" class="btn-link ml-3"
           (click)="randomPassword()">{{'Сгенерировать пароль' | translate}}</a></label>

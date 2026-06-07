@@ -56,7 +56,7 @@
             </td>
             <td>
               @for (obj of actions | filter:{val:log.action}; track obj) {
-              <span style="font-size:14px;padding:5px 10px;" class="{{obj.color}}">{{obj.title}}</span>
+              <span style="font-size:14px;padding:5px 10px;" class="{{obj.color}}">{{obj["title_"+curLang]}}</span>
               }
             </td>
             <td>{{log.created_at | time: 'dd.MM.yyyy HH:mm'}}</td>

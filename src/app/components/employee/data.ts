@@ -192,6 +192,7 @@ export class LogsComponent implements OnInit {
   totalPage: number;
   pageSize: any;
   is_access: boolean;
+  curLang: any;
 
   constructor(
     private DataApi: EmployeeService,
@@ -202,28 +203,131 @@ export class LogsComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('SD') || '{}'))));
+    this.curLang = localStorage.getItem('curLang');
 
     if (this.currentUser.role != 'employee')
       this.is_access = true;
 
     this.actions = [
-      { 'title': 'Массовая рассылка', 'val': 'send_mailing', 'color': 'badge bg-primary' },
-      { 'title': 'Отправлено СМС', 'val': 'send_single', 'color': 'badge bg-primary' },
-      { 'title': 'Отменено рассылка', 'val': 'cancel_mailing', 'color': 'badge bg-danger' },
-      { 'title': 'Добалено контакт', 'val': 'add_contact', 'color': 'badge bg-primary' },
-      { 'title': 'Импортировано контакты', 'val': 'import_contact', 'color': 'badge bg-primary' },
-      { 'title': 'Изменено контакт', 'val': 'edit_contact', 'color': 'badge bg-warning' },
-      { 'title': 'Удалено контакт', 'val': 'delete_contact', 'color': 'badge bg-danger' },
-      { 'title': 'Удалено несколько контактов', 'val': 'delete_contacts', 'color': 'badge bg-danger' },
-      { 'title': 'Удалено все контакты', 'val': 'delete_contacts_all', 'color': 'badge bg-danger' },
-      { 'title': 'Добавлено текст', 'val': 'add_text', 'color': 'badge bg-primary' },
-      { 'title': 'Изменено текст', 'val': 'edit_text', 'color': 'badge bg-warning' },
-      { 'title': 'Удалено текст', 'val': 'remove_text', 'color': 'badge bg-danger' },
-      { 'title': 'Удалено все группы', 'val': 'delete_group_all', 'color': 'badge bg-danger' },
-      { 'title': 'Удалено группа', 'val': 'delete_group', 'color': 'badge bg-danger' },
-      { 'title': 'Добавлено группа', 'val': 'add_group', 'color': 'badge bg-primary' },
-      { 'title': 'Изменено группа', 'val': 'edit_group', 'color': 'badge bg-warning' },
-      { 'title': 'Добавлено заявка на ник', 'val': 'patch_anketa', 'color': 'badge bg-primary' },
+      { 
+        'title_ru': 'Отравлена массовая рассылка',
+        'title_uz': 'Ommaviy xabar yuborildi',
+        'title_oz': 'Оммавий хабар юборилди',
+        'title_en': 'Bulk message sent',
+        'val': 'send_mailing', 'color': 'badge bg-primary' 
+      },
+      { 
+        'title_ru': 'Отправлено СМС',
+        'title_uz': 'SMS yuborildi',
+        'title_oz': 'СМС юборилди',
+        'title_en': 'SMS sent',
+        'val': 'send_single', 'color': 'badge bg-primary' 
+      },
+      { 
+        'title_ru': 'Отменена рассылка',
+        'title_uz': 'Ommaviy xabar yuborish bekor qilindi',
+        'title_oz': 'Оммавий хабар юбориш бекор қилинди',
+        'title_en': 'Campaign canceled',
+        'val': 'cancel_mailing', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Добавлен контакт',
+        'title_uz': 'Kontakt qo\'shildi',
+        'title_oz': 'Контакт қўшилди',
+        'title_en': 'Contact added',
+        'val': 'add_contact', 'color': 'badge bg-primary' 
+      },
+      { 
+        'title_ru': 'Импортированы контакты', 
+        'title_uz': 'Kontaktlar import qilindi',
+        'title_oz': 'Контактлар импорт қилинди',
+        'title_en': 'Contacts imported',
+        'val': 'import_contact', 'color': 'badge bg-primary' 
+      },
+      { 
+        'title_ru': 'Изменен контакт', 
+        'title_uz': 'Kontakt o\'zgartirildi',
+        'title_oz': 'Контакт ўзгартирилди',
+        'title_en': 'Contact edited',
+        'val': 'edit_contact', 'color': 'badge bg-warning' 
+      },
+      { 
+        'title_ru': 'Удален контакт', 
+        'title_uz': 'Kontakt o\'chirildi',
+        'title_oz': 'Контакт ўчирилди',
+        'title_en': 'Contact deleted',
+        'val': 'delete_contact', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Удалено несколько контактов', 
+        'title_uz': 'Bir nechta kontaktlar o\'chirildi',
+        'title_oz': 'Бир нечта контактлар ўчирилди',
+        'title_en': 'Multiple contacts deleted',
+        'val': 'delete_contacts', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Удалены все контакты', 
+        'title_uz': 'Barcha kontaktlar o\'chirildi',
+        'title_oz': 'Барча контактлар ўчирилди',
+        'title_en': 'All contacts deleted',
+        'val': 'delete_contacts_all', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Добавлен текст', 
+        'title_uz': 'Matn qo\'shildi',
+        'title_oz': 'Матн қўшилди',
+        'title_en': 'Text added',
+        'val': 'add_text', 'color': 'badge bg-primary' 
+      },
+      { 
+        'title_ru': 'Изменен текст', 
+        'title_uz': 'Matn o\'zgartirildi',
+        'title_oz': 'Матн ўзгартирилди',
+        'title_en': 'Text edited',
+        'val': 'edit_text', 'color': 'badge bg-warning' 
+      },
+      { 
+        'title_ru': 'Удален текст', 
+        'title_uz': 'Matn o\'chirildi',
+        'title_oz': 'Матн ўчирилди',
+        'title_en': 'Text deleted',
+        'val': 'remove_text', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Удалены все группы', 
+        'title_uz': 'Barcha guruhlar o\'chirildi',
+        'title_oz': 'Барча гуруҳлар ўчирилди',
+        'title_en': 'All groups deleted',
+        'val': 'delete_group_all', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Удалена группа', 
+        'title_uz': 'Guruh o\'chirildi',
+        'title_oz': 'Гуруҳ ўчирилди',
+        'title_en': 'Group deleted',
+        'val': 'delete_group', 'color': 'badge bg-danger' 
+      },
+      { 
+        'title_ru': 'Создана группа', 
+        'title_uz': 'Guruh yaratildi',
+        'title_oz': 'Гуруҳ яратилди',
+        'title_en': 'Group added',
+        'val': 'add_group', 'color': 'badge bg-primary' 
+      },
+      { 
+        'title_ru': 'Изменена группа', 
+        'title_uz': 'Guruh o\'zgartirildi',
+        'title_oz': 'Гуруҳ ўзгартирилди',
+        'title_en': 'Group edited',
+        'val': 'edit_group', 'color': 'badge bg-warning' 
+      },
+      { 
+        'title_ru': 'Добавлена заявка на ник', 
+        'title_uz': 'Nik uchun ariza yaratildi',
+        'title_oz': 'Ник учун ариза яратилди',
+        'title_en': 'Nickname request added',
+        'val': 'patch_anketa', 'color': 'badge bg-primary' 
+      },
     ];
 
     this.getFilter();

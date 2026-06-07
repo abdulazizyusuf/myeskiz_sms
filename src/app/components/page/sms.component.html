@@ -1,0 +1,124 @@
+<app-header></app-header>
+
+<section class="main-content">
+
+  <h1 class="page-title">{{'Инструкция по символам' | translate}}</h1>
+
+  <section class="white-content">
+    @if (curLang == 'ru') {
+      <div>
+        <p>SMS-сообщение тарифицируется в зависимости от его длины. Сообщение может состоять из одной или нескольких частей.</p>
+        <p>- Латиница: если длина сообщения до 160 символов включительно, то оно тарифицируется как <strong>1 (один)</strong> SMS-сообщение, если свыше 160 символов, то тарифицируется как <strong>2 (две)</strong> SMS-сообщение.</p>
+        <p>- Кириллица: если длина сообщения до 70 символов включительно то оно тарифицируется как <strong>1 (один)</strong> SMS- сообщение, если свыше 70 символов, то тарифицируется как <strong>2 (две)</strong> SMS-сообщение.</p>
+        <p>- В одном SMS на кириллице — 70 символов, в двойном — 134, а также в одном SMS на латинице — 160 символов, в двойном — 306.</p>
+        <p>Подробно в таблице:</p>
+      </div>
+    }
+
+    @if (curLang == 'uz') {
+      <div>
+        <p>SMS-xabarning narxi uning uzunligiga qarab hisoblanadi. Sms xabar bir yoki bir nechta qismdan iborat bo'lishi mumkin.</p>
+        <p>- Lotin harflarida: agar xabar uzunligi 160 belgidan iborat bo'lsa, u holda <strong>1 (bir)</strong> SMS-xabar sifatida, agar u 160 belgidan ortiq bo'lsa, u holda <strong>2 (ikki)</strong> dona sms miqdorida pul hisoblanadi.</p>
+        <p>- Kirill harflarida: agar xabar uzunligi 70 belgigacha bo'lsa, u holda u <strong>1 (bir)</strong> SMS xabar sifatida, agar u 70 belgidan ortiq bo'lsa, u holda <strong>2 (ikki)</strong> dona sms miqdorida pul hisoblanadi.</p>
+        <p>- Kirill yozuvlik bitta SMS - 70 ta simvoldan, ikkitalik SMS da esa- 134 ta simvoldan tashkil topgan, shuningdek lotin yozuvlik bitta SMS - 160 belgidan, ikkitalik SMS esa - 306 belgidan tashkil topgan. Batafsil ma’lumot quyidagi jadvalda keltirilgan.</p>
+        <p>Sms xabarning uzunligi va simvollar soni:</p>
+      </div>
+    }
+
+    @if (curLang == 'oz') {
+      <div>
+        <p>СМС-хабарнинг нархи унинг узунлигига қараб ҳисобланади. Смс хабар бир ёки бир нечта қисмдан иборат бўлиши мумкин.</p>
+        <p>- Лотин ҳарфларида: агар хабар узунлиги 160 символдан иборат бўлса, у ҳолда <strong>1 (бир)</strong> СМС-хабар сифатида, агар у 160 символдан ортиқ бўлса, у ҳолда 2 (икки) дона смс миқдорида пул ҳисобланади.</p>
+        <p>- Кирилл ҳарфларида: агар хабар узунлиги 70 символгача бўлса, у ҳолда у <strong>1 (бир)</strong> СМС хабар сифатида, агар у 70 символдан ортиқ бўлса, у ҳолда <strong>2 (икки)</strong> дона смс миқдорида пул ҳисобланади. </p>
+        <p>- Кирилл ёзувлик битта СМС - 70 та символдан, иккиталик СМС да эса- 134 та символдан ташкил топган, шунингдек лотин ёзувлик битта СМС - 160 белгидан, иккиталик СМС эса - 306 белгидан ташкил топган. Батафсил маълумот қуйидаги жадвалда келтирилган.</p>
+        <p>Смс хабарнинг узунлиги ва символлар сони:</p>
+      </div>
+    }
+
+    <div class="mt-4 mb-4">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>{{'Длина SMS, частей' | translate}}</th>
+            <th>{{'Количество символов в SMS латиница' | translate}}</th>
+            <th>{{'Количество символов в SMS кириллица' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>160 {{'pc' | translate}}</td>
+            <td>70 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>306 {{'pc' | translate}}</td>
+            <td>134 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>459 {{'pc' | translate}}</td>
+            <td>201 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>612 {{'pc' | translate}}</td>
+            <td>268 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>765 {{'pc' | translate}}</td>
+            <td>335 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>918 {{'pc' | translate}}</td>
+            <td>402 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>1071 {{'pc' | translate}}</td>
+            <td>469 {{'pc' | translate}}</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>1224 {{'pc' | translate}}</td>
+            <td>536 {{'pc' | translate}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    @if (curLang == 'ru') {
+      <div>
+        <p><strong>ВАЖНО:</strong></p>
+        <p><strong>1. Латинским считается сообщение, содержащие только латинские буквы, цифры или иные разрешенные символы, такие как: {{'! #%.,:;?\/()+-&^?{}[]<>/\@#$%^+=~*_'}}'()" </strong></p>
+        <p><strong>2. Если в SMS-сообщении будет находится, хотя бы один кириллический символ (буква), то все сообщения будут считаться как кириллическим и тарифицироваться как кириллица.</strong></p>
+        <p><strong>3. При использовании в SMS- сообщение специальных символов как: « ― », « ` », «(« , »)», « ‘ », « No », « “ ” », « ” », « | », то все сообщения также будут считаться как кириллическим и тарифицироваться как кириллица.</strong></p>
+        <p><strong>4. Пробелы и знаки препинания также считаются как за символы.</strong></p>
+      </div>
+    }
+
+    @if (curLang == 'uz') {
+      <div>
+        <p><strong>MUHIM:</strong></p>
+        <p><strong>1. Lotin matndagi SMS xabarlar toifasiga - faqat lotin harflar, raqamlar va quyidagi ruxsat etilgan simvollarni: {{'! #%.,:;?\/()+-&^?{}[]<>/\@#$%^+=~*_'}}'()" o'z ichiga olgan xabarlar kiradi.</strong></p>
+        <p><strong>2. Agar lotin matnlik SMS xabarda kamida 1 (bir) dona kirillcha harf bo'lsa u holda butun xabar kirillcha hisoblanadi.</strong></p>
+        <p><strong>3. Matnning ichida quyidagi mahsus simvollar: « ― », « ` », «(« , »)», « ‘ », « № », « “ ” », « ” », « | », ishlatilgan (joylashgan) bo'lsa, u holda ham butun xabar kirillcha hisoblanadi.</strong></p>
+        <p><strong>4. Bo'shliq va tinish belgilari ham simvol bo'lib hisoblanadi.</strong></p>
+      </div>
+    }
+
+    @if (curLang == 'oz') {
+      <div>
+        <p><strong>МУҲИМ:</strong></p>
+        <p><strong>1. Лотин матндаги СМС хабарлар тоифасига - фақат лотин ҳарфлар,  рақамлар ва қуйидаги рухсат этилган символларни: {{'! #%.,:;?\/()+-&^?{}[]<>/\@#$%^+=~*_'}}'()" ўз ичига олган хабарлар киради.</strong></p>
+        <p><strong>2. Агар лотин матнлик СМС хабарда камида 1 (бир) дона кириллча ҳарф бўлса у ҳолда бутун хабар кириллча ҳисобланади. </strong></p>
+        <p><strong>3. Матннинг ичида қуйидаги маҳсус символлар:  « ― »,  « ` »,  «(« ,  »)»,  « ъ »,  « № »,  « “ ” »,  « ” », « | », ишлатилган (жойлашган) бўлса,  у ҳолда ҳам бутун хабар кириллча ҳисобланади. </strong></p>
+        <p><strong>4. Бўшлиқ ва тиниш белгилари ҳам символ бўлиб ҳисобланади.</strong></p>
+      </div>
+    }
+  </section>
+
+</section>
+

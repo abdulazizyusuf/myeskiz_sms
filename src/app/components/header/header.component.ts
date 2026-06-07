@@ -149,9 +149,6 @@ export class HeaderComponent implements OnInit {
         localStorage.setItem('countries', JSON.stringify(data));
       }
     )
-    this.Account.updateUserLang(this.currentUser).subscribe();
-    let user = btoa(unescape(encodeURIComponent(JSON.stringify(this.currentUser))));
-    localStorage.setItem('SD', user);
     setTimeout(() => {
       location.reload();
     }, 1000);

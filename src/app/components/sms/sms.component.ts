@@ -3717,10 +3717,14 @@ export class SmsIntegrateComponent implements OnInit {
 export class SmsMenuComponent implements OnInit {
 
   currentUser: any;
+  is_detailing: boolean;
   constructor() { }
 
   ngOnInit() {
     this.currentUser = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('SD') || '{}'))));
+    this.is_detailing = true;
+    if (this.currentUser.role == 'employee' && !this.currentUser.detailing)
+      this.is_detailing = false;
   }
 
 }

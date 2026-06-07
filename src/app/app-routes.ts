@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { AuthComponent, PageNotFoundComponent } from './components/auth/auth';
 import { EmployeeComponent, LogsComponent } from './components/employee/data';
 import { SmsComponent, SmsDetailingComponent, SmsDetailsComponent, SmsTextComponent, SmsSettingsComponent, SmsContactComponent, SmsGroupComponent, SmsTemplateComponent, SmsRequestComponent, SmsPricesComponent, SmsTargetComponent, SmsBlacklistComponent, SmsIntegrateComponent } from './components/sms/sms.component';
+import { PageSmsComponent } from './components/page/page.component';
 
 export const routes: Routes = [
   {
@@ -95,6 +96,11 @@ export const routes: Routes = [
   {
     path: 'logs',
     component: LogsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'page/sms-symbol',
+    component: PageSmsComponent,
     canActivate: [AuthGuard],
   },
   {

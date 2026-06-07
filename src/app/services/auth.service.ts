@@ -72,8 +72,10 @@ export class AuthService {
   storeTokens(res) {
     if (res.access_token) {
       localStorage.setItem(this.JWT_TOKEN, res.access_token);
-      let user = btoa(unescape(encodeURIComponent(JSON.stringify(res.result))));
-      localStorage.setItem('SD', user);
+      if(res.result){
+        let user = btoa(unescape(encodeURIComponent(JSON.stringify(res.result))));
+        localStorage.setItem('SD', user);
+      }
     }
     else
       this.removeTokens();

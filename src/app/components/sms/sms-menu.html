@@ -2,7 +2,9 @@
 	<a routerLink="/sms" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'send_sms' | translate}}</a>
 	<a routerLink="/sms/contact" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'kontakti' | translate}}</a>
 	<a routerLink="/sms/group" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'groups' | translate}}</a>
+	@if(is_detailing) {
 	<a routerLink="/sms/detailing" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'detailing' | translate}}</a>
+	}
 	<a routerLink="/sms/texts" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'my_text' | translate}}</a>
 	<a routerLink="/sms/prices" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'prices' | translate}}</a>
 	<a routerLink="/sms/settings" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'sms_shluz' | translate}}</a>

@@ -202,8 +202,18 @@
     </div>
     <div class="mt-2 mb-3" style="display:flex;">
       <input type="checkbox" id="terms_condition_2" [(ngModel)]="templateData.terms_2" name="terms_condition_2"
-        required> <label for="terms_condition_2" class="i-l mb-0" style="font-size:12px"> {{'sms_text_agree_2' |
-        translate}}</label>
+        required> <label for="terms_condition_2" class="i-l mb-0" style="font-size:12px"> @if(curLang == 'ru'){
+          Ознакомлен (а) с <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">инструкцией по использованию символов</a> в смс сообщении
+        }
+        @if(curLang == 'uz'){
+          Men sms xabarda <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">simvollarni ishlatish yo‘riqnoma si</a> bilan tanishman
+        }
+        @if(curLang == 'oz'){
+          Мен смс хабарда <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">символларни ишлатиш йўриқнома си</a> билан танишман
+        }
+        @if(curLang == 'en'){
+          Familiarized with <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">the instructions of using symbols</a> in SMS messages
+        }</label>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-success btn-r" [disabled]="!dataForm.form.valid">{{'save' |
