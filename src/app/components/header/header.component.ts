@@ -71,7 +71,7 @@ export class ProfileModal implements OnInit {
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  imports: [NgbNavModule, RouterLink, FormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, RouterLinkActive, NgxSpinnerModule, DecimalPipe, TranslateModule]
+  imports: [NgbNavModule, RouterLink, FormsModule, NgClass, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, RouterLinkActive, NgxSpinnerModule, TranslateModule]
 })
 export class HeaderComponent implements OnInit {
   private auth = inject(AuthService);

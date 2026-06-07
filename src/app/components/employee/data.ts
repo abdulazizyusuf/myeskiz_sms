@@ -178,7 +178,7 @@ export class EmployeeComponent implements OnInit {
   selector: 'app-logs-list',
   templateUrl: './logs.html',
   styleUrls: [],
-  imports: [HeaderComponent, TranslateModule, FormsModule, NgbTooltip, NgbPagination, FilterPipe, TimePipe]
+  imports: [HeaderComponent, TranslateModule, FormsModule, NgbPagination, FilterPipe, TimePipe]
 })
 
 export class LogsComponent implements OnInit {
