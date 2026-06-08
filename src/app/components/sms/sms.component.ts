@@ -137,7 +137,7 @@ export class SmsComponent implements OnInit {
       this.is_type_sent = true;
 
     this.is_detailing = true;
-    if (this.currentUser.role == 'employee' && !this.currentUser.detailing)
+    if (this.currentUser.role == 'employee' && this.currentUser.detailing)
       this.is_detailing = false;
 
     this.sendData = { contact_id: '', info: '' }
@@ -3232,6 +3232,7 @@ export class SmsRequestComponent implements OnInit {
   currentClient: any;
   not_found: boolean;
   session_expired: boolean;
+  is_nick: boolean;
   authorization_sms_failed: string;
   authorization_sms_success: string;
   expire_time_counter: string;
@@ -3248,6 +3249,10 @@ export class SmsRequestComponent implements OnInit {
     this.spinner.show();
     this.currentUser = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('SD') || '{}'))));
     this.curLang = localStorage.getItem('curLang') || 'ru';
+    this.is_nick = true;
+    if (this.currentUser.role == 'employee' && this.currentUser.nick)
+      this.is_nick = false;
+
     this.translate.get(['authorization_sms_failed', 'authorization_sms_success']).subscribe((item: any) => {
       this.authorization_sms_failed = item['authorization_sms_failed'];
       this.authorization_sms_success = item['authorization_sms_success'];
@@ -3728,13 +3733,17 @@ export class SmsMenuComponent implements OnInit {
 
   currentUser: any;
   is_detailing: boolean;
+  is_nick: boolean;
   constructor() { }
 
   ngOnInit() {
     this.currentUser = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('SD') || '{}'))));
     this.is_detailing = true;
-    if (this.currentUser.role == 'employee' && !this.currentUser.detailing)
+    this.is_nick = true;
+    if (this.currentUser.role == 'employee' && this.currentUser.detailing)
       this.is_detailing = false;
+    if (this.currentUser.role == 'employee' && this.currentUser.nick)
+      this.is_nick = false;
   }
 
 }

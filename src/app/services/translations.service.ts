@@ -24,6 +24,7 @@ export class AsyncTranslate implements TranslateLoader  {
       map((res: any) => res[0]),
       tap((data) => {
         if (data) {
+          localStorage.removeItem(storageKey);
           localStorage.setItem(storageKey, JSON.stringify(data));
         }
       })

@@ -141,7 +141,7 @@ export class EmployeeComponent implements OnInit {
 
   addData() {
     const modalRef = this.modalService.open(EmployeeModal, { backdrop: 'static', windowClass: 'animated fadeInDown' });
-    modalRef.componentInstance.data = { phone_ext: 998, phone: '', name: '', access: 'active', password: '', role: 'employee', department: '' };
+    modalRef.componentInstance.data = { phone_ext: 998, phone: '', name: '', access: 'active', password: '', role: 'employee', department: '', detailing:false, nick:false };
     modalRef.componentInstance.edited = true;
 
     modalRef.result.then((result) => {
