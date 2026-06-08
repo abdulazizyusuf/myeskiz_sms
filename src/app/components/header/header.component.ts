@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, signal, inject } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
@@ -11,7 +11,7 @@ import { CountryService } from '../../services/country.service';
 import { FilterPipe, TimePipe } from '../../directive/filter';
 import { MatchPasswordDirective } from '../../directive/match-password.directive';
 import { FormsModule } from '@angular/forms';
-import { NgClass, DecimalPipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -76,10 +76,8 @@ export class ProfileModal implements OnInit {
 export class HeaderComponent implements OnInit {
   private auth = inject(AuthService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
   private modalService = inject(NgbModal);
   private spinner = inject(NgxSpinnerService);
-  private Account = inject(AccountService);
   private translate = inject(TranslateService);
   private Country = inject(CountryService);
 
@@ -135,10 +133,10 @@ export class HeaderComponent implements OnInit {
   }
 
   switchLang(lang) {
-    localStorage.removeItem('translateRU');
-    localStorage.removeItem('translateOZ');
-    localStorage.removeItem('translateUZ');
-    localStorage.removeItem('translateEN');
+    localStorage.removeItem('translate_RU');
+    localStorage.removeItem('translate_OZ');
+    localStorage.removeItem('translate_UZ');
+    localStorage.removeItem('translate_EN');
     this.spinner.show();
     localStorage.setItem('curLang', lang);
     this.translate.setDefaultLang(lang);

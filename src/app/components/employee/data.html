@@ -23,11 +23,12 @@
             <th>{{'department' | translate}}</th>
             <th>{{'status' | translate}}</th>
             <th>{{'Доступ к смс детализацию' | translate}}</th>
+            <th>{{'Доступ к заявкам на ник' | translate}}</th>
             <th>{{'date' | translate}}</th>
             <th></th>
           </tr>
           <tr>
-            <th colspan="9">
+            <th colspan="10">
               <input type="text" class="form-control" [(ngModel)]="searching" placeholder="Искать">
             </th>
           </tr>
@@ -48,7 +49,8 @@
               <span class="es_label bg-danger">{{'Неактивный' | translate}}</span>
               }
             </td>
-            <td>{{item.detailing ? ('Да' | translate ) : ('Нет' | translate)}}</td>
+            <td>{{item.detailing ? ('Нет' | translate ) : ('Да' | translate)}}</td>
+            <td>{{item.nick ? ('Нет' | translate ) : ('Да' | translate)}}</td>
             <td>{{item.created_at | date:'dd.MM.yyyy HH:mm'}}</td>
             <td width="130">
               <button class="btn btn-sm btn-warning" type="button" (click)="editData(item)" placement="bottom"
