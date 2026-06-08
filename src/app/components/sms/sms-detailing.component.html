@@ -310,7 +310,7 @@
             </div>
             <div class="inline-select">
               <label>&nbsp;&nbsp;</label>
-              <button class="btn btn-primary" (click)="reportTotalByMonth()">{{'search' | translate}}</button>
+              <button class="btn btn-primary" type="button" [disabled]="!filter.year" (click)="reportTotalByMonth()">{{'search' | translate}}</button>
             </div>
           </div>
           }
@@ -771,7 +771,7 @@
             </div>
             <div class="inline-select">
               <label>&nbsp;&nbsp;</label>
-              <button class="btn btn-primary" (click)="reportTotalByOperator()">{{'search' | translate}}</button>
+              <button class="btn btn-primary" type="button" [disabled]="!filter.year || !filter.month" (click)="reportTotalByOperator()">{{'search' | translate}}</button>
             </div>
           </div>
           }

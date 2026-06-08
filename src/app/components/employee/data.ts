@@ -75,7 +75,8 @@ export class EmployeeModal implements OnInit {
 
   deleteData() {
     this.spinner.show();
-    this.DataApi.deleteData(this.data).subscribe(
+    this.data.access = 'inactive';
+    this.DataApi.updateData(this.data).subscribe(
       data => {
         if (data) {
           this.spinner.hide();

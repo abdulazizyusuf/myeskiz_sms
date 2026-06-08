@@ -52,9 +52,9 @@
             <td>{{item.created_at | date:'dd.MM.yyyy HH:mm'}}</td>
             <td width="130">
               <button class="btn btn-sm btn-warning" type="button" (click)="editData(item)" placement="bottom"
-                ngbTooltip="Редактировать"><i class="ion-md-create"></i></button>
+                ngbTooltip="{{'edit' | translate}}"><i class="ion-md-create"></i></button>
               <button class="btn btn-sm btn-danger" type="button" (click)="deleteData(item)" placement="bottom"
-                ngbTooltip="Удалить"><i class="ion-md-trash"></i></button>
+                ngbTooltip="{{'Заблокировать' | translate}}"><i class="ion-md-remove-circle"></i></button>
             </td>
           </tr>
           }
