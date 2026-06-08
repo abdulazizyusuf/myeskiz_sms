@@ -94,6 +94,7 @@ export class SmsComponent implements OnInit {
   alertShowRequestContract: boolean;
   changeOwnerAccess: boolean;
   is_type_sent: boolean;
+  is_detailing: boolean;
 
   constructor(
     private Sms: SmsService,
@@ -134,6 +135,10 @@ export class SmsComponent implements OnInit {
     }
     if (this.currentUser.role == 'admin' || this.currentUser.email == 'qodirjon@eskiz.uz' || this.currentUser.email == 'zulfiya@eskiz.uz')
       this.is_type_sent = true;
+
+    this.is_detailing = true;
+    if (this.currentUser.role == 'employee' && !this.currentUser.detailing)
+      this.is_detailing = false;
 
     this.sendData = { contact_id: '', info: '' }
     this.times = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
@@ -933,6 +938,7 @@ export class SmsDetailingComponent implements OnInit {
   exportData: any;
   curLang: any;
   success_deleted_msg: any;
+  is_detailing: boolean;
 
   constructor(
     private Sms: SmsService,
@@ -965,6 +971,10 @@ export class SmsDetailingComponent implements OnInit {
     this.currentUser = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('SD') || '{}'))));
     if (this.currentUser.role == 'admin' || this.currentUser.role == 'leader' || this.currentUser.role == 'manager')
       this.is_admin = true;
+
+    this.is_detailing = true;
+    if (this.currentUser.role == 'employee' && !this.currentUser.detailing)
+      this.is_detailing = false;
 
     this.countries = JSON.parse(localStorage.getItem('countries') || '[]');
     this.translate.get(['sms_status_rejected', 'sms_status_waiting', 'sms_status_delivered', 'sms_status_notdelivered', 'sms_status_failed', 'sms_status_expired', 'scheduled', 'january', 'february', 'march', 'april', 'may', 'juny', 'july', 'august', 'september', 'october', 'november', 'december', 'in_year', 'status_finished', 'sent', 'dispatch_time', 'waiting', 'Перечисление', 'Наличные', 'Долг', 'Бесплатно', 'recal', 'Пополнено из Кешбека', 'balance_minus', 'Снять с баланса за ник', 'Для теста', 'Перекидка из баланса пользователя', 'Списано с баланса за ник', 'Успешно удалено', 'Списано деньги из баланса']).subscribe((item: any) => {
@@ -1047,8 +1057,8 @@ export class SmsDetailingComponent implements OnInit {
     this.currentClient = JSON.parse(localStorage.getItem('currentClient') || '{}');
 
     this.filter = {
-      year: year,
-      month: month,
+      year: '',
+      month: '',
       start_date: '',
       start_dates: '',
       end_date: '',

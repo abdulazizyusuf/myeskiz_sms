@@ -6,7 +6,7 @@
 
   <app-sms-menu></app-sms-menu>
 
-  @if (!user_blocked && !login_failed && !not_found) {
+  @if (!user_blocked && !login_failed && !not_found && is_detailing) {
   <section class="white-content">
     <nav ngbNav #nav="ngbNav" class="nav-tabs" (navChange)="tabChange($event)">
       @if (!archiveDetail) {
@@ -86,12 +86,14 @@
               @for (item of historyBalance(); track item.id) {
               <div ngbAccordionItem>
                 <div ngbAccordionHeader>
-                  @if (item.payment != 'balance_minus') {
-                  <span>{{item.amount | number}} {{'sum' | translate}}</span>
-                  }
-                  @if (item.payment == 'balance_minus') {
-                  <span>-{{item.amount | number}} {{'sum' | translate}}</span>
-                  }
+                  <button ngbAccordionButton>
+                    @if (item.payment != 'balance_minus') {
+                    <span>{{item.amount | number}} {{'sum' | translate}}</span>
+                    }
+                    @if (item.payment == 'balance_minus') {
+                    <span>-{{item.amount | number}} {{'sum' | translate}}</span>
+                    }
+                  </button>
                 </div>
                 <div ngbAccordionCollapse>
                   <div ngbAccordionBody>
@@ -300,6 +302,7 @@
             <div class="inline-select">
               <label class="text-capitalize">{{'year' | translate}}:</label>
               <select name="year" [(ngModel)]="filter.year" class="form-control">
+                <option value="">{{'choose' | translate}}</option>
                 @for (year of years; track year) {
                 <option value="{{year}}">{{year}}</option>
                 }
@@ -751,6 +754,7 @@
             <div class="inline-select">
               <label class="text-capitalize">{{'year' | translate}}:</label>
               <select name="year" [(ngModel)]="filter.year" class="form-control">
+                <option value="">{{'choose' | translate}}</option>
                 @for (year of years; track year) {
                 <option value="{{year}}">{{year}}</option>
                 }
@@ -759,6 +763,7 @@
             <div class="inline-select">
               <label class="text-capitalize">{{'month' | translate}}:</label>
               <select name="month" [(ngModel)]="filter.month" class="form-control">
+                <option value="">{{'choose' | translate}}</option>
                 @for (month of months; track month) {
                 <option value="{{month.val}}">{{month.title}}</option>
                 }

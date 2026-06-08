@@ -7,7 +7,7 @@
   @if (is_access) {
   <section class="white-content">
     <div class="mb-10 text-center">
-      <div class="inline-select" style="max-width:180px;">
+      <div class="inline-select" style="max-width:170px;">
         <label class="text-capitalize">{{'Сотрудники' | translate}}</label>
         <select name="user_id" [(ngModel)]="filter.user_id" class="form-control">
           <option value="">{{'Все' | translate}}</option>
@@ -16,12 +16,12 @@
           }
         </select>
       </div>
-      <div class="inline-select">
+      <div class="inline-select" style="max-width:170px;">
         <label class="text-capitalize">{{'Действия' | translate}}</label>
         <select name="action" [(ngModel)]="filter.action" class="form-control">
           <option value="">{{'Все' | translate}}</option>
           @for (item of actions; track item) {
-          <option [value]="item.val">{{item.title}}</option>
+          <option [value]="item.val">{{item["title_"+curLang]}}</option>
           }
         </select>
       </div>

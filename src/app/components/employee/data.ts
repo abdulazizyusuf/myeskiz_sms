@@ -210,7 +210,7 @@ export class LogsComponent implements OnInit {
 
     this.actions = [
       { 
-        'title_ru': 'Отравлена массовая рассылка',
+        'title_ru': 'Отправлена массовая рассылка',
         'title_uz': 'Ommaviy xabar yuborildi',
         'title_oz': 'Оммавий хабар юборилди',
         'title_en': 'Bulk message sent',

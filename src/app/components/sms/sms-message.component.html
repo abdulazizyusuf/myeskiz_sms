@@ -152,7 +152,9 @@
     </div>
     <div class="text-center mt-15">
       <a (click)="sendAgain()" class="btn btn-success btn-r">{{'send_again_sms' | translate}}</a>
-      <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
+      @if(is_detailing){
+        <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
+      }
     </div>
   </div>
   }
@@ -164,7 +166,9 @@
     </div>
     <div class="text-center mt-15">
       <a (click)="sendAgain()" class="btn btn-success btn-r">{{'send_again_sms' | translate}}</a>
-      <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
+      @if(is_detailing){
+        <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
+      }
     </div>
   </div>
   }
