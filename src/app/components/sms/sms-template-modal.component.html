@@ -56,9 +56,12 @@
 <div class="modal-body">
   @if (anketa) {
   <form (ngSubmit)="sendRequest()" class="row" #dataForm="ngForm">
-    @if (curLang == 'ru' || curLang == 'en') {
+    @if (curLang == 'ru') {
     <p class="mb-10 text-danger col-sm-12"><strong>Заявка будет принято только после оплаты. Во время оплаты, в деталях
         платежа обязательно указать: "за организации каналов для передачи СМС-сообщений"</strong></p>
+    }
+    @if (curLang == 'en') {
+    <p class="mb-10 text-danger col-sm-12"><strong>The application will be accepted only after payment. During the payment process, the payment details must include: "For organizing channels for sending SMS messages".</strong></p>
     }
     @if (curLang == 'oz') {
     <p class="mb-10 text-danger col-sm-12"><strong>Ариза фақат тўловдан сўнг қабул қилинади. Тўловни амалга
@@ -71,8 +74,11 @@
         lozim</strong></p>
     }
     <div class="form-group col-sm-12">
-      @if (curLang == 'ru' || curLang == 'en' || curLang == 'oz') {
+      @if (curLang == 'ru' || curLang == 'oz') {
       <label>НИК <span class="text-danger">*</span></label>
+      }
+      @if (curLang == 'en') {
+      <label>Nickname <span class="text-danger">*</span></label>
       }
       @if (curLang == 'uz') {
       <label>Nik <span class="text-danger">*</span></label>
@@ -80,9 +86,11 @@
       <input type="text" class="form-control" maxlength="11" pattern="[a-zA-Z0-9_.]{2,11}" [(ngModel)]="anketa.nic"
         name="nic" #nic="ngModel" required>
       @if (nic.invalid && nic.touched) {
-      <p class="mb-0 text-danger">@if (curLang == 'ru' || curLang == 'en') {
+      <p class="mb-0 text-danger">@if (curLang == 'ru') {
         <small>В альфа-имени может быть максимум 11 символов и без пробелов. Можно использовать только латинские
           буквы.</small>
+        }@if (curLang == 'en') {
+        <small>The Alpha name can contain a maximum of 11 characters and must not contain spaces. Only latin letters can be used.</small>
         }@if (curLang == 'uz') {
         <small>Alfa nomi - eng ko'pi bilan 11 ta belgidan iborat bo'lishi lozim va so'zlar orasida bo'sh joy qolmasligi
           kerak. Faqat lotin harflarini ishlatish mumkin.</small>
@@ -94,8 +102,11 @@
       }
     </div>
     <div class="form-group col-sm-12">
-      @if (curLang == 'ru' || curLang == 'en') {
+      @if (curLang == 'ru') {
       <label>Введите сферу деятельности компании <span class="text-danger">*</span></label>
+      }
+      @if (curLang == 'en') {
+      <label>Enter the company's field of activity <span class="text-danger">*</span></label>
       }
       @if (curLang == 'uz') {
       <label>Korhonangizning faoliyati turini kiriting <span class="text-danger">*</span></label>
@@ -146,10 +157,14 @@
 <div class="modal-body">
   <form class="col-lg-12" (ngSubmit)="patchTemplateData()" #dataForm="ngForm">
     <div class="form-group">
-      @if (curLang == 'ru' || curLang == 'en') {
+      @if (curLang == 'ru') {
       <label class="text-danger">Пожалуйста, для модерации смс сообщения вводить текст только в оригинальном виде (без
         изменений), то есть, в том виде, которая будет отправляться получателям на телефон. Обработка текста (изменение
         переменных значений, масок) будет производиться только самим модератором <span
+          class="text-danger">*</span></label>
+      }
+      @if (curLang == 'en') {
+      <label class="text-danger">Please enter the SMS message text for moderation only in its original form (without any changes), exactly as it will be sent to the recipients' phones. Processing of the text (changing variable values and masks) will be performed only by the moderator <span
           class="text-danger">*</span></label>
       }
       @if (curLang == 'uz') {

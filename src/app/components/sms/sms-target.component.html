@@ -11,7 +11,20 @@
       <ng-container ngbNavItem>
         <a ngbNavLink>{{'О проекте' | translate}}</a>
         <ng-template ngbNavContent>
-          <h4 class="mb-4">Только для абонентов Билайн</h4>
+          <h4 class="mb-4">
+            @if (curLang == 'ru'){
+              Только для абонентов Билайн
+            }
+            @if (curLang == 'oz'){
+              Фақат Билайн абонентлари учун
+            }
+            @if (curLang == 'uz'){
+              Faqatgina Beeline abonentlari uchun
+            }
+            @if (curLang == 'en'){
+              For Beeline subscribers only
+            }
+          </h4>
           <ngx-doc-viewer [url]="'https://my.eskiz.uz/assets/data/target_preview.pdf'" viewer="pdf"
             style="width:100%;height:800px"></ngx-doc-viewer>
         </ng-template>
@@ -19,14 +32,53 @@
       <ng-container ngbNavItem>
         <a ngbNavLink>{{'Цена' | translate}}</a>
         <ng-template ngbNavContent>
-          <h4 class="mb-4">Прайс-лист на услугу “Таргет SMS”</h4>
+          <h4 class="mb-4">
+            @if (curLang == 'ru'){
+              Прайс-лист на услугу “Таргет SMS”
+            }
+            @if (curLang == 'oz'){
+              "Таргет SMS" хизмати нархлари
+            }
+            @if (curLang == 'uz'){
+              "Target SMS" xizmati narxlari
+            }
+            @if (curLang == 'en'){
+              Price for the "Target SMS" service
+            }
+          </h4>
 
-          <p class="mb-2 text-center"><strong>Стоимость за одно таргетированное SMS-сообщение, сум</strong></p>
+          <p class="mb-2 text-center"><strong>
+              @if (curLang == 'ru'){
+                Стоимость за одно таргетированное SMS-сообщение, сум
+              }
+              @if (curLang == 'oz'){
+                Битта мақсадли SMS хабар учун нарх, сўм
+              }
+              @if (curLang == 'uz'){
+                Bitta maqsadli SMS xabar uchun narx, summa
+              }
+              @if (curLang == 'en'){
+                Cost per one targeted SMS message, UZS
+              }
+            </strong></p>
           <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
               <thead class="thead-light">
                 <tr>
-                  <th>Количество SMS*</th>
+                  <th>
+                    @if (curLang == 'ru'){
+                      Количество SMS*
+                    }
+                    @if (curLang == 'oz'){
+                      SMS хабарлар сони*
+                    }
+                    @if (curLang == 'uz'){
+                      SMS xabarlar soni*
+                    }
+                    @if (curLang == 'en'){
+                      Amount of SMS*
+                    }
+                  </th>
                   <th>1 таргет</th>
                   <th>2 таргета</th>
                   <th>3 таргета</th>
@@ -80,7 +132,20 @@
                 <div ngbAccordionCollapse>
                   <div ngbAccordionBody>
                     <ng-template>
-                      <p><strong>Количество SMS*</strong>Extra Large: от 500 001 SMS</p>
+                      <p><strong>
+                        @if (curLang == 'ru'){
+                          Количество SMS*
+                        }
+                        @if (curLang == 'oz'){
+                          SMS хабарлар сони*
+                        }
+                        @if (curLang == 'uz'){
+                          SMS xabarlar soni*
+                        }
+                        @if (curLang == 'en'){
+                          Amount of SMS*
+                        }
+                      </strong>Extra Large: от 500 001 SMS</p>
                       <p><strong>1 таргет</strong>251,2</p>
                       <p><strong>2 таргета</strong>273,6</p>
                       <p><strong>3 таргета</strong>290,4</p>
@@ -144,6 +209,7 @@
             </div>
           </div>
 
+          @if (curLang == 'ru' || curLang == 'uz' || curLang == 'oz') {
           <div class="alert p-3 alert-info">
             <h5 class="mt-0 mb-2">Цены указаны c учетом НДС:</h5>
             <p class="mb-2">* Количество SMS за один заказ.</p>
@@ -183,12 +249,56 @@
             <p class="mb-0">Тариф Large – до 5</p>
             <p class="mb-0">Тариф Extra – до 10</p>
           </div>
+          }
+          @if (curLang == 'en') {
+          <div class="alert p-3 alert-info">
+            <h5 class="mt-0 mb-2">Prices include VAT:</h5>
+            <p class="mb-2">* Number of SMS messages per order.</p>
+            <p class="mb-1">- The price is calculated based on the number of selected SMS messages per order. Payment is based on the number of SMS messages multiplied by the cost of one targeted SMS message.</p>
+            <p class="mb-3">- Payment is made for sent SMS messages, regardless of whether the corresponding SMS messages were delivered.</p>
+            <p class="mb-1"><strong>Target types:</strong></p>
+            <p class="mb-1">- Basic targets: age, gender, presence of children, income (can be overlapped, counted as one target)</p>
+            <p class="mb-1">- Geo targets: Country, city, supergeo</p>
+            <p class="mb-1">- Interests: list of predefined interests for a product Taxonomy (can be overlapped; if the syntax is "or", it counts as one target; if the syntax is "and", each interest is counted separately)</p>
+            <p class="mb-1">- Page visits: visits to specific domains (e.g., korzinka.uz)</p>
+            <p class="mb-3">- Receipt of SMS from alpha names: users who received SMS from a list of alpha names (e.g., korzinka)</p>
+            <p class="mb-1"><strong>Examples of calculating the number of targets:</strong></p>
+            <p class="mb-1"><strong>1.</strong> Men 25+, no children, middle income, Tashkent, interested in
+              car dealerships - 3 targets</p>
+            <p class="mb-1"><strong>2.</strong> Men 25+, no children, middle income, Tashkent, interested in
+              car dealerships and real estate - 4 targets</p>
+            <p class="mb-3"><strong>3.</strong> Men 25+, no children, middle income, Tashkent, interested in
+              car dealerships or real estate - 3 targets</p>
+            <p class="mb-1"><strong>Using Alpha names:</strong></p>
+            <p class="mb-3">Customers can send under their own Alpha name starting with the Medium plan. To register an Alpha name, they must provide documents confirming their right to use the name, such as a domain voucher, trademark certificate, or other documents proving their ownership of the Alpha name.</p>
+            <p class="mb-1"><strong>For the Small tariff, SMS messages will be sent from one of the following names:</strong></p>
+            <p class="mb-3">Veon AdTech <br> Veon Adtech <br> Beeline ads <br> Veon ads</p>
+            <p class="mb-1"><strong>Number of advertising creatives:</strong></p>
+            <p class="mb-0">Tariff Small – 1</p>
+            <p class="mb-0">Tariff Medium – 2</p>
+            <p class="mb-0">Tariff Large – up to 5</p>
+            <p class="mb-0">Tariff Extra – up to 10</p>
+          </div>
+          }
         </ng-template>
       </ng-container>
       <ng-container ngbNavItem>
         <a ngbNavLink>{{'fill_form' | translate}}</a>
         <ng-template ngbNavContent>
-          <p class="alert alert-info mb-3">Заполненые анкеты со стороны Билайна обрабатываются в течение 5 дней</p>
+          <p class="alert alert-info mb-3">
+            @if (curLang == 'ru'){
+            Заполненые анкеты со стороны Билайна обрабатываются в течение 5 дней
+            }
+            @if (curLang == 'oz'){
+            Тўлдирилган анкеталар Билайн томонидан 5 кун ичида кўриб чиқилади
+            }
+            @if (curLang == 'uz'){
+            To'ldirilgan anketalar Beeline tomonidan 5 kun ichida ko'rib chiqiladi
+            }
+            @if (curLang == 'en'){
+            Completed forms are processed by Beeline within 5 days.
+            }
+          </p>
           @if (currentClient && currentClient.type == 'client') {
           <button class="btn btn-primary btn-sm" type="button" (click)="createData()">{{'Создать анкету' |
             translate}}</button>

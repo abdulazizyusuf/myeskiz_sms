@@ -7,7 +7,7 @@
   <app-sms-menu></app-sms-menu>
 
   <section class="white-content">
-    @if (curLang == 'ru' || curLang == 'en') {
+    @if (curLang == 'ru') {
     <div class="alert p-3 alert-info">
       <h4 class="mt-0 mb-20">Инструкция по добавлению Текстов для модерации:</h4>
       <p class="mb-10">Перед тем как отправлять любые <strong>новые смс сообщения</strong>, пользователям сначала нужно
@@ -75,6 +75,68 @@
           ожидайте подтверждение текста.</li>
         <li class="mb-2"><strong>Одобрено</strong> - Текст одобрен и готов к использованию.</li>
         <li><strong>Отказан</strong> - Текст отклонён, причина отказа указано в Примечании.</li>
+      </ol>
+    </div>
+    }
+
+    @if (curLang == 'en') {
+    <div class="alert p-3 alert-info">
+      <h4 class="mt-0 mb-20">Instructions for adding Texts for moderation:</h4>
+      <p class="mb-10">Before sending any <strong>new SMS messages</strong>, please submit your message templates <strong>for moderation</strong> first by clicking the "+ Add text" button. You don't need to resubmit the same text every time – once approved, it's ready to use.</p>
+      <p class="mb-10"><u>SMS message templates are reviewed within 1 hour to 1 business day, excluding weekends and public holidays.</u></p>
+      <div class="punkts">
+        <div class="item">
+          <p class="mb-10"><strong>Clause 1</strong></p>
+          <p class="mb-4"><strong>Please submit your SMS text for moderation exactly as it will appear to recipients – do not modify or alter it in any way. Any processing of the text (such as replacing variables or masks) will be handled exclusively by the moderator.</strong></p>
+          <p class="mb-10"><strong>Examples:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Hello (STUDENT)! You were absent at (TIME) in group (GROUP) during lesson (COURSE). –
+              <strong>incorrect form</strong>
+            </li>
+            <li class="mb-10"> - Hello Murod! You were absent at 11:00 in group 789-A during the IELTS lesson. –
+              <strong>correct form</strong>
+            </li>
+            <li> - Dear #NAME#! You have #CASH# #CASHNAME# remaining in your account. Please top up your account promptly. –
+              <strong>incorrect form</strong>
+            </li>
+            <li class="mb-10"> - Dear Anvar Tursunov! You have 32 456.74 sum remaining in your account. Please top up your account promptly. – <strong>correct form</strong></li>
+            <li> - You placed an order for [name]. Number: # [order_id]. Amount: [order_total]. Payment upon receipt. –
+              <strong>incorrect form</strong>
+            </li>
+            <li class="mb-10"> - You placed an order on Eskiz.uz. Number: #447-A. Amount: 143,000 sum. Payment upon receipt.
+              – <strong>correct form</strong></li>
+          </ul>
+        </div>
+        <div class="item">
+          <p class="mb-10"><strong>Clause 2</strong></p>
+          <p class="mb-4"><strong>All SMS messages containing "registration codes" (authorization, verification) must include the name of the resource (project, website, or Telegram bot name) and the purpose for which the authorization codes are being used. Texts containing authorization codes without specifying the resource name and purpose will not be accepted by mobile operators.</strong></p>
+          <p class="mb-10"><strong>Examples:</strong></p>
+          <ul style="list-style:none;padding-left:15px;">
+            <li> - Confirmation code: 0000 – <strong>incorrect form</strong></li>
+            <li class="mb-10"> - Confirmation code <u>for registration (purpose of use)</u> on the
+              <strong>Eskiz.uz</strong> website (resource name): 0000 – <strong>correct form</strong>
+            </li>
+            <li> - Password recovery for: 0000 – <strong>incorrect form</strong></li>
+            <li class="mb-10"> - <u>Password recovery (purpose of use)</u> for the <strong> Eskiz
+                Media</strong> (resource name): 0000 – <strong>correct form</strong></li>
+            <li> - Mobile application code: 0000 – <strong>incorrect form</strong></li>
+            <li class="mb-10"> - Verification code <u>for login (purpose of use)</u> for the mobile
+              application
+              <strong>Eskiz.uz</strong> (resource name): 0000 – <strong>correct form</strong>
+            </li>
+            <li> - Order confirmation code: 0000 – <strong>incorrect form</strong></li>
+            <li class="mb-10"> - Confirmation code <u>for order (purpose of use)</u> on the website
+              <strong>Eskiz.uz</strong> (resource name): 0000 – <strong>correct form</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <h5 class="mb-10 text-center">Statuses</h5>
+      <ol style="padding-left:25px;">
+        <li class="mb-2"><strong>Moderation</strong> - Texts undergo moderation every 3 hours from 10:00 to 16:00, except weekends and holidays. Please wait.</li>
+        <li class="mb-2"><strong>In proccess</strong> - The text has been submitted to the mobile operator for moderation, please wait for text approval.</li>
+        <li class="mb-2"><strong>Approved</strong> - The text has been approved and is ready for use.</li>
+        <li><strong>Rejected</strong> - The text has been rejected, the reason for rejection is indicated in the Notes.</li>
       </ol>
     </div>
     }

@@ -33,6 +33,16 @@
           </div>
           }
 
+          @if (curLang == 'en') {
+          <div class="alert p-3 alert-info">
+            <p class="mb-10">Ucell, Mobiuz, Beeline, and Uzmobile mobile operators divide SMS messages into two categories: <strong>Service</strong> and <strong>Advertising</strong>.</p>
+            <p class="mb-10"><strong>- Service SMS messages </strong> – include all SMS messages that contain information such as confirmation codes, passwords, and order numbers; payment and transaction information; warnings about certain events or situations, and so on.</p>
+            <p class="mb-10"><strong>- Advertising SMS messages </strong> – include all advertising-type SMS messages that contain information such as product and service promotions; subscriber notifications about promotions, discounts, and updates; holiday greetings, etc.</p>
+            <p class="mb-10"><strong>- SMS messages are charged for all statuses: </strong> Delivered, Transferred, Not Delivered.
+            </p>
+          </div>
+          }
+
           @if (curLang == 'uz') {
           <div class="alert p-3 alert-info">
             <p class="mb-10">Ucell, Mobiuz, Beeline va Uzmobile uyali aloqa operatorlarida barcha cms xabarlar 2
@@ -180,6 +190,10 @@
             Через смс шлюз в Америку смс сообщения можно отправлять, только после модерации и согласования текстов с
             сотовыми операторами США. Процесс занимает 1-2 месяца. Для подробной информации обращайтесь в абонентский
             отдел по номеру +998712026060.</p>
+          }
+          @if (curLang == 'en') {
+          <p class="text-danger ml-2">* Prices may be updated monthly <br> ** This service is only available through the SMS gateway <br>*** The SMS fee applies to all specified statuses: Delivered, Transferred, Not Delivered. <br> ****
+            SMS messages can be sent to the US via the SMS gateway only after moderation and approval by US mobile operators. This process takes 1-2 months. For more information, please contact our customer service team at +998712026060.</p>
           }
           @if (curLang == 'uz') {
           <p class="text-danger ml-2">* Narxlar har oy yangilanishi mumkin <br> ** Xalqaro smslar faqat SMS shlyuz

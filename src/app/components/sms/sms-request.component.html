@@ -8,7 +8,7 @@
 
   @if(is_nick){
     <section class="white-content">
-      @if (curLang == 'ru' || curLang == 'en') {
+      @if (curLang == 'ru') {
       <div>
         <h3 class="mt-0 mb-20 text-center">Заявка на создание Ника (Альфа имени) **</h3>
         <p class="mb-1 text-center"><strong>Утверждение Альфа-имени со стороны сотовых операторов занимает 1-2 месяцев.
@@ -33,6 +33,29 @@
           <p class="mb-10">Образец: Eskiz, ESKIZ, eskiz, Eskiz.uz, Eskizuz, EskizUZ, Eskiz_MEDIA, ESKIZ_MEDIA</p>
           <p class="mb-10"><strong>Введите сферу деятельности компании:</strong> Услуги по разработке сайтов, хостинга,
             регистрации домена </p>
+        </div>
+      </div>
+      }
+      @if (curLang == 'en') {
+      <div>
+        <h3 class="mt-0 mb-20 text-center">Application for Nickname (Alpha name) creation **</h3>
+        <p class="mb-1 text-center"><strong>Approval of the Alpha-name by mobile operators takes 1–2 months. *</strong></p>
+        <p class="mb-1 text-center"><strong>Cost of creating one Alpha name with mobile operators: **</strong></p>
+        <ol>
+          <li><strong>Beeline</strong> – monthly subscription fee: 250 000 UZS</li>
+          <li><strong>Ucell</strong> – monthly subscription fee: 200 000 UZS</li>
+          <li><strong>Uzmobile</strong> – monthly subscription fee: 100 000 UZS</li>
+          <li><strong>Mobiuz</strong> – one-time payment: 600 000 UZS</li>
+          <li><strong>Humans</strong> – one-time payment: 300 000 UZS</li>
+          <li><strong>Perfectum</strong> – service does not work</li>
+        </ol>
+        <p class="mb-2"><strong>P/S: A separate contract for the number is not provided. Payment is made under the same SMS service contract. When making a payment, the payment details must include: "For organizing channels for sending SMS messages under contract №"</strong></p>
+        <div class="alert p-3 alert-info">
+          <h5 class="mt-0">Example:</h5>
+          <p class="mb-5"><strong>Nickname:</strong> Eskiz</p>
+          <p class="mb-5">The Alpha name can contain a maximum of 11 characters and must not contain spaces. Only latin letters can be used.</p>
+          <p class="mb-10">Examples: Eskiz, ESKIZ, eskiz, Eskiz.uz, Eskizuz, EskizUZ, Eskiz_MEDIA, ESKIZ_MEDIA</p>
+          <p class="mb-10"><strong>Enter the company's field of activity: </strong> Website development services, hosting, domain registration. </p>
         </div>
       </div>
       }
