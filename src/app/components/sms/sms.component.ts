@@ -973,7 +973,7 @@ export class SmsDetailingComponent implements OnInit {
       this.is_admin = true;
 
     this.is_detailing = true;
-    if (this.currentUser.role == 'employee' && !this.currentUser.detailing)
+    if (this.currentUser.role == 'employee' && this.currentUser.detailing)
       this.is_detailing = false;
 
     this.countries = JSON.parse(localStorage.getItem('countries') || '[]');
