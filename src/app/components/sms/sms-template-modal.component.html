@@ -181,11 +181,11 @@
       }
       <textarea name="text" class="form-control" [(ngModel)]="templateData.original_text" #text="ngModel" cols="10"
         rows="5" required></textarea>
-      @if (!smsCountLimit) {
+      @if (!smsCountLimit()) {
       <p>
-        @if (smsCount > 0 && smsLength > 0) {
+        @if (smsCount() > 0 && smsLength() > 0) {
         <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
-            [translateParams]="{value: smsLength}"></span> - {{smsCount}} {{'pc' | translate}}.</span>
+            [translateParams]="{value: smsLength()}"></span> - {{smsCount()}} {{'pc' | translate}}.</span>
         }
         @if (templateData.original_text) {
         <a role="button" class="btn-link mt-2" (click)="calcCharacter(templateData.original_text)">{{'Рассчитать
@@ -193,7 +193,7 @@
         }
       </p>
       }
-      @if (smsCountLimit) {
+      @if (smsCountLimit()) {
       <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
       }
     </div>
@@ -209,7 +209,7 @@
       <label>{{'Добавить комментарию' | translate}}</label>
       <textarea name="comment" class="form-control" [(ngModel)]="templateData.comment" cols="2" rows="2"></textarea>
     </div>
-    <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link" target="_blank">{{'Инструкция по
+    <p><a href="https://my.eskiz.uz/assets/data/sms-symbols.pdf" class="d-inline-block btn-link" target="_blank">{{'Инструкция по
         использованию символов в смс' | translate}}</a></p>
     <div class="mt-3" style="display:flex;">
       <input type="checkbox" id="terms_condition" [(ngModel)]="templateData.terms" name="terms_condition" required>
@@ -218,16 +218,16 @@
     <div class="mt-2 mb-3" style="display:flex;">
       <input type="checkbox" id="terms_condition_2" [(ngModel)]="templateData.terms_2" name="terms_condition_2"
         required> <label for="terms_condition_2" class="i-l mb-0" style="font-size:12px"> @if(curLang == 'ru'){
-          Ознакомлен (а) с <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">инструкцией по использованию символов</a> в смс сообщении
+          Ознакомлен (а) с <a href="https://my.eskiz.uz/assets/data/sms-symbols.pdf" target="_blank">инструкцией по использованию символов</a> в смс сообщении
         }
         @if(curLang == 'uz'){
-          Men sms xabarda <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">simvollarni ishlatish yo‘riqnoma si</a> bilan tanishman
+          Men sms xabarda <a href="https://my.eskiz.uz/assets/data/sms-symbols.pdf" target="_blank">simvollarni ishlatish yo‘riqnoma si</a> bilan tanishman
         }
         @if(curLang == 'oz'){
-          Мен смс хабарда <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">символларни ишлатиш йўриқнома си</a> билан танишман
+          Мен смс хабарда <a href="https://my.eskiz.uz/assets/data/sms-symbols.pdf" target="_blank">символларни ишлатиш йўриқнома си</a> билан танишман
         }
         @if(curLang == 'en'){
-          Familiarized with <a href="https://sms.eskiz.uz/page/sms-symbol" target="_blank">the instructions of using symbols</a> in SMS messages
+          Familiarized with <a href="https://my.eskiz.uz/assets/data/sms-symbols.pdf" target="_blank">the instructions of using symbols</a> in SMS messages
         }</label>
     </div>
     <div class="form-group">

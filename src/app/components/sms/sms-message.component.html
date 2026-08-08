@@ -152,9 +152,7 @@
     </div>
     <div class="text-center mt-15">
       <a (click)="sendAgain()" class="btn btn-success btn-r">{{'send_again_sms' | translate}}</a>
-      @if(is_detailing){
-        <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
-      }
+      <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
     </div>
   </div>
   }
@@ -166,9 +164,7 @@
     </div>
     <div class="text-center mt-15">
       <a (click)="sendAgain()" class="btn btn-success btn-r">{{'send_again_sms' | translate}}</a>
-      @if(is_detailing){
-        <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
-      }
+      <a routerLink="/sms/detailing" class="btn btn-primary btn-l">{{'detailing' | translate}}</a>
     </div>
   </div>
   }
@@ -408,11 +404,11 @@
             <div class="form-group">
               <label>{{'message_text' | translate}}</label>
               <textarea class="form-control" [(ngModel)]="message.text" name="text" #text="ngModel" required></textarea>
-              @if (!smsCountLimit) {
+              @if (!smsCountLimit()) {
               <p>
-                @if (smsCount > 0 && smsLength > 0) {
+                @if (smsCount() > 0 && smsLength() > 0) {
                 <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
-                    [translateParams]="{value: smsLength}"></span> - {{smsCount}} {{'pc' | translate}}.</span>
+                    [translateParams]="{value: smsLength()}"></span> - {{smsCount()}} {{'pc' | translate}}.</span>
                 }
                 @if (message.text) {
                 <a role="button" class="btn-link mt-2" (click)="calcCharacter(message.text,'contact')">{{'Рассчитать
@@ -420,7 +416,7 @@
                 }
               </p>
               }
-              @if (smsCountLimit) {
+              @if (smsCountLimit()) {
               <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
               }
             </div>
@@ -432,7 +428,7 @@
               }
             </p>
             }
-            <p><a href="https://sms.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
+            <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
                 target="_blank">{{'Инструкция по символам' | translate}}</a></p>
             @if (curLang == 'ru' && smsCount > 0 && message.contacts.length > 0) {
             <div class="text-danger mb-3">
@@ -472,7 +468,7 @@
             }
             <div class="form-group">
               <button type="submit" class="btn btn-success"
-                [disabled]="!dataForm.form.valid || message.contacts.length == 0 || smsWaitLoading() || smsCountLimit">{{'send'
+                [disabled]="!dataForm.form.valid || message.contacts.length == 0 || smsWaitLoading() || smsCountLimit()">{{'send'
                 | translate}} </button>
             </div>
           </form>
@@ -574,11 +570,11 @@
               <label>{{'message_text' | translate}}</label>
               <textarea class="form-control" [(ngModel)]="messageGroup.text" name="text" #text="ngModel"
                 required></textarea>
-              @if (!smsCountLimit) {
+              @if (!smsCountLimit()) {
               <p>
-                @if (smsCountGroup > 0 && smsLengthGroup > 0) {
+                @if (smsCountGroup() > 0 && smsLengthGroup() > 0) {
                 <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
-                    [translateParams]="{value: smsLengthGroup}"></span> - {{smsCountGroup}} {{'pc' | translate}}.</span>
+                    [translateParams]="{value: smsLengthGroup()}"></span> - {{smsCountGroup()}} {{'pc' | translate}}.</span>
                 }
                 @if (messageGroup.text) {
                 <a role="button" class="btn-link mt-2" (click)="calcCharacter(messageGroup.text,'group')">{{'Рассчитать
@@ -586,7 +582,7 @@
                 }
               </p>
               }
-              @if (smsCountLimit) {
+              @if (smsCountLimit()) {
               <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
               }
             </div>
@@ -598,38 +594,38 @@
               }
             </p>
             }
-            <p><a href="https://sms.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
+            <p><a href="https://my.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
                 target="_blank">{{'Инструкция по символам' | translate}}</a></p>
-            @if (curLang == 'ru' && smsCountGroup > 0 && contactsCount > 0) {
+            @if (curLang == 'ru' && smsCountGroup() > 0 && contactsCount() > 0) {
             <div class="text-danger mb-3">
               - Примерная стоимость SMS рассылки составляет:
-              <strong class="d-block">Количество контактов ({{contactsCount}} шт) × Стоимость смс
-                ({{currentCompany.price}} сум) × Количество смс сообщений ({{smsCountGroup}} шт) = {{smsCountGroup *
-                currentCompany.price * contactsCount}} сум
+              <strong class="d-block">Количество контактов ({{contactsCount()}} шт) × Стоимость смс
+                ({{currentCompany.price}} сум) × Количество смс сообщений ({{smsCountGroup()}} шт) = {{smsCountGroup() *
+                currentCompany.price * contactsCount()}} сум
               </strong>
               <div class="alert alert-warning p-1 mt-2">P/S: Реальная стоимость смс рассылки зависит от <a
                   href="/sms/prices" target="_blank">цены</a> каждого сотового оператора, а также от категории:
                 сервисного и рекламного типа смс сообщений</div>
             </div>
             }
-            @if (curLang == 'uz' && smsCountGroup > 0 && contactsCount > 0) {
+            @if (curLang == 'uz' && smsCountGroup() > 0 && contactsCount() > 0) {
             <div class="text-danger mb-3">
               - SMS xabarning yuborish taxminiy narxi:
-              <strong class="d-block">Kontaktlar soni ({{contactsCount}} dona) × SMS narxi ({{currentCompany.price}}
-                so'm) × SMS xabarlar soni ({{smsCountGroup}} dona) = {{smsCountGroup * currentCompany.price *
-                contactsCount}} so'm
+              <strong class="d-block">Kontaktlar soni ({{contactsCount()}} dona) × SMS narxi ({{currentCompany.price}}
+                so'm) × SMS xabarlar soni ({{smsCountGroup()}} dona) = {{smsCountGroup() * currentCompany.price *
+                contactsCount()}} so'm
               </strong>
               <div class="alert alert-warning p-1 mt-2">P/S: SMS habarning aniq narxi, har bir uyali aloqa operator
                 tomonidan ornatilgan <a href="/sms/prices" target="_blank">narxga</a> bogliq, hamda, matnning Servis
                 turdagi yoki Reklama turdagi kategoriyasiga kirishiga qarab</div>
             </div>
             }
-            @if (curLang == 'oz' && smsCountGroup > 0 && contactsCount > 0) {
+            @if (curLang == 'oz' && smsCountGroup() > 0 && contactsCount() > 0) {
             <div class="text-danger mb-3">
               - СМС хабарнинг юбориш тахминий нархи:
-              <strong class="d-block">Контактлар сони ({{contactsCount}} дона) × СМС нархи ({{currentCompany.price}}
-                сўм) × СМС хабарлар сони ({{smsCountGroup}} дона) = {{smsCountGroup * currentCompany.price *
-                contactsCount}} сўм
+              <strong class="d-block">Контактлар сони ({{contactsCount()}} дона) × СМС нархи ({{currentCompany.price}}
+                сўм) × СМС хабарлар сони ({{smsCountGroup()}} дона) = {{smsCountGroup() * currentCompany.price *
+                contactsCount()}} сўм
               </strong>
               <div class="alert alert-warning p-1 mt-2">P/S: СМС ҳабарнинг аниқ нархи, ҳар бир уяли алоқа оператор
                 томонидан орнатилган <a href="/sms/prices" target="_blank">нархга</a> боглиқ, ҳамда, матннинг Сервис
@@ -638,7 +634,7 @@
             }
             <div class="form-group">
               <button type="submit" class="btn btn-success"
-                [disabled]="!dataForm.form.valid || messageGroup.groups.length == 0 || smsWaitLoading() || smsCountLimit">{{'send'
+                [disabled]="!dataForm.form.valid || messageGroup.groups.length == 0 || smsWaitLoading() || smsCountLimit()">{{'send'
                 | translate}}</button>
             </div>
           </form>
@@ -666,7 +662,7 @@
               </select>
             </div>
             }
-            @if (dataNik && dataNik.length > 0) {
+            @if (dataNik() && dataNik().length > 0) {
             <div class="form-group">
               <label>{{'Ник (альфа имя)' | translate}}</label>
               @if (currentCompany.id == 13) {
@@ -702,11 +698,11 @@
               <label>{{'message_text' | translate}}</label>
               <textarea class="form-control" [(ngModel)]="messageSingle.text" name="text" #text="ngModel"
                 required></textarea>
-              @if (!smsCountLimit) {
+              @if (!smsCountLimit()) {
               <p>
-                @if (smsCountSingle > 0 && smsLengthSingle > 0) {
+                @if (smsCountSingle() > 0 && smsLengthSingle() > 0) {
                 <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
-                    [translateParams]="{value: smsLengthSingle}"></span> - {{smsCountSingle}} {{'pc' |
+                    [translateParams]="{value: smsLengthSingle()}"></span> - {{smsCountSingle()}} {{'pc' |
                   translate}}.</span>
                 }
                 @if (messageSingle.text) {
@@ -715,7 +711,7 @@
                 }
               </p>
               }
-              @if (smsCountLimit) {
+              @if (smsCountLimit()) {
               <p class="text-danger mt-2">{{'sms_count_limit_msg' | translate}}</p>
               }
             </div>
@@ -727,11 +723,11 @@
               }
             </p>
             }
-            <p><a href="https://sms.eskiz.uz/page/sms-symbol" class="d-inline-block btn-link"
+            <p><a href="https://my.eskiz.uz/assets/data/sms-symbols.pdf" class="d-inline-block btn-link"
                 target="_blank">{{'Инструкция по символам' | translate}}</a></p>
             <div class="form-group">
               <button type="submit" class="btn btn-success"
-                [disabled]="!dataForm.form.valid || smsWaitLoading() || smsCountLimit">{{'send' | translate}}</button>
+                [disabled]="!dataForm.form.valid || smsWaitLoading() || smsCountLimit()">{{'send' | translate}}</button>
             </div>
           </form>
           }
@@ -772,9 +768,9 @@
               <textarea class="form-control" [(ngModel)]="messageGlobal.text" name="text" #text="ngModel"
                 required></textarea>
               <p>
-                @if (smsCountGlobal > 0 && smsLengthGlobal > 0) {
+                @if (smsCountGlobal() > 0 && smsLengthGlobal() > 0) {
                 <span class="btn-r"><span [translate]="'entered_characters_total_sms'"
-                    [translateParams]="{value: smsLengthGlobal}"></span> - {{smsCountGlobal}} {{'pc' |
+                    [translateParams]="{value: smsLengthGlobal()}"></span> - {{smsCountGlobal()}} {{'pc' |
                   translate}}.</span>
                 }
                 @if (messageGlobal.text) {

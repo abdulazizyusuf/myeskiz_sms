@@ -66,16 +66,16 @@ export class SmsComponent implements OnInit {
   resultMessage: string;
   sms_illegal_found_word: string;
   service_suspended_msg: string;
-  smsLength: number = 0;
-  smsLengthGroup: number = 0;
-  smsLengthSingle: number = 0;
-  smsLengthGlobal: number = 0;
-  smsCount: number = 0;
-  smsCountGroup: number = 0;
-  smsCountSingle: number = 0;
-  smsCountGlobal: number = 0;
-  smsCountLimit: boolean;
-  contactsCount: number = 0;
+  smsLength = signal<number>(0);
+  smsLengthGroup = signal<number>(0);
+  smsLengthSingle = signal<number>(0);
+  smsLengthGlobal = signal<number>(0);
+  smsCount = signal<number>(0);
+  smsCountGroup = signal<number>(0);
+  smsCountSingle = signal<number>(0);
+  smsCountGlobal = signal<number>(0);
+  smsCountLimit = signal<boolean>(false);
+  contactsCount = signal<number>(0);
   clientPrice: number = 0;
   smsInfo: boolean;
   is_sms_access: boolean;
@@ -400,23 +400,23 @@ export class SmsComponent implements OnInit {
   }
 
   messageSingleText(event: any) {
-    this.smsCountSingle = Number(this.messageCalcCount(event));
-    this.smsLengthSingle = event.length;
+    this.smsCountSingle.set(Number(this.messageCalcCount(event)));
+    this.smsLengthSingle.set(event.length);
   }
 
   messageGlobalText(event: any) {
-    this.smsCountGlobal = Number(this.messageCalcCount(event));
-    this.smsLengthGlobal = event.length;
+    this.smsCountGlobal.set(Number(this.messageCalcCount(event)));
+    this.smsLengthGlobal.set(event.length);
   }
 
   messageText(event: any) {
-    this.smsCount = Number(this.messageCalcCount(event));
-    this.smsLength = event.length;
+    this.smsCount.set(Number(this.messageCalcCount(event)));
+    this.smsLength.set(event.length);
   }
 
   messageGroupText(event: any) {
-    this.smsCountGroup = Number(this.messageCalcCount(event));
-    this.smsLengthGroup = event.length;
+    this.smsCountGroup.set(Number(this.messageCalcCount(event)));
+    this.smsLengthGroup.set(event.length);
   }
 
   calcCharacter(text: any, type: any) {
@@ -424,20 +424,20 @@ export class SmsComponent implements OnInit {
       this.Sms.checkSmsMessage({ text: text, id: this.currentCompany.api_user_id }).subscribe((res: any) => {
         if (res.data) {
           if (type == 'global') {
-            this.smsLengthGlobal = res.data.chars_count;
-            this.smsCountGlobal = res.data.parts_count;
+            this.smsLengthGlobal.set(res.data.chars_count);
+            this.smsCountGlobal.set(res.data.parts_count);
           }
           if (type == 'group') {
-            this.smsLengthGroup = res.data.chars_count;
-            this.smsCountGroup = res.data.parts_count;
+            this.smsLengthGroup.set(res.data.chars_count);
+            this.smsCountGroup.set(res.data.parts_count);
           }
           if (type == 'contact') {
-            this.smsLength = res.data.chars_count;
-            this.smsCount = res.data.parts_count;
+            this.smsLength.set(res.data.chars_count);
+            this.smsCount.set(res.data.parts_count);
           }
           if (type == 'single') {
-            this.smsLengthSingle = res.data.chars_count;
-            this.smsCountSingle = res.data.parts_count;
+            this.smsLengthSingle.set(res.data.chars_count);
+            this.smsCountSingle.set(res.data.parts_count);
           }
         }
       })
@@ -449,7 +449,7 @@ export class SmsComponent implements OnInit {
     var isGsm = regexp.test(event);
 
     var smsCount;
-    this.smsCountLimit = false;
+    this.smsCountLimit.set(false);
 
     if (!isGsm) {
       if (event.length <= 70)
@@ -469,7 +469,7 @@ export class SmsComponent implements OnInit {
       else if (event.length <= 536)
         smsCount = 8;
       else
-        this.smsCountLimit = true;
+        this.smsCountLimit.set(true);
     }
 
     if (isGsm) {
@@ -490,7 +490,7 @@ export class SmsComponent implements OnInit {
       else if (event.length <= 1224)
         smsCount = 8;
       else
-        this.smsCountLimit = true;
+        this.smsCountLimit.set(true);
     }
 
     if (event == '')
@@ -776,7 +776,7 @@ export class SmsComponent implements OnInit {
 
   getActiveTab(event) {
     //if(event.nextId == 'tab-messages-group')
-    this.smsCountLimit = false;
+    this.smsCountLimit.set(false);
   }
 
   addBalance() {
@@ -831,11 +831,11 @@ export class SmsComponent implements OnInit {
   }
 
   changesGroups(items: any) {
-    this.contactsCount = 0;
+    this.contactsCount.set(0);
     items.forEach((item: any) => {
       this.groupsData().forEach((group: any) => {
         if (item.value == group.id)
-          this.contactsCount += group.count;
+          this.contactsCount.set(this.contactsCount() + group.count);
       })
     })
   }
@@ -2622,10 +2622,10 @@ export class SmsTemplateModal implements OnInit {
   sms_illegal_found_word_msg: string;
   phone_incorrect_msg: string;
   curLang: string;
-  smsCountLimit: boolean;
+  smsCountLimit = signal<boolean>(false);
   upload_file = signal<boolean>(false);
-  smsCount: number;
-  smsLength: number;
+  smsCount = signal<number>(0);
+  smsLength = signal<number>(0);
   tariff = signal<any>({});
   curClient: any;
   uploadFiles: any = [];
@@ -2664,7 +2664,7 @@ export class SmsTemplateModal implements OnInit {
       this.download_file_txt = item['Загрузите файл'];
     });
     this.symbol = '{name}';
-    this.smsLength = 0;
+    this.smsLength.set(0);
     if (localStorage.getItem('currentClient'))
       this.currentClient = JSON.parse(localStorage.getItem('currentClient') || '{}');
 
@@ -2816,8 +2816,8 @@ export class SmsTemplateModal implements OnInit {
   }
 
   messageText(event: any) {
-    this.smsCount = Number(this.messageCalcCount(event));
-    this.smsLength = event.length;
+    this.smsCount.set(Number(this.messageCalcCount(event)));
+    this.smsLength.set(event.length);
   }
 
   messageCalcCount(event: any) {
@@ -2825,7 +2825,7 @@ export class SmsTemplateModal implements OnInit {
     var isGsm = regexp.test(event);
 
     var smsCount;
-    this.smsCountLimit = false;
+    this.smsCountLimit.set(false);
 
     if (!isGsm) {
       if (event.length <= 70)
@@ -2845,7 +2845,7 @@ export class SmsTemplateModal implements OnInit {
       else if (event.length <= 536)
         smsCount = 8;
       else
-        this.smsCountLimit = true;
+        this.smsCountLimit.set(true);
     }
 
     if (isGsm) {
@@ -2866,7 +2866,7 @@ export class SmsTemplateModal implements OnInit {
       else if (event.length <= 1224)
         smsCount = 8;
       else
-        this.smsCountLimit = true;
+        this.smsCountLimit.set(true);
     }
 
     if (event == '')
