@@ -3031,8 +3031,8 @@ export class SmsTemplateModal implements OnInit {
     if (text) {
       this.Sms.checkSmsMessage({ text: text, id: this.currentClient.api_user_id }).subscribe((res: any) => {
         if (res.data) {
-          this.smsLength = res.data.chars_count;
-          this.smsCount = res.data.parts_count;
+          this.smsLength.set(res.data.chars_count);
+          this.smsCount.set(res.data.parts_count);
         }
       })
     }
